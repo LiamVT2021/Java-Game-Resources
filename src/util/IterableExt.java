@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
  * extends the Iterable interface with some default helper methods
  * 
  * @author Liam
- * @date 7/1/2021
+ * @date 7/2/2021
  *
  * @param <E> type of Object in Iterable
  */
@@ -43,7 +43,9 @@ public interface IterableExt<E> extends Iterable<E> {
 				heap.add(cur);
 			}
 		}
-		for (int i = l - 1; i >= 0; i--)
+		for (int i = l - 1; i >= count; i--)
+			arr[i] = null;
+		for (int i = count - 1; i >= 0; i--)
 			arr[i] = heap.poll();
 		return arr;
 	}

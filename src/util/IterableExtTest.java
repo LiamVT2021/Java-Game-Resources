@@ -11,11 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
  * (and SComp and Rcomp classes aswell)
  * 
  * @author Liam
- * @date 7/1/2021
+ * @date 7/2/2021
  */
 public class IterableExtTest {
 
 	private IterableExt<Integer> arr;
+	private IterableExt<Integer> small;
 	private IterableExt<Integer> empty;
 	private SComp<Integer> comp;
 
@@ -23,6 +24,7 @@ public class IterableExtTest {
 	public void setUp() {
 		arr = new Array<Integer>(
 				new Integer[] { 1, 5, 10, -2, 3, 6, 2, 8, 12 });
+		small = new Array<Integer>(new Integer[] { 1, 2 });
 		empty = new Array<Integer>(new Integer[0]);
 		comp = new SComp<Integer>();
 	}
@@ -35,6 +37,8 @@ public class IterableExtTest {
 		assertEquals(null, empty.getMax(comp));
 		assertArrayEquals(new Integer[] { null, null, null, null },
 				empty.getMax(comp, new Integer[4]));
+		assertArrayEquals(new Integer[] { 2, 1, null, null },
+				small.getMax(comp, new Integer[4]));
 	}
 
 	@Test
@@ -42,6 +46,8 @@ public class IterableExtTest {
 		assertEquals(-2, arr.getMin(comp));
 		assertArrayEquals(new Integer[] { -2, 1, 2, 3 },
 				arr.getMin(comp, new Integer[4]));
+		assertArrayEquals(new Integer[] { 1, 2, null, null },
+				small.getMin(comp, new Integer[4]));
 	}
 
 }
