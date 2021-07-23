@@ -50,7 +50,7 @@ public interface IntCheck<C>
 			int i = quickInt(c, g);
 			if (i >= g)
 				return i;
-			return i + IntCheck.<C>cast(other).quickInt(c, g - i);
+			return i + cast(other).quickInt(c, g - i);
 		};
 	}
 
@@ -62,7 +62,7 @@ public interface IntCheck<C>
 			int i = quickInt(c, g);
 			if (i >= g)
 				return i;
-			return i + IntCheck.<D>cast(other).quickInt(d, g - i);
+			return i + cast(other).quickInt(d, g - i);
 		};
 	}
 
@@ -74,7 +74,7 @@ public interface IntCheck<C>
 			int i = quickInt(c, g);
 			if (i >= g)
 				return i;
-			return i + IntCheck.<D>cast(other).quickInt(d, g - i);
+			return i + cast(other).quickInt(d, g - i);
 		};
 	}
 

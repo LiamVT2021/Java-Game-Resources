@@ -24,6 +24,8 @@ public class BiCheckSet<A, B> implements IntBiCheck<A, B> {
 
 	@Override
 	public int quickInt(A a, B b, Integer goal) {
+		if (a == null && b == null)
+			return 0;
 		return type.count(new It(a, b), goal);
 	}
 

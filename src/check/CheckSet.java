@@ -22,6 +22,8 @@ public class CheckSet<C> implements IntCheck<C> {
 
 	@Override
 	public int quickInt(C checkItem, Integer goal) {
+		if (checkItem == null)
+			return 0;
 		return type.count(new It(checkItem), goal);
 	}
 

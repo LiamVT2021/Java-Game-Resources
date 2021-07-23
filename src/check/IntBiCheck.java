@@ -43,8 +43,7 @@ public interface IntBiCheck<A, B> extends ToIntBiFunction<A, B> {
 			int i = quickInt(a, b, g);
 			if (i >= g)
 				return i;
-			return i + IntBiCheck.<A, B>cast(other).quickInt(a, b,
-					g - i);
+			return i + cast(other).quickInt(a, b, g - i);
 		};
 	}
 

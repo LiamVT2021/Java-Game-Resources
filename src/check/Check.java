@@ -6,7 +6,7 @@ import java.util.function.Predicate;
  * extends the Predicate interface to allow converting to BiChecks
  * 
  * @author Liam
- * @version 7/20/21
+ * @version 7/22/21
  *
  * @param <C> the class of object we are testing
  */
@@ -41,7 +41,12 @@ public interface Check<C> extends Predicate<C> {
 	public static final Check<Object> False = c -> false;
 	public static final Check<Object> NotNull = c -> c != null;
 
-	public static <D> Check<D> cast(Predicate<? super D> pred) {
+	public static <D> Check<? super D> cast(
+			Predicate<? super D> pred) {
+		if (pred instanceof Check)
+			return (Check<? super D>) pred;
+		if (pred == null)
+			return False;
 		return d -> pred.test(d);
 	}
 
@@ -49,11 +54,15 @@ public interface Check<C> extends Predicate<C> {
 
 	@Override
 	public default Check<C> and(Predicate<? super C> other) {
+		if (other == null)
+			return this;
 		return c -> test(c) && other.test(c);
 	}
 
 	@Override
 	public default Check<C> or(Predicate<? super C> other) {
+		if (other == null)
+			return this;
 		return c -> test(c) || other.test(c);
 	}
 

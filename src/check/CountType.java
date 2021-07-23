@@ -13,6 +13,8 @@ public enum CountType {
 	ORDER, SUM, MAX;
 
 	public int count(IndexIt<Boolean> it, Integer goal) {
+		if (it == null || !it.hasNext())
+			return 0;
 		switch (this) {
 		case ORDER:
 			if (goal == null)
