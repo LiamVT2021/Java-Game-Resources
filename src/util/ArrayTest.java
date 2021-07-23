@@ -3,12 +3,13 @@ package util;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Test all the methods in the Array class
  * 
  * @author Liam
- * @date 7/1/2021
+ * @date 7/22/2021
  */
 public class ArrayTest {
 
@@ -33,6 +34,9 @@ public class ArrayTest {
 		Integer i : nullArr)
 			count++;
 		assertEquals(0, count);
+		IndexIt<Integer> it = nullArr.iterator();
+		assertFalse(it.hasNext());
+		assertEquals(0, it.prevIndex());
 	}
 
 }

@@ -3,29 +3,42 @@ package check;
 import java.util.function.Predicate;
 
 /**
- * uses a set of checks to satisfy IntCheck
+ * uses a set of Checks to satisfy IntCheck
  * 
  * @author Liam
- * @version 7/20/21
+ * @version 7/22/21
  *
  * @param <C> the class of object we are checking
  */
 public class CheckSet<C> implements IntCheck<C> {
 
 	private Predicate<C>[] checks;
+	private CountType type;
 
-	public CheckSet(Predicate<C>[] checkArr) {
+	public CheckSet(Predicate<C>[] checkArr, CountType countType) {
 		checks = checkArr;
+		type = countType;
 	}
 
 	@Override
-	public int applyAsInt(C checkItem) {
-		int count = 0;
-		for (Predicate<C> check : checks) {
-			if (check.test(checkItem))
-				count++;
+	public int quickInt(C checkItem, Integer goal) {
+		return type.count(new It(checkItem), goal);
+	}
+
+	private class It extends CountIt<Predicate<C>> {
+
+		private C item;
+
+		public It(C checkItem) {
+			super(checks);
+			item = checkItem;
 		}
-		return count;
+
+		@Override
+		public Boolean next() {
+			return it.next().test(item);
+		}
+
 	}
 
 }

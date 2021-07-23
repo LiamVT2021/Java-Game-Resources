@@ -1,12 +1,10 @@
 package util;
 
-import java.util.Iterator;
-
 /**
  * Shell class to make an array into an iterable. Also screen null elements
  * 
  * @author Liam
- * @date 7/1/2021
+ * @date 7/22/2021
  * 
  * @param <E> type of object stored in array
  */
@@ -19,18 +17,23 @@ public class Array<E> implements IterableExt<E> {
 	}
 
 	@Override
-	public Iterator<E> iterator() {
+	public IndexIt<E> iterator() {
 		return new It();
 	}
 
-	private class It implements Iterator<E> {
+	private class It implements IndexIt<E> {
 
 		private int index;
+		private int nulls;
 
 		public It() {
-			// screens null as first element
-			if (isNull())
+			if (isNull()) // screens null as first element
 				next();
+		}
+
+		@Override
+		public int prevIndex() {
+			return index - 1 - nulls;
 		}
 
 		@Override
@@ -41,10 +44,11 @@ public class Array<E> implements IterableExt<E> {
 		@Override
 		public E next() {
 			E ret = arr[index];
-			do
+			index++;
+			while (isNull()) { // screens null elements
 				index++;
-			while (isNull());
-			// screens null elements
+				nulls++;
+			}
 			return ret;
 		}
 

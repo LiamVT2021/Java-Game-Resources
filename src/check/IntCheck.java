@@ -3,10 +3,10 @@ package check;
 import java.util.function.ToIntFunction;
 
 /**
- * uses the ToIntFunction interface to satisfy the BiPredicate
+ * Converts ToIntFunction to Check by comparing against a goal Integer
  * 
  * @author Liam
- * @version 7/20/21
+ * @version 7/22/21
  *
  * @param <C> the class we will be converting to an int
  */
@@ -14,11 +14,18 @@ import java.util.function.ToIntFunction;
 public interface IntCheck<C>
 		extends BiCheck<C, Integer>, ToIntFunction<C> {
 
+	public int quickInt(C checkItem, Integer goal);
+
+	@Override
+	public default int applyAsInt(C checkItem) {
+		return quickInt(checkItem, null);
+	}
+
 	@Override
 	public default boolean test(C checkItem, Integer goal) {
 		if (goal == null)
-			goal = 0;
-		return applyAsInt(checkItem) >= goal;
+			return quickInt(checkItem, 1) > 0;
+		return quickInt(checkItem, goal) >= goal;
 	}
 
 	public default boolean contest(C first, C second) {
@@ -31,18 +38,55 @@ public interface IntCheck<C>
 
 	public default Check<C> range(int min, int max) {
 		return c -> {
-			int i = applyAsInt(c);
+			int i = quickInt(c, max + 1);
 			return i >= min && i <= max;
 		};
 	}
 
 	public default IntCheck<C> sum(ToIntFunction<? super C> other) {
-		return c -> applyAsInt(c) + other.applyAsInt(c);
+		if (other == null)
+			return this;
+		return (c, g) -> {
+			int i = quickInt(c, g);
+			if (i >= g)
+				return i;
+			return i + IntCheck.<C>cast(other).quickInt(c, g - i);
+		};
 	}
 
-	public default <D> BiCheck<C, D> sum(
-			ToIntFunction<? super D> other, int goal) {
-		return (c, d) -> applyAsInt(c) + other.applyAsInt(d) >= goal;
+	public default <D> IntBiCheck<C, D> biSum(
+			ToIntFunction<? super D> other) {
+		if (other == null)
+			return (c, d, g) -> quickInt(c, g);
+		return (c, d, g) -> {
+			int i = quickInt(c, g);
+			if (i >= g)
+				return i;
+			return i + IntCheck.<D>cast(other).quickInt(d, g - i);
+		};
+	}
+
+	public default <D> IntBiCheck<D, C> revBiSum(
+			ToIntFunction<? super D> other) {
+		if (other == null)
+			return (d, c, g) -> quickInt(c, g);
+		return (d, c, g) -> {
+			int i = quickInt(c, g);
+			if (i >= g)
+				return i;
+			return i + IntCheck.<D>cast(other).quickInt(d, g - i);
+		};
+	}
+
+	public static final IntCheck<Object> Zero = (o, g) -> 0;
+
+	public static <D> IntCheck<? super D> cast(
+			ToIntFunction<? super D> intFunc) {
+		if (intFunc instanceof IntCheck<?>)
+			return (IntCheck<? super D>) intFunc;
+		if (intFunc == null)
+			return Zero;
+		return (d, g) -> intFunc.applyAsInt(d);
 	}
 
 }
