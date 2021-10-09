@@ -12,7 +12,22 @@ import java.util.PriorityQueue;
  *
  * @param <E> type of Object in Iterable
  */
+@FunctionalInterface
 public interface IterableExt<E> extends Iterable<E> {
+
+	public default boolean has(E target) {
+		return get(target) != null;
+	}
+
+	public default E get(E target) {
+		if (target == null)
+			return null;
+		for (E cur : this) {
+			if (target.equals(cur))
+				return cur;
+		}
+		return null;
+	}
 
 	public default E getMax(Comparator<? super E> comp) {
 		Iterator<E> it = iterator();

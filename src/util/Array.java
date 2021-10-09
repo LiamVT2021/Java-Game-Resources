@@ -21,12 +21,27 @@ public class Array<E> implements IterableExt<E> {
 		return new It();
 	}
 
+	public IndexIt<E> iterator(int start, int max) {
+		return new It(start, max);
+	}
+
+	public IterableExt<E> range(int start, int max) {
+		return () -> iterator(start, max);
+	}
+
 	private class It implements IndexIt<E> {
 
 		private int index;
 		private int nulls;
+		private int max;
 
 		public It() {
+			this(0, arr.length);
+		}
+
+		public It(int start, int max) {
+			index = start;
+			this.max = max;
 			if (isNull()) // screens null as first element
 				next();
 		}
@@ -38,7 +53,7 @@ public class Array<E> implements IterableExt<E> {
 
 		@Override
 		public boolean hasNext() {
-			return index < arr.length;
+			return index < max;
 		}
 
 		@Override
