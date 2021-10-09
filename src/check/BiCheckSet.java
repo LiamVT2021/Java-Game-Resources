@@ -11,7 +11,7 @@ import java.util.function.BiPredicate;
  * @param <A> the class of the first object we are checking
  * @param <B> the class of the second object we are checking
  */
-public class BiCheckSet<A, B> implements IntBiCheck<A, B> {
+public class BiCheckSet<A, B> implements MaxIntBiCheck<A, B> {
 
 	private BiPredicate<A, B>[] checks;
 	private CountType type;
@@ -23,13 +23,18 @@ public class BiCheckSet<A, B> implements IntBiCheck<A, B> {
 	}
 
 	@Override
+	public int max() {
+		return checks.length;
+	}
+
+	@Override
 	public int quickInt(A a, B b, Integer goal) {
 		if (a == null && b == null)
 			return 0;
 		return type.count(new It(a, b), goal);
 	}
 
-	private class It extends CountIt<BiPredicate<A, B>> {
+	private class It extends CountIt<BiPredicate<A, B>,Boolean> {
 
 		private A a;
 		private B b;

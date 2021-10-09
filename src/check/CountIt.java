@@ -12,8 +12,9 @@ import util.IndexIt;
  * @version 7/22/21
  *
  * @param <P> The type of Predicate (or BiPredicate)
+ * @param <R> The type of return for the count (boolean or int)
  */
-public abstract class CountIt<P> implements IndexIt<Boolean> {
+public abstract class CountIt<P, R> implements IndexIt<R> {
 
 	protected IndexIt<P> it;
 
@@ -25,13 +26,41 @@ public abstract class CountIt<P> implements IndexIt<Boolean> {
 		it = predIt;
 	}
 
+	public void skip() {
+		it.next();
+	}
+
+	public int remaining() {
+		int rem = 0;
+		while (hasNext()) {
+			skip();
+			rem++;
+		}
+		return rem;
+	}
+
 	@Override
 	public boolean hasNext() {
 		return it.hasNext();
 	}
 
 	@Override
-	public int prevIndex() {
-		return it.prevIndex();
+	public int index() {
+		return it.index();
 	}
+
+//	@Override
+//	public int prevIndex() {
+//		return it.prevIndex();
+//	}
+
+//	@Override
+//	public int max() {
+//		return it.max();
+//	}
+//
+//	@Override
+//	public int remaining() {
+//		return it.remaining();
+//	}
 }

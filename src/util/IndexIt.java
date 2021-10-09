@@ -3,7 +3,7 @@ package util;
 import java.util.Iterator;
 
 /**
- * Add the ability to check the index of the previous object
+ * Add the ability to check the index of the next object (or count of prev)
  * 
  * @author Liam
  * @version 7/22/21
@@ -12,6 +12,12 @@ import java.util.Iterator;
  */
 public interface IndexIt<E> extends Iterator<E> {
 
-	public int prevIndex();
+	public int index();
+
+//	public int prevIndex();
+
+//	public int max();
+
+//	public int remaining();
 
 }

@@ -1,22 +1,19 @@
 package proficiency;
 
 import sheet.Sheet;
-import sheet.SheetItem;
-import ui.Openable;
+import util.Named;
 
-public abstract class ProficiencyADT extends SheetItem implements Openable<Sheet> {
+public abstract class ProficiencyADT implements Named {// extends SheetItem implements Openable<Sheet> {
 
-	public abstract String fullName();
-
-	@Override
-	public String lineString(Sheet sheet) {
-		return fullName() + ": " + getValue(sheet);
-	}
-
-	@Override
-	public String str(Sheet sheet) {
-		return name() + ": " + getValue(sheet);
-	}
+//	@Override
+//	public String lineString(Sheet sheet) {
+//		return fullName() + ": " + getValue(sheet);
+//	}
+//
+//	@Override
+//	public String str(Sheet sheet) {
+//		return name() + ": " + getValue(sheet);
+//	}
 
 //	public abstract int valMod(Sheet sheet);
 //
@@ -34,7 +31,7 @@ public abstract class ProficiencyADT extends SheetItem implements Openable<Sheet
 	}
 
 	public abstract int minValue(Sheet sheet);
-	
+
 //	public abstract void allSkills();
 
 }

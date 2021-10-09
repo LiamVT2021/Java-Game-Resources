@@ -32,9 +32,24 @@ public class Array<E> implements IterableExt<E> {
 		}
 
 		@Override
-		public int prevIndex() {
-			return index - 1 - nulls;
+		public int index() {
+			return index - nulls;
 		}
+
+//		@Override
+//		public int prevIndex() {
+//			return index - 1 - nulls;
+//		}
+
+//		@Override
+//		public int max() {
+//			return arr.length;
+//		}
+//
+//		@Override
+//		public int remaining() {
+//			return arr.length - index;
+//		}
 
 		@Override
 		public boolean hasNext() {

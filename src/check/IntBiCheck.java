@@ -17,6 +17,10 @@ public interface IntBiCheck<A, B> extends ToIntBiFunction<A, B> {
 
 	public int quickInt(A a, B b, Integer goal);
 
+	public default boolean test(A a, B b, int goal) {
+		return quickInt(a, b, goal) >= goal;
+	}
+
 	@Override
 	public default int applyAsInt(A a, B b) {
 		return quickInt(a, b, null);
@@ -25,10 +29,11 @@ public interface IntBiCheck<A, B> extends ToIntBiFunction<A, B> {
 	public default BiCheck<A, B> biCheck(Integer goal) {
 		if (goal == null)
 			return (a, b) -> quickInt(a, b, 1) > 0;
-		return (a, b) -> quickInt(a, b, goal) >= goal;
+		return (a, b) -> test(a, b, goal);
 	}
 
-	public default BiCheck<A, B> range(int min, int max) {
+	public default BiCheck<? super A, ? super B> range(int min,
+			int max) {
 		return (a, b) -> {
 			int i = quickInt(a, b, max + 1);
 			return i >= min && i <= max;
@@ -39,11 +44,12 @@ public interface IntBiCheck<A, B> extends ToIntBiFunction<A, B> {
 			ToIntBiFunction<? super A, ? super B> other) {
 		if (other == null)
 			return this;
+		IntBiCheck<? super A, ? super B> check = cast(other);
 		return (a, b, g) -> {
 			int i = quickInt(a, b, g);
 			if (i >= g)
 				return i;
-			return i + cast(other).quickInt(a, b, g - i);
+			return i + check.quickInt(a, b, g - i);
 		};
 	}
 

@@ -11,46 +11,17 @@ import java.util.function.ToIntFunction;
  * @param <C> the class we will be converting to an int
  */
 @FunctionalInterface
-public interface IntCheck<C>
-		extends BiCheck<C, Integer>, ToIntFunction<C> {
-
-	public int quickInt(C checkItem, Integer goal);
-
-	@Override
-	public default int applyAsInt(C checkItem) {
-		return quickInt(checkItem, null);
-	}
-
-	@Override
-	public default boolean test(C checkItem, Integer goal) {
-		if (goal == null)
-			return quickInt(checkItem, 1) > 0;
-		return quickInt(checkItem, goal) >= goal;
-	}
-
-	public default boolean contest(C first, C second) {
-		return applyAsInt(first) >= applyAsInt(second);
-	}
-
-	public default SimpleContest<C> contest() {
-		return c -> applyAsInt(c);
-	}
-
-	public default Check<C> range(int min, int max) {
-		return c -> {
-			int i = quickInt(c, max + 1);
-			return i >= min && i <= max;
-		};
-	}
+public interface IntCheck<C> extends FinalIntCheck<C> {
 
 	public default IntCheck<C> sum(ToIntFunction<? super C> other) {
 		if (other == null)
 			return this;
+		IntCheck<? super C> check = cast(other);
 		return (c, g) -> {
 			int i = quickInt(c, g);
 			if (i >= g)
 				return i;
-			return i + cast(other).quickInt(c, g - i);
+			return i + check.quickInt(c, g - i);
 		};
 	}
 
@@ -58,11 +29,12 @@ public interface IntCheck<C>
 			ToIntFunction<? super D> other) {
 		if (other == null)
 			return (c, d, g) -> quickInt(c, g);
+		IntCheck<? super D> check = cast(other);
 		return (c, d, g) -> {
 			int i = quickInt(c, g);
 			if (i >= g)
 				return i;
-			return i + cast(other).quickInt(d, g - i);
+			return i + check.quickInt(d, g - i);
 		};
 	}
 
@@ -70,11 +42,12 @@ public interface IntCheck<C>
 			ToIntFunction<? super D> other) {
 		if (other == null)
 			return (d, c, g) -> quickInt(c, g);
+		IntCheck<? super D> check = cast(other);
 		return (d, c, g) -> {
 			int i = quickInt(c, g);
 			if (i >= g)
 				return i;
-			return i + cast(other).quickInt(d, g - i);
+			return i + check.quickInt(d, g - i);
 		};
 	}
 
