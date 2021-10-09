@@ -22,7 +22,8 @@ public class BodyPart {
 
 
 	public int efficiency() {
-		return (maxHP - getDamage()) * 100 / maxHP ;
+		return 0;
+		// return (maxHP - getDamage()) * 100 / maxHP ;
 	}
 
 //	public String damage(int nl, int l, int m) {
