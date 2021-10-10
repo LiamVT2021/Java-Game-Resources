@@ -1,15 +1,15 @@
 package enums;
 
-public class GroupID<E> {
+public abstract class GroupID<E> {
 
     private E first;
     private int size;
 
-    public void put(E e) {
-        if (first == null)
-            first = e;
-        size++;
-    }
+    // public void put(E e) {
+    //     if (first == null)
+    //         first = e;
+    //     size++;
+    // }
 
     public E first() {
         return first;
@@ -17,5 +17,9 @@ public class GroupID<E> {
 
     public int size() {
         return size;
+    }
+
+    public Iterable<E> getMembers() {
+        return null;
     }
 }

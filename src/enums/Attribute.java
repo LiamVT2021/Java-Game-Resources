@@ -1,28 +1,33 @@
 package enums;
 
-import static enums.Attribute.Type.MENTAL;
-import static enums.Attribute.Type.PHYSICAL;
+import util.Array;
 
 public enum Attribute implements GroupedEnum<Attribute.Type> {
 
-    STR("Strength", PHYSICAL), CON("Constitution", PHYSICAL), DEX("Dexterity", PHYSICAL), AGI("Agility", PHYSICAL),
-    APL("Appeal", PHYSICAL), //
-    INT("Intelegence", MENTAL), WIS("Widsom", MENTAL), PER("Perception", MENTAL), CHA("Charisma", MENTAL),
-    WIL("Will", MENTAL);
+    STR("Strength"), CON("Constitution"), DEX("Dexterity"), AGI("Agility"), APL("Appeal"), //
+    INT("Intelegence"), WIS("Widsom"), PER("Perception"), CHA("Charisma"), WIL("Will");
 
-    private Type[] tags;
+    public static final Array<Attribute> arr = new Array<Attribute>(values());
+
+    private Type type;
+    // private Type[] tags;
     private String fullName;
 
     private Attribute(String fullName, Type... tags) {
         this.fullName = fullName;
-        this.tags = tags;
-        for (Type tag : tags)
-            tag.id.put(this);
+        // this.tags = tags;
+        // for (Type tag : tags)
+        //     tag.id.put(this);
     }
 
     @Override
-    public Type[] getGroups() {
-        return tags;
+    public Type getType() {
+        return type;
+    }
+
+    @Override
+    public Type[] getTags() {
+        return new Type[0];
     }
 
     @Override
@@ -31,17 +36,24 @@ public enum Attribute implements GroupedEnum<Attribute.Type> {
     }
 
     public enum Type implements EnumGroup<Attribute> {
-        PHYSICAL, MENTAL;
+        PHYSICAL(STR, INT), MENTAL(INT, null);
 
-        private GroupID<Attribute> id;
+        private Iterable<Attribute> members;
 
-        private Type() {
-            id = new GroupID<Attribute>();
+        // private Type(Attribute... atts){
+        //     // this(STR, INT);
+        //     System.out.println("bad");
+        // }
+
+        private Type(Attribute first, Attribute cut) {
+            members = arr.range(first.ordinal(), (cut != null) ? cut.ordinal() : arr.size());
+            for (Attribute att : members)
+                att.type = this;
         }
 
         @Override
-        public GroupID<Attribute> id() {
-            return id;
+        public Iterable<Attribute> getMembers() {
+            return members;
         }
 
     }

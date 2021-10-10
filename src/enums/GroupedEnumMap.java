@@ -18,11 +18,15 @@ public class GroupedEnumMap<E extends Enum<E> & GroupedEnum<G>, G extends Enum<G
     }
 
     public int get(E e) {
-        int i = baseGet(e);
-        for (G group : e.getGroups()) {
-            i += groupMap.getOrDefault(group, 0);
+        int i = baseGet(e) + groupGet(e.getType());
+        for (G group : e.getTags()) {
+            i += groupGet(group);
         }
         return i;
+    }
+
+    private Integer groupGet(G group) {
+        return groupMap.getOrDefault(group, 0);
     }
 
     public void set(E e, int i) {
@@ -34,23 +38,15 @@ public class GroupedEnumMap<E extends Enum<E> & GroupedEnum<G>, G extends Enum<G
     }
 
     public String getGroup(G group, boolean full) {
-        Iterator<E> it = map.keySet().iterator();
-        E first = group.first();
-        while (it.next() != first)
-            ;
-        String str = getLine(first, full);
-        int i = 1;
-        while (i < group.size()) {
-            E e = it.next();
-            if (e.inGroup(group)) {
-                str += "\n" + getLine(e, full);
-                i++;
-            }
+        Iterator<E> it = group.getMembers().iterator();
+        String str = getLine(it.next(), full);
+        while (it.hasNext()) {
+                str += "\n" + getLine(it.next(), full);
         }
         return str;
     }
 
-    private String getLine(E first, boolean full) {
-        return first.name(full) + ": " + get(first);
+    private String getLine(E e, boolean full) {
+        return e.name(full) + ": " + get(e);
     }
 }
