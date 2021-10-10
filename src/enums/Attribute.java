@@ -17,7 +17,12 @@ public enum Attribute implements GroupedEnum<Attribute.Type> {
         this.fullName = fullName;
         // this.tags = tags;
         // for (Type tag : tags)
-        //     tag.id.put(this);
+        // tag.id.put(this);
+    }
+
+    @Override
+    public String name(boolean full) {
+        return full ? fullName : name();
     }
 
     @Override
@@ -30,23 +35,18 @@ public enum Attribute implements GroupedEnum<Attribute.Type> {
         return new Type[0];
     }
 
-    @Override
-    public String name(boolean full) {
-        return full ? fullName : name();
-    }
-
     public enum Type implements EnumGroup<Attribute> {
         PHYSICAL(STR, INT), MENTAL(INT, null);
 
         private Iterable<Attribute> members;
 
         // private Type(Attribute... atts){
-        //     // this(STR, INT);
-        //     System.out.println("bad");
+        // // this(STR, INT);
+        // System.out.println("bad");
         // }
 
         private Type(Attribute first, Attribute cut) {
-            members = arr.range(first.ordinal(), (cut != null) ? cut.ordinal() : arr.size());
+            members = arr.range(first, cut);
             for (Attribute att : members)
                 att.type = this;
         }

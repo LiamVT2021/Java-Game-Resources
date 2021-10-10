@@ -3,7 +3,7 @@ package util;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -17,7 +17,7 @@ public class ArrayTest {
 	private Array<Integer> arr;
 	private Array<Integer> nullArr;
 
-	@BeforeAll
+	@BeforeEach
 	public void setUp() {
 		arr = new Array<Integer>(new Integer[] { 1, 3, 5 });
 		nullArr = new Array<Integer>(

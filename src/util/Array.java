@@ -1,7 +1,5 @@
 package util;
 
-import java.util.Iterator;
-
 /**
  * Shell class to make an array into an iterable. Also screen null elements
  * 
@@ -20,8 +18,8 @@ public class Array<E> implements IterableExt<E> {
 	}
 
 	public int size() {
-        return arr.length;
-    }
+		return arr.length;
+	}
 
 	@Override
 	public IndexIt<E> iterator() {
@@ -36,12 +34,12 @@ public class Array<E> implements IterableExt<E> {
 		return () -> iterator(start, max);
 	}
 
-	public Iterator<E> setIt(int... indexes) {
-		return new SetIt(indexes);
+	public IterableExt<E> range(Enum<?> first, Enum<?> cut) {
+		return () -> iterator(first.ordinal(), cut != null ? cut.ordinal() : arr.length);
 	}
 
 	public IterableExt<E> subSet(int... indexes) {
-		return () -> setIt(indexes);
+		return new SubArray<E>(arr, indexes);
 	}
 
 	private class It implements IndexIt<E> {
@@ -86,28 +84,5 @@ public class Array<E> implements IterableExt<E> {
 		}
 
 	}
-
-	private class SetIt implements Iterator<E> {
-
-		private int[] indexes;
-		private int i;
-
-		public SetIt(int... indexes) {
-			this.indexes = indexes;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return i < indexes.length && indexes[i] < arr.length;
-		}
-
-		@Override
-		public E next() {
-			return arr[i++];
-		}
-
-	}
-
-    
 
 }
