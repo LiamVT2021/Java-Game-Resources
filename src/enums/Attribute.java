@@ -1,15 +1,20 @@
 package enums;
 
-import static enums.Attribute.Type.*;
+import static enums.Attribute.Type.MENTAL;
+import static enums.Attribute.Type.PHYSICAL;
 
 public enum Attribute implements GroupedEnum<Attribute.Type> {
 
-    STR(PHYSICAL), CON(PHYSICAL), DEX(PHYSICAL), AGI(PHYSICAL), //
-    INT(MENTAL), WIS(MENTAL), CHA(MENTAL), WIL(MENTAL);
+    STR("Strength", PHYSICAL), CON("Constitution", PHYSICAL), DEX("Dexterity", PHYSICAL), AGI("Agility", PHYSICAL),
+    APL("Appeal", PHYSICAL), //
+    INT("Intelegence", MENTAL), WIS("Widsom", MENTAL), PER("Perception", MENTAL), CHA("Charisma", MENTAL),
+    WIL("Will", MENTAL);
 
     private Type[] tags;
+    private String fullName;
 
-    private Attribute(Type... tags) {
+    private Attribute(String fullName, Type... tags) {
+        this.fullName = fullName;
         this.tags = tags;
         for (Type tag : tags)
             tag.id.put(this);
@@ -18,6 +23,11 @@ public enum Attribute implements GroupedEnum<Attribute.Type> {
     @Override
     public Type[] getGroups() {
         return tags;
+    }
+
+    @Override
+    public String name(boolean full) {
+        return full ? fullName : name();
     }
 
     public enum Type implements EnumGroup<Attribute> {

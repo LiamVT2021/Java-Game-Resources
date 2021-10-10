@@ -33,24 +33,24 @@ public class GroupedEnumMap<E extends Enum<E> & GroupedEnum<G>, G extends Enum<G
         groupMap.put(group, i);
     }
 
-    public String getGroup(G group) {
+    public String getGroup(G group, boolean full) {
         Iterator<E> it = map.keySet().iterator();
         E first = group.first();
         while (it.next() != first)
             ;
-        String str = getLine(first);
+        String str = getLine(first, full);
         int i = 1;
         while (i < group.size()) {
             E e = it.next();
             if (e.inGroup(group)) {
-                str += "\n" + getLine(e);
+                str += "\n" + getLine(e, full);
                 i++;
             }
         }
         return str;
     }
 
-    private String getLine(E first) {
-        return first.name() + ": " + get(first);
+    private String getLine(E first, boolean full) {
+        return first.name(full) + ": " + get(first);
     }
 }
