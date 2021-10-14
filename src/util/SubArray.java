@@ -12,6 +12,10 @@ public class SubArray<E> implements IterableExt<E> {
         this.indexes = indexes;
     }
 
+    public int[] indexes(){
+        return indexes;
+    }
+
     public void addIndex(int index) {
         int[] newArr = new int[indexes.length + 1];
         for (int i = 0; i < arr.length; i++)
