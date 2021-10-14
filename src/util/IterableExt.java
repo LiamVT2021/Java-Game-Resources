@@ -15,6 +15,14 @@ import java.util.PriorityQueue;
 @FunctionalInterface
 public interface IterableExt<E> extends Iterable<E> {
 
+	public default int count() {
+		int count = 0;
+		for (@SuppressWarnings("unused")
+		E e : this)
+			count++;
+		return count;
+	}
+
 	public default boolean has(E target) {
 		return get(target) != null;
 	}

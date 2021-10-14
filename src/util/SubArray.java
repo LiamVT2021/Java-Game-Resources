@@ -12,16 +12,20 @@ public class SubArray<E> implements IterableExt<E> {
         this.indexes = indexes;
     }
 
-    public int[] indexes(){
+    public int[] indexes() {
         return indexes;
     }
 
-    public void addIndex(int index) {
+    public static int[] addIndex(int[] indexes, int index) {
         int[] newArr = new int[indexes.length + 1];
-        for (int i = 0; i < arr.length; i++)
+        for (int i = 0; i < indexes.length; i++)
             newArr[i] = indexes[i];
         indexes[indexes.length] = index;
-        indexes = newArr;
+        return newArr;
+    }
+
+    public void addIndex(int index) {
+        indexes = addIndex(indexes, index);
     }
 
     @Override
@@ -33,6 +37,11 @@ public class SubArray<E> implements IterableExt<E> {
 
         private int i;
 
+        private It() {
+            if (isNull())
+                next();
+        }
+
         @Override
         public boolean hasNext() {
             return i < indexes.length && indexes[i] < arr.length;
@@ -40,9 +49,15 @@ public class SubArray<E> implements IterableExt<E> {
 
         @Override
         public E next() {
-            return arr[i++];
+            E ret = arr[indexes[i++]];
+            while (isNull()) // screens null elements
+                i++;
+            return ret;
         }
 
+        private boolean isNull() {
+            return hasNext() && arr[indexes[i]] == null;
+        }
     }
 
 }
