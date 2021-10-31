@@ -8,6 +8,7 @@ public enum Attribute implements GroupedEnum<Attribute.Type> {
     INT("Intelegence"), WIS("Widsom"), PER("Perception"), CHA("Charisma"), WIL("Will");
 
     public static final Array<Attribute> arr = new Array<Attribute>(values());
+    public static final short defVal = 20;
 
     private Type type;
     // private Type[] tags;
@@ -54,6 +55,14 @@ public enum Attribute implements GroupedEnum<Attribute.Type> {
         @Override
         public Iterable<Attribute> getMembers() {
             return members;
+        }
+
+    }
+
+    public class Map extends GroupedEnumShortArr<Attribute, Type> {
+
+        public Map() {
+            super(arr.size(), defVal);
         }
 
     }
