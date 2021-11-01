@@ -3,8 +3,6 @@ package check;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.junit.runner.OrderWith;
-
 import util.Math;
 
 /**
@@ -24,6 +22,12 @@ public abstract class CheckSet<C> implements IntCheck<C> {
 	public CheckSet(Predicate<C>... checkArr) {// , CountType countType) {
 		checks = checkArr;
 		// type = countType;
+	}
+
+	@Override
+	public boolean range(C checkItem, int min, int max) {
+		int i = quickInt(checkItem, max + 1);
+		return min <= i && max >= i;
 	}
 
 	protected Predicate<C>[] checks() {

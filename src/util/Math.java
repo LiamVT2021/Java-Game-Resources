@@ -125,9 +125,9 @@ public class Math {
 		return max(toIntStream(stream, e));
 	}
 
-	// public static <E> Integer max(Stream<IntCheck<E>> stream, E e, int goal) {
-	// 	return max(toIntStream(stream, e, goal));
-	// }
+	public static <E> Integer max(Stream<IntCheck<E>> stream, E e, int goal) {
+		return max(toIntStream(stream, e, goal));
+	}
 
 	//
 

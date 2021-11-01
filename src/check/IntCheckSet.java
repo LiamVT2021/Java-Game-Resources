@@ -6,7 +6,7 @@ import util.Math;
 
 public abstract class IntCheckSet<E> implements IntCheck<E> {
 
-    private IntCheck<E>[] intChecks;
+    protected IntCheck<E>[] intChecks;
 
     @SafeVarargs
     public IntCheckSet(IntCheck<E>... intChecks) {
@@ -24,18 +24,18 @@ public abstract class IntCheckSet<E> implements IntCheck<E> {
     public int quickInt(E val, int goal) {
         if (uncountable(val) || goal <= 0)
             return 0;
-        return count(intChecks, val, goal);
+        return count(val, goal);
     }
 
-    private boolean uncountable(E val) {
+    protected boolean uncountable(E val) {
         return val == null || intChecks == null || intChecks.length == 0;
     }
 
     protected abstract int count(Stream<ToIntFunction<E>> stream, E val);
 
-    protected abstract int count(IntCheck<E>[] checks, E val, int goal);
+    protected abstract int count(E val, int goal);
 
-    public static class Sum<S> extends IntCheckSet<S> {
+    public static abstract class Sum<S> extends IntCheckSet<S> {
 
         @SafeVarargs
         public Sum(IntCheck<S>... intChecks) {
@@ -46,17 +46,44 @@ public abstract class IntCheckSet<E> implements IntCheck<E> {
         protected int count(Stream<ToIntFunction<S>> stream, S val) {
             return Math.sum(stream, val);
         }
+    }
+
+    public static class ForceSum<S> extends Sum<S> {
+
+        @SafeVarargs
+        public ForceSum(IntCheck<S>... intChecks) {
+            super(intChecks);
+        }
 
         @Override
-        protected int count(IntCheck<S>[] checks, S val, int goal) {
+        protected int count(S val, int goal) {
+            return count(Stream.of(intChecks), val);
+        }
+
+    }
+
+    public static class QucikSum<S> extends Sum<S> {
+
+        @SafeVarargs
+        public QucikSum(IntCheck<S>... intChecks) {
+            super(intChecks);
+        }
+
+        @Override
+        public boolean range(S checkItem, int min, int max) {
+            int i = quickInt(checkItem, max + 1);
+            return min <= i && max >= i;
+        }
+
+        @Override
+        protected int count(S val, int goal) {
             int rem = goal;
-            for (IntCheck<S> check : checks) {
+            for (IntCheck<S> check : intChecks) {
                 rem -= check.quickInt(val, rem);
                 if (rem <= 0)
                     return goal - rem;
             }
             return goal - rem;
-
         }
     }
 
@@ -73,8 +100,20 @@ public abstract class IntCheckSet<E> implements IntCheck<E> {
         }
 
         @Override
-        protected int count(IntCheck<S>[] checks, S val, int goal) {
-            return Math.min(Stream.of(checks), val, goal);
+        protected int count(S val, int goal) {
+            return Math.min(Stream.of(intChecks), val, goal);
+        }
+
+        @Override
+        public boolean revTest(S val, int goal) {
+            if (uncountable(val))
+                return 0 < goal;
+            for (IntCheck<S> check : intChecks) {
+                int cur = check.quickInt(val, goal);
+                if (cur < goal)
+                    return true;
+            }
+            return false;
         }
     }
 
@@ -91,16 +130,20 @@ public abstract class IntCheckSet<E> implements IntCheck<E> {
         }
 
         @Override
-        protected int count(IntCheck<S>[] checks, S val, int goal) {
-            int max = 0;
-            for (IntCheck<S> check : checks) {
+        protected int count(S val, int goal) {
+            return Math.max(Stream.of(intChecks), val, goal);
+        }
+
+        @Override
+        public boolean test(S val, int goal) {
+            if (uncountable(val))
+                return 0 >= goal;
+            for (IntCheck<S> check : intChecks) {
                 int cur = check.quickInt(val, goal);
                 if (cur >= goal)
-                    return cur;
-                if (cur >= max)
-                    max = cur;
+                    return true;
             }
-            return max;
+            return false;
         }
     }
 }

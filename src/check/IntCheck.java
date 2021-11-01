@@ -18,8 +18,31 @@ public interface IntCheck<C> extends ToIntFunction<C> {
 	}
 
 	public default boolean test(C checkItem, int goal) {
-		return quickInt(checkItem, goal) >= 0;
+		return quickInt(checkItem, goal) >= goal;
 	}
+
+	public default boolean revTest(C checkItem, int goal) {
+		return quickInt(checkItem, goal) < goal;
+	}
+
+	//
+
+	public default boolean range(C checkItem, int min, int max) {
+		int i = applyAsInt(checkItem);
+		return i >= min && i <= max;
+	}
+
+	//
+
+	public default Check<C> check(int goal) {
+		return c -> test(c, goal);
+	}
+
+	public default Check<C> range(int min, int max) {
+		return c -> range(c, min, max);
+	}
+
+	//
 
 	public default boolean contest(C first, C second) {
 		return applyAsInt(first) >= applyAsInt(second);
@@ -29,12 +52,9 @@ public interface IntCheck<C> extends ToIntFunction<C> {
 		return c -> applyAsInt(c);
 	}
 
-	public default Check<C> range(int min, int max) {
-		return c -> {
-			int i = quickInt(c, max + 1);
-			return i >= min && i <= max;
-		};
-	}
+	//
+
+	public static final IntCheck<Object> Zero = o -> 0;
 
 	// public default IntCheck<C> sum(ToIntFunction<? super C> other) {
 	// if (other == null)
@@ -70,8 +90,6 @@ public interface IntCheck<C> extends ToIntFunction<C> {
 	// return i + cast(other).quickInt(d, g - i);
 	// };
 	// }
-
-	public static final IntCheck<Object> Zero = o -> 0;
 
 	// public static <D> IntCheck<? super D> cast(
 	// ToIntFunction<? super D> intFunc) {
