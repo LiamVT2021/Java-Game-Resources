@@ -2,6 +2,8 @@ package util;
 
 import java.util.stream.Stream;
 
+import check.IntCheck;
+
 import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -27,6 +29,14 @@ public class Math {
 
 	private static Integer opInt(OptionalInt i) {
 		return i.isPresent() ? i.getAsInt() : null;
+	}
+
+	private static <E> IntStream toIntStream(Stream<ToIntFunction<E>> stream, E e) {
+		return stream.mapToInt(intCheck -> intCheck.applyAsInt(e));
+	}
+
+	private static <E> IntStream toIntStream(Stream<IntCheck<E>> stream, E e, int goal) {
+		return stream.mapToInt(intCheck -> intCheck.quickInt(e, goal));
 	}
 
 	//
@@ -102,27 +112,35 @@ public class Math {
 	}
 
 	public static <E> int sum(Stream<ToIntFunction<E>> stream, E e) {
-		return sum(stream.mapToInt(intCheck -> intCheck.applyAsInt(e)));
+		return sum(toIntStream(stream, e));
 	}
 
 	//
 
-	public static <E> Integer max(Stream<E> stream, ToIntFunction<E> intCheck){
+	public static <E> Integer max(Stream<E> stream, ToIntFunction<E> intCheck) {
 		return max(stream.mapToInt(intCheck));
 	}
 
 	public static <E> Integer max(Stream<ToIntFunction<E>> stream, E e) {
-		return max(stream.mapToInt(intCheck -> intCheck.applyAsInt(e)));
+		return max(toIntStream(stream, e));
 	}
+
+	// public static <E> Integer max(Stream<IntCheck<E>> stream, E e, int goal) {
+	// 	return max(toIntStream(stream, e, goal));
+	// }
 
 	//
 
-	public static <E> Integer min(Stream<E> stream, ToIntFunction<E> intCheck){
+	public static <E> Integer min(Stream<E> stream, ToIntFunction<E> intCheck) {
 		return min(stream.mapToInt(intCheck));
 	}
 
 	public static <E> Integer min(Stream<ToIntFunction<E>> stream, E e) {
-		return min(stream.mapToInt(intCheck -> intCheck.applyAsInt(e)));
+		return min(toIntStream(stream, e));
+	}
+
+	public static <E> Integer min(Stream<IntCheck<E>> stream, E e, int goal) {
+		return min(toIntStream(stream, e, goal));
 	}
 
 }
