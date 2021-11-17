@@ -18,9 +18,9 @@ public abstract class HeapADT {
      * @param b
      * @return true if a MUST be above b
      */
-    protected abstract boolean compareIndex(int a, int b);
+    // protected abstract boolean compareIndex(int a, int b);
 
-    protected abstract void swapIndex(int a, int b);
+    // protected abstract void swapIndex(int a, int b);
 
     protected int up(int i) {
         return (i - 1) / 2;
@@ -28,6 +28,10 @@ public abstract class HeapADT {
 
     protected int left(int i) {
         return i * 2 + 1;
+    }
+
+    protected int bottom(){
+
     }
 
     // public default int right(int i){
@@ -41,29 +45,32 @@ public abstract class HeapADT {
     // return r;
     // }
 
-    protected void heapUp(int i) {
-        int up = up(i);
-        if (compareIndex(i, up)) {
-            swapIndex(i, up);
-            heapUp(up);
-        }
-    }
+    protected abstract void heapUp(int i);
+    // int up = up(i);
+    // if (compareIndex(i, up)) {
+    // swapIndex(i, up);
+    // heapUp(up);
+    // }
 
-    protected void heapDown(int i) {
-        int l = left(i);
-        int r = l + 1;
-        if (compareIndex(l, i) && !compareIndex(r, l)) {
-            swapIndex(l, i);
-            heapDown(l);
-        } else if (compareIndex(r, i)) {
-            swapIndex(r, i);
-            heapDown(r);
-        }
-    }
+    protected abstract void heapDown(int i);
+    // int l = left(i);
+    // int r = l + 1;
+    // if (compareIndex(l, i) && !compareIndex(r, l)) {
+    // swapIndex(l, i);
+    // heapDown(l);
+    // } else if (compareIndex(r, i)) {
+    // swapIndex(r, i);
+    // heapDown(r);
+    // }
 
-    protected void heapify(int i) {
-        for (i = up(i); i >= 0; i--)
+    public void heapify() {
+        for (int i = bottom(); i >= 0; i--)
             heapDown(i);
+    }
+
+    public void update(int index) {
+        heapUp(index);
+        heapDown(index);
     }
 
 }

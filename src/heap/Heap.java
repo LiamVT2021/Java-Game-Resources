@@ -10,9 +10,6 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
     public boolean push(E e) {
         if (isFull())
             return false;
-        // arr[size] = e;
-        // heapUp(size);
-        // size++;
         heapUp(size++, e);
         return true;
     }
@@ -22,8 +19,9 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
         if (isEmpty())
             return null;
         E ret = arr[0];
-        arr[0] = arr[size--];
-        heapDown(0);
+        E bot = arr[--size];
+        arr[size] = null;
+        heapDown(0, bot);
         return ret;
     }
 
@@ -38,44 +36,66 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
     public E swap(E e) {
         if (isEmpty())
             return e;
-        E peek = peek();
+        E peek = arr[0];
         if (compare(peek, e)) {
-            arr[0] = e;
-            heapDown(0);
+            heapDown(0, e);
             return peek;
         }
         return e;
     }
 
     @Override
-    public void swapIndex(int a, int b) {
-        E temp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = temp;
+    protected void heapUp(int i) {
+        heapUp(i, arr[i]);
+    }
+
+    private void heapUp(int i, E e) {
+        while (i > 0) {
+            int up = up(i);
+            E top = arr[up];
+            if (compare(e, top))
+                i = helpHeap(i, up, top);
+            else {
+                arr[i] = e;
+                break;
+            }
+        }
     }
 
     @Override
-    public boolean compareIndex(int a, int b) {
-        E A = arr[a];
-        if (A == null)
-            return false;
-        E B = arr[b];
-        if (B == null)
-            return true;
-        return compare(A, B);
+    protected void heapDown(int i) {
+        heapDown(i, arr[i]);
+    }
+
+    private void heapDown(int i, E e) {
+        int bottom = bottom();
+        while(i < bottom) {
+            int l = left(i);
+            E left = arr[l];
+            int r = l + 1;
+            if (r >= size) {
+                if (compare(left, e))
+                    i = helpHeap(i, l, left);
+                else
+                    break;
+            }
+            E right = arr[r];
+            if (compare(left, e) && !compare(right, left))
+                i = helpHeap(i, l, left);
+            else if (compare(right, e))
+                i = helpHeap(i, r, right);
+            else
+                break;
+        }
+        arr[i] = e;
+    }
+
+    private int helpHeap(int i, int next, E e) {
+        arr[i] = e;
+        return next;
     }
 
     public abstract boolean compare(E A, E B);
-
-    protected void heapUp(int i, E e) {
-        int up = up(i);
-        E top = arr[up];
-        if (compare(e, top)) {
-            arr[i] = top;
-            heapUp(up, e);
-        } else
-            arr[i] = e;
-    }
 
     public static class Min<E extends Comparable<E>> extends Heap<E> {
 

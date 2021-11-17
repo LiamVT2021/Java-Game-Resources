@@ -7,15 +7,33 @@ public abstract class PrimHeap extends HeapADT implements PrimPushPop {
         private int[] arr;
 
         @Override
-        public boolean compareIndex(int a, int b) {
-            return arr[a] < arr[b];
+        public boolean push(int i) {
+            // TODO Auto-generated method stub
+            return false;
         }
 
         @Override
-        public void swap(int a, int b) {
-            int temp = arr[a];
-            arr[a] = arr[b];
-            arr[b] = temp;
+        public int pop() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        @Override
+        public int peek() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        @Override
+        protected void heapUp(int i) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        protected void heapDown(int i) {
+            // TODO Auto-generated method stub
+
         }
 
     }
