@@ -13,6 +13,9 @@ import java.util.function.ToIntFunction;
 @FunctionalInterface
 public interface IntCheck<C> extends ToIntFunction<C> {
 
+	/**
+	 * only implement if start at zero and can only go up.
+	 */
 	public default int quickInt(C checkItem, int goal) {
 		return applyAsInt(checkItem);
 	}
@@ -28,7 +31,7 @@ public interface IntCheck<C> extends ToIntFunction<C> {
 	//
 
 	public default boolean range(C checkItem, int min, int max) {
-		int i = applyAsInt(checkItem);
+		int i = quickInt(checkItem, max + 1);
 		return i >= min && i <= max;
 	}
 

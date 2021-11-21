@@ -16,18 +16,10 @@ import util.Math;
 public abstract class CheckSet<C> implements IntCheck<C> {
 
 	private Predicate<C>[] checks;
-	// private CountType type;
 
 	@SafeVarargs
-	public CheckSet(Predicate<C>... checkArr) {// , CountType countType) {
+	public CheckSet(Predicate<C>... checkArr) {
 		checks = checkArr;
-		// type = countType;
-	}
-
-	@Override
-	public boolean range(C checkItem, int min, int max) {
-		int i = quickInt(checkItem, max + 1);
-		return min <= i && max >= i;
 	}
 
 	protected Predicate<C>[] checks() {
@@ -138,28 +130,4 @@ public abstract class CheckSet<C> implements IntCheck<C> {
 		}
 
 	}
-
-	// @Override
-	// public int quickInt(C checkItem, Integer goal) {
-	// if (checkItem == null)
-	// return 0;
-	// return type.count(new It(checkItem), goal);
-	// }
-
-	// private class It extends CountIt<Predicate<C>> {
-
-	// private C item;
-
-	// public It(C checkItem) {
-	// super(checks);
-	// item = checkItem;
-	// }
-
-	// @Override
-	// public Boolean next() {
-	// return it.next().test(item);
-	// }
-
-	// }
-
 }
