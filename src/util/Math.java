@@ -3,13 +3,17 @@ package util;
 import java.util.stream.Stream;
 
 import check.IntCheck;
-
 import java.util.OptionalInt;
+import java.util.Random;
+import java.util.function.IntBinaryOperator;
 import java.util.function.Predicate;
+import java.util.function.ToIntBiFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 
 public class Math {
+
+	public static final Random random = new Random();
 
 	public static int divideUp(int num, int div) {
 		return (num + div - 1) / div;
@@ -31,15 +35,59 @@ public class Math {
 		return i.isPresent() ? i.getAsInt() : null;
 	}
 
-	private static <E> IntStream toIntStream(Stream<ToIntFunction<E>> stream, E e) {
-		return stream.mapToInt(intCheck -> intCheck.applyAsInt(e));
-	}
-
-	private static <E> IntStream toIntStream(Stream<IntCheck<E>> stream, E e, int goal) {
-		return stream.mapToInt(intCheck -> intCheck.quickInt(e, goal));
+	private static int defInt(Integer i, int def) {
+		return i == null ? def : i;
 	}
 
 	//
+
+	public static class Operation {
+
+		private static final int parrSize = 32;
+
+		private IntBinaryOperator func;
+		private Integer identity;
+
+		public Operation(IntBinaryOperator func, Integer identity) {
+			this.func = func;
+			this.identity = identity;
+		}
+
+		public Integer reduce(IntStream stream, boolean parrallel) {
+			if (parrallel)
+				stream = fullParallel(stream);
+			return identity == null ? opInt(stream.reduce(func)) : stream.reduce(identity, func);
+		}
+
+		public Integer reduce(int... ints) {
+			int l = ints.length;
+			if (l < 2)
+				return l == 1 ? ints[0] : identity;
+			if (l >= parrSize)
+				return reduce(IntStream.of(ints), true);
+			int ret = identity == null ? ints[0] : identity;
+			for (int i : ints)
+				ret = func.applyAsInt(ret, i);
+			return ret;
+		}
+
+		public IntBinaryOperator func() {
+			return func;
+		}
+
+		public ToIntBiFunction<IntStream, Boolean> streamOp() {
+			return this::reduce;
+		}
+
+		public ToIntFunction<int[]> arrayOp() {
+			return this::reduce;
+		}
+	}
+
+	public static final Operation Sum = new Operation((a, b) -> a + b, 0);
+	public static final Operation Product = new Operation((a, b) -> a * b, 1);
+	public static final Operation Min = new Operation((a, b) -> a <= b ? a : b, null);
+	public static final Operation Max = new Operation((a, b) -> a >= b ? a : b, null);
 
 	public static int add(int a, int b) {
 		return a + b;
@@ -107,40 +155,28 @@ public class Math {
 
 	//
 
-	public static <E> int sum(Stream<E> stream, ToIntFunction<E> intCheck) {
-		return sum(stream.mapToInt(intCheck));
-	}
-
-	public static <E> int sum(Stream<ToIntFunction<E>> stream, E e) {
-		return sum(toIntStream(stream, e));
+	public static <E> int streamOp(Stream<E> stream, ToIntFunction<E> mapper, ToIntFunction<IntStream> counter) {
+		return counter.applyAsInt(stream.mapToInt(mapper));
 	}
 
 	//
 
-	public static <E> Integer max(Stream<E> stream, ToIntFunction<E> intCheck) {
-		return max(stream.mapToInt(intCheck));
+	public static <E> ToIntFunction<ToIntFunction<E>> intChecker(E val) {
+		return intCheck -> intCheck.applyAsInt(val);
 	}
 
-	public static <E> Integer max(Stream<ToIntFunction<E>> stream, E e) {
-		return max(toIntStream(stream, e));
-	}
-
-	public static <E> Integer max(Stream<IntCheck<E>> stream, E e, int goal) {
-		return max(toIntStream(stream, e, goal));
+	public static <E> ToIntFunction<IntCheck<E>> intChecker(E val, int goal) {
+		return intCheck -> intCheck.quickInt(val, goal);
 	}
 
 	//
 
-	public static <E> Integer min(Stream<E> stream, ToIntFunction<E> intCheck) {
-		return min(stream.mapToInt(intCheck));
+	public static ToIntFunction<IntStream> minCounter(int def) {
+		return stream -> defInt(min(stream), def);
 	}
 
-	public static <E> Integer min(Stream<ToIntFunction<E>> stream, E e) {
-		return min(toIntStream(stream, e));
-	}
-
-	public static <E> Integer min(Stream<IntCheck<E>> stream, E e, int goal) {
-		return min(toIntStream(stream, e, goal));
+	public static ToIntFunction<IntStream> maxCounter(int def) {
+		return stream -> defInt(max(stream), def);
 	}
 
 }
