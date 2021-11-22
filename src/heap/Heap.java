@@ -1,16 +1,38 @@
 package heap;
 
+import java.lang.reflect.Array;
 import java.util.Comparator;
 
-public abstract class Heap<E> extends HeapADT implements PushPop<E> {
+public abstract class Heap<E> extends HeapADT implements PushPop<E>, Cloneable {
 
-    protected E[] arr;
+    @SuppressWarnings("unchecked")
+    public Heap(Class<E> Class, int cap, int length) {
+        super(cap);
+        arr = (E[]) Array.newInstance(Class, length);
+    }
+
+    public Heap(int cap, E[] arr) {
+        this(cap, arr, true);
+    }
+
+    private Heap(int cap, E[] arr, boolean heapify) {
+        super(cap);
+        this.arr = arr;
+        if (heapify)
+            heapify();
+    }
+
+    protected Heap(Heap<E> heap) {
+        this(heap.cap, heap.arr, false);
+    }
+
+    private E[] arr;
 
     @Override
     public boolean push(E e) {
         if (isFull())
             return false;
-        heapUp(size++, e);
+        heapUp(size++, e, true);
         return true;
     }
 
@@ -21,7 +43,7 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
         E ret = arr[0];
         E bot = arr[--size];
         arr[size] = null;
-        heapDown(0, bot);
+        heapDown(0, bot, true);
         return ret;
     }
 
@@ -38,38 +60,39 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
             return e;
         E peek = arr[0];
         if (compare(peek, e)) {
-            heapDown(0, e);
+            heapDown(0, e, true);
             return peek;
         }
         return e;
     }
 
     @Override
-    protected void heapUp(int i) {
-        heapUp(i, arr[i]);
+    protected boolean heapUp(int i) {
+        return heapUp(i, arr[i], false);
     }
 
-    private void heapUp(int i, E e) {
+    @Override
+    protected boolean heapDown(int i) {
+        return heapDown(i, arr[i], false);
+    }
+
+    private boolean heapUp(int start, E e, boolean writeOnStart) {
+        int i = start;
         while (i > 0) {
             int up = up(i);
             E top = arr[up];
             if (compare(e, top))
                 i = helpHeap(i, up, top);
-            else {
-                arr[i] = e;
+            else
                 break;
-            }
         }
+        return write(start, e, writeOnStart, i);
     }
 
-    @Override
-    protected void heapDown(int i) {
-        heapDown(i, arr[i]);
-    }
-
-    private void heapDown(int i, E e) {
+    private boolean heapDown(int start, E e, boolean writeOnStart) {
+        int i = start;
         int bottom = bottom();
-        while(i < bottom) {
+        while (i <= bottom) {
             int l = left(i);
             E left = arr[l];
             int r = l + 1;
@@ -87,7 +110,7 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
             else
                 break;
         }
-        arr[i] = e;
+        return write(start, e, writeOnStart, i);
     }
 
     private int helpHeap(int i, int next, E e) {
@@ -95,12 +118,38 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
         return next;
     }
 
-    public abstract boolean compare(E A, E B);
+    private boolean write(int start, E e, boolean writeOnStart, int i) {
+        boolean ret = i != start;
+        if (ret || writeOnStart)
+            arr[i] = e;
+        return ret;
+    }
+
+    protected abstract boolean compare(E A, E B);
+
+    public abstract Heap<E> clone();
 
     public static class Min<E extends Comparable<E>> extends Heap<E> {
 
+        public Min(Class<E> Class, int cap, int length) {
+            super(Class, cap, length);
+        }
+
+        public Min(int cap, E[] arr) {
+            super(cap, arr);
+        }
+
+        private Min(Min<E> heap) {
+            super(heap);
+        }
+
         @Override
-        public boolean compare(E A, E B) {
+        public Min<E> clone() {
+            return new Min<E>(this);
+        }
+
+        @Override
+        protected boolean compare(E A, E B) {
             return A.compareTo(B) < 0;
         }
 
@@ -108,8 +157,25 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
 
     public static class Max<E extends Comparable<E>> extends Heap<E> {
 
+        public Max(Class<E> Class, int cap, int length) {
+            super(Class, cap, length);
+        }
+
+        public Max(int cap, E[] arr) {
+            super(cap, arr);
+        }
+
+        private Max(Max<E> heap) {
+            super(heap);
+        }
+
         @Override
-        public boolean compare(E A, E B) {
+        public Max<E> clone() {
+            return new Max<E>(this);
+        }
+
+        @Override
+        protected boolean compare(E A, E B) {
             return A.compareTo(B) > 0;
         }
 
@@ -117,11 +183,38 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E> {
 
     public static class Comp<E> extends Heap<E> {
 
+        public Comp(Class<E> Class, Comparator<E> comp, int cap, int length) {
+            super(Class, cap, length);
+            this.comp = comp;
+        }
+
+        public Comp(Comparator<E> comp, int cap, E[] arr) {
+            super(cap, arr, false);
+            this.comp = comp;
+            heapify();
+        }
+
+        private Comp(Comp<E> heap) {
+            super(heap);
+            this.comp = heap.comp;
+        }
+
+        @Override
+        public Comp<E> clone() {
+            return new Comp<E>(this);
+        }
+
         private Comparator<E> comp;
 
         @Override
-        public boolean compare(E A, E B) {
+        protected boolean compare(E A, E B) {
             return comp.compare(A, B) < 0;
+        }
+
+        @Override
+        public void heapify() {
+            if (comp != null)
+                super.heapify();
         }
 
     }

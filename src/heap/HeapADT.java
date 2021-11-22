@@ -2,6 +2,11 @@ package heap;
 
 public abstract class HeapADT {
 
+    public HeapADT(int cap) {
+        this.cap = cap;
+        this.size = 0;
+    }
+
     protected int cap;
     protected int size;
 
@@ -13,15 +18,6 @@ public abstract class HeapADT {
         return size == cap;
     }
 
-    /**
-     * @param a
-     * @param b
-     * @return true if a MUST be above b
-     */
-    // protected abstract boolean compareIndex(int a, int b);
-
-    // protected abstract void swapIndex(int a, int b);
-
     protected int up(int i) {
         return (i - 1) / 2;
     }
@@ -30,8 +26,16 @@ public abstract class HeapADT {
         return i * 2 + 1;
     }
 
-    protected int bottom(){
+    protected boolean isLeft(int i) {
+        return i > 0 && i % 2 == 1;
+    }
 
+    protected boolean isRight(int i) {
+        return i > 0 && i % 2 == 0;
+    }
+
+    protected int bottom() {
+        return up(size - 1);
     }
 
     // public default int right(int i){
@@ -45,23 +49,9 @@ public abstract class HeapADT {
     // return r;
     // }
 
-    protected abstract void heapUp(int i);
-    // int up = up(i);
-    // if (compareIndex(i, up)) {
-    // swapIndex(i, up);
-    // heapUp(up);
-    // }
+    protected abstract boolean heapUp(int i);
 
-    protected abstract void heapDown(int i);
-    // int l = left(i);
-    // int r = l + 1;
-    // if (compareIndex(l, i) && !compareIndex(r, l)) {
-    // swapIndex(l, i);
-    // heapDown(l);
-    // } else if (compareIndex(r, i)) {
-    // swapIndex(r, i);
-    // heapDown(r);
-    // }
+    protected abstract boolean heapDown(int i);
 
     public void heapify() {
         for (int i = bottom(); i >= 0; i--)
