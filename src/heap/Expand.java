@@ -1,6 +1,8 @@
 package heap;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.function.IntFunction;
 
 import util.Math;
 
@@ -12,8 +14,12 @@ public abstract class Expand {
         this.capacity = capacity;
     }
 
-    private Expand(int size, int bound, boolean expand) {
-        this(size, expand ? -1 : bound, expand ? -1 : bound);
+    private Expand(int size) {
+        this(size, -1, -1);
+    }
+
+    private Expand() {
+        this(0);
     }
 
     protected int size;
@@ -23,6 +29,25 @@ public abstract class Expand {
     public int size() {
         return size;
     }
+
+    public void setRange(int min, int capacity) {
+        this.min = min;
+        this.capacity = capacity;
+    }
+
+    public void setRange(int lock) {
+        setRange(lock, lock);
+    }
+
+    public void free() {
+        setRange(-1);
+    }
+
+    public void lock() {
+        setRange(length());
+    }
+
+    public abstract int length();
 
     public boolean isEmpty() {
         return size <= 0;
@@ -36,40 +61,39 @@ public abstract class Expand {
         return arrCopy(Math.Max.reduce(size, min, 0));
     }
 
-    public boolean expand(int newSize) {
-        return (capacity >= 0 && (newSize <= size || newSize > capacity)) ? false : arrCopy(newSize);
+    public boolean expand() {
+        if (isFull())
+            return false;
+        if (size < length())
+            return true;
+        return arrCopy(Math.min(capacity, newSize()));
+    }
+
+    protected int newSize() {
+        return size * 2 + 1;
     }
 
     protected abstract boolean arrCopy(int newSize);
 
     static abstract class Array<E> extends Expand {
 
-        Array(E[] arr, int min, int capacity) {
-            super(arr.length, min, capacity);
+        protected Array(IntFunction<E[]> newArr, int length) {
+            super();
+            this.arr = newArr.apply(length);
+        }
+
+        @SafeVarargs
+        protected Array(E... arr) {
+            super(arr.length);
             this.arr = arr;
-        }
-
-        Array(E[] arr, boolean expand) {
-            super(arr.length, arr.length, expand);
-            this.arr = arr;
-        }
-
-        Array(Class<E> clazz, int start, int min, int capacity) {
-            super(0, min, capacity);
-            arr = newArr(clazz, start);
-        }
-
-        Array(Class<E> clazz, int start, boolean expand) {
-            super(0, start, expand);
-            arr = newArr(clazz, start);
-        }
-
-        @SuppressWarnings("unchecked")
-        private E[] newArr(Class<E> clazz, int size) {
-            return (E[]) java.lang.reflect.Array.newInstance(clazz, size);
         }
 
         protected E[] arr;
+
+        @Override
+        public int length() {
+            return arr.length;
+        }
 
         @Override
         protected boolean arrCopy(int newSize) {
@@ -79,34 +103,39 @@ public abstract class Expand {
             return true;
         }
 
-        public E[] cloneArr(boolean clone) {
-            return clone ? Arrays.copyOf(arr, arr.length) : arr;
+        public E[] array() {
+            return Arrays.copyOf(arr, size);
+        }
+
+        public E[] sorted(Comparator<? super E> comp) {
+            E[] ret = array();
+            Arrays.sort(ret, comp);
+            return ret;
         }
     }
 
     static abstract class Int extends Expand {
 
-        Int(int[] arr, int min, int capacity) {
-            super(arr.length, min, capacity);
+        protected Int(int length) {
+            super();
+            setArr(new int[length]);
+        }
+
+        protected Int(int... arr) {
+            super(arr.length);
+            setArr(arr);
+        }
+
+        protected int[] arr;
+
+        public void setArr(int... arr) {
             this.arr = arr;
         }
 
-        Int(int[] arr, boolean expand) {
-            super(arr.length, arr.length, expand);
-            this.arr = arr;
+        @Override
+        public int length() {
+            return arr.length;
         }
-
-        Int(int start, int min, int capacity) {
-            super(0, min, capacity);
-            arr = new int[start];
-        }
-
-        Int(int start, boolean expand) {
-            super(0, start, expand);
-            arr = new int[start];
-        }
-
-        private int[] arr;
 
         protected boolean arrCopy(int newSize) {
             if (newSize == arr.length)
@@ -115,8 +144,8 @@ public abstract class Expand {
             return true;
         }
 
-        public int[] array(boolean clone) {
-            return clone ? Arrays.copyOf(arr, arr.length) : arr;
+        public int[] array() {
+            return Arrays.copyOf(arr, size);
         }
     }
 

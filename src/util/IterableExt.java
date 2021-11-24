@@ -2,7 +2,11 @@ package util;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.PriorityQueue;
+import java.util.function.BiPredicate;
+import java.util.function.BinaryOperator;
+import java.util.function.IntFunction;
+
+import heap.Heap;
 
 /**
  * extends the Iterable interface with some default helper methods
@@ -38,47 +42,41 @@ public interface IterableExt<E> extends Iterable<E> {
 	}
 
 	public default E getMax(Comparator<? super E> comp) {
+		return reduce((a, b) -> comp.compare(a, b) > 0 ? a : b);
+	}
+
+	public default E[] getMax(Comparator<? super E> comp, IntFunction<E[]> newArr, int size) {
+		return reduce(Heap.min(comp), newArr, size).sorted(newArr, false, true);
+	}
+
+	public default E getMin(Comparator<? super E> comp) {
+		return reduce((a, b) -> comp.compare(a, b) > 0 ? a : b);
+	}
+
+	public default E[] getMin(Comparator<? super E> comp, IntFunction<E[]> newArr, int size) {
+		return reduce(Heap.max(comp), newArr, size).sorted(newArr, false, true);
+	}
+
+	public default E reduce(BinaryOperator<E> operator) {
 		Iterator<E> it = iterator();
 		if (!it.hasNext())
 			return null;
 		E ret = it.next();
-		while (it.hasNext()) {
-			E cur = it.next();
-			if (comp.compare(cur, ret) > 0)
-				ret = cur;
-		}
+		while (it.hasNext())
+			ret = operator.apply(ret, it.next());
 		return ret;
 	}
 
-	public default E[] getMax(Comparator<? super E> comp, E[] arr) {
+	public default Heap<E> reduce(BiPredicate<E, E> comp, IntFunction<E[]> newArr, int size) {
+		Heap<E> heap = new Heap<E>(newArr, size, comp);
 		Iterator<E> it = iterator();
-		int count = 0;
-		int l = arr.length;
-		PriorityQueue<E> heap = new PriorityQueue<E>(l, comp);
-		while (it.hasNext() && count < l) {
-			heap.add(it.next());
-			count++;
-		}
+		while (it.hasNext() && !heap.isFull())
+			heap.push(it.next());
+
 		while (it.hasNext()) {
-			E cur = it.next();
-			if (comp.compare(cur, heap.peek()) > 0) {
-				heap.poll();
-				heap.add(cur);
-			}
+			heap.swap(it.next());
 		}
-		for (int i = l - 1; i >= count; i--)
-			arr[i] = null;
-		for (int i = count - 1; i >= 0; i--)
-			arr[i] = heap.poll();
-		return arr;
-	}
-
-	public default E getMin(Comparator<? super E> comp) {
-		return getMax(new RComp<E>(comp));
-	}
-
-	public default E[] getMin(Comparator<? super E> comp, E[] arr) {
-		return getMax(new RComp<E>(comp), arr);
+		return heap;
 	}
 
 }

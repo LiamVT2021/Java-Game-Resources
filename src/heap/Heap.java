@@ -1,32 +1,38 @@
 package heap;
 
-import java.lang.reflect.Array;
 import java.util.Comparator;
+import java.util.function.BiPredicate;
+import java.util.function.IntFunction;
 
-public abstract class Heap<E> extends HeapADT implements PushPop<E>, Cloneable {
+public class Heap<E> extends Expand.Array<E> implements HeapADT, PushPop<E>, Cloneable {
 
-    @SuppressWarnings("unchecked")
-    public Heap(Class<E> Class, int cap, int length) {
-        super(cap);
-        arr = (E[]) Array.newInstance(Class, length);
+    private BiPredicate<E, E> comp;
+
+    public Heap(IntFunction<E[]> newArr, int length, BiPredicate<E, E> comp) {
+        super(newArr, length);
+        this.comp = comp;
     }
 
-    public Heap(int cap, E[] arr) {
-        this(cap, arr, true);
+    public Heap(E[] arr, BiPredicate<E, E> comp) {
+        super(arr);
+        this.comp = comp;
+        heapify();
     }
 
-    private Heap(int cap, E[] arr, boolean heapify) {
-        super(cap);
-        this.arr = arr;
-        if (heapify)
-            heapify();
+    private Heap(Heap<E> heap) {
+        super(heap.array());
+        this.comp = heap.comp;
+        this.capacity = heap.capacity;
+        this.min = heap.min;
     }
 
-    protected Heap(Heap<E> heap) {
-        this(heap.cap, heap.arr, false);
+    public static <E> BiPredicate<E, E> min(Comparator<? super E> comp) {
+        return (a, b) -> comp.compare(a, b) < 0;
     }
 
-    private E[] arr;
+    public static <E> BiPredicate<E, E> max(Comparator<? super E> comp) {
+        return (a, b) -> comp.compare(a, b) > 0;
+    }
 
     @Override
     public boolean push(E e) {
@@ -59,7 +65,7 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E>, Cloneable {
         if (isEmpty())
             return e;
         E peek = arr[0];
-        if (compare(peek, e)) {
+        if (comp.test(peek, e)) {
             heapDown(0, e, true);
             return peek;
         }
@@ -67,12 +73,12 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E>, Cloneable {
     }
 
     @Override
-    protected boolean heapUp(int i) {
+    public boolean heapUp(int i) {
         return heapUp(i, arr[i], false);
     }
 
     @Override
-    protected boolean heapDown(int i) {
+    public boolean heapDown(int i) {
         return heapDown(i, arr[i], false);
     }
 
@@ -81,7 +87,7 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E>, Cloneable {
         while (i > 0) {
             int up = up(i);
             E top = arr[up];
-            if (compare(e, top))
+            if (comp.test(e, top))
                 i = helpHeap(i, up, top);
             else
                 break;
@@ -97,15 +103,15 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E>, Cloneable {
             E left = arr[l];
             int r = l + 1;
             if (r >= size) {
-                if (compare(left, e))
+                if (comp.test(left, e))
                     i = helpHeap(i, l, left);
                 else
                     break;
             }
             E right = arr[r];
-            if (compare(left, e) && !compare(right, left))
+            if (comp.test(left, e) && !comp.test(right, left))
                 i = helpHeap(i, l, left);
-            else if (compare(right, e))
+            else if (comp.test(right, e))
                 i = helpHeap(i, r, right);
             else
                 break;
@@ -119,104 +125,26 @@ public abstract class Heap<E> extends HeapADT implements PushPop<E>, Cloneable {
     }
 
     private boolean write(int start, E e, boolean writeOnStart, int i) {
-        boolean ret = i != start;
-        if (ret || writeOnStart)
-            arr[i] = e;
+        if (i == start && !writeOnStart)
+            return false;
+        arr[i] = e;
+        return true;
+    }
+
+    @Override
+    public Heap<E> clone() {
+        return new Heap<E>(this);
+    }
+
+    public E[] sorted(IntFunction<E[]> newArr, boolean clone, boolean reverse) {
+        E[] ret = newArr.apply(size);
+        Heap<E> heap = clone ? clone() : this;
+        if (reverse)
+            for (int i = ret.length - 1; i >= 0; i--)
+                ret[i] = heap.pop();
+        else
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = heap.pop();
         return ret;
     }
-
-    protected abstract boolean compare(E A, E B);
-
-    public abstract Heap<E> clone();
-
-    public static class Min<E extends Comparable<E>> extends Heap<E> {
-
-        public Min(Class<E> Class, int cap, int length) {
-            super(Class, cap, length);
-        }
-
-        public Min(int cap, E[] arr) {
-            super(cap, arr);
-        }
-
-        private Min(Min<E> heap) {
-            super(heap);
-        }
-
-        @Override
-        public Min<E> clone() {
-            return new Min<E>(this);
-        }
-
-        @Override
-        protected boolean compare(E A, E B) {
-            return A.compareTo(B) < 0;
-        }
-
-    }
-
-    public static class Max<E extends Comparable<E>> extends Heap<E> {
-
-        public Max(Class<E> Class, int cap, int length) {
-            super(Class, cap, length);
-        }
-
-        public Max(int cap, E[] arr) {
-            super(cap, arr);
-        }
-
-        private Max(Max<E> heap) {
-            super(heap);
-        }
-
-        @Override
-        public Max<E> clone() {
-            return new Max<E>(this);
-        }
-
-        @Override
-        protected boolean compare(E A, E B) {
-            return A.compareTo(B) > 0;
-        }
-
-    }
-
-    public static class Comp<E> extends Heap<E> {
-
-        public Comp(Class<E> Class, Comparator<E> comp, int cap, int length) {
-            super(Class, cap, length);
-            this.comp = comp;
-        }
-
-        public Comp(Comparator<E> comp, int cap, E[] arr) {
-            super(cap, arr, false);
-            this.comp = comp;
-            heapify();
-        }
-
-        private Comp(Comp<E> heap) {
-            super(heap);
-            this.comp = heap.comp;
-        }
-
-        @Override
-        public Comp<E> clone() {
-            return new Comp<E>(this);
-        }
-
-        private Comparator<E> comp;
-
-        @Override
-        protected boolean compare(E A, E B) {
-            return comp.compare(A, B) < 0;
-        }
-
-        @Override
-        public void heapify() {
-            if (comp != null)
-                super.heapify();
-        }
-
-    }
-
 }

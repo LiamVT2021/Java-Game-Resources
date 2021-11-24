@@ -1,42 +1,28 @@
 package heap;
 
-public abstract class HeapADT {
+public interface HeapADT {
 
-    public HeapADT(int cap) {
-        this.cap = cap;
-        this.size = 0;
-    }
-
-    protected int cap;
-    protected int size;
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    public boolean isFull() {
-        return size == cap;
-    }
-
-    protected int up(int i) {
+    default int up(int i) {
         return (i - 1) / 2;
     }
 
-    protected int left(int i) {
+    default int left(int i) {
         return i * 2 + 1;
     }
 
-    protected boolean isLeft(int i) {
+    default boolean isLeft(int i) {
         return i > 0 && i % 2 == 1;
     }
 
-    protected boolean isRight(int i) {
+    default boolean isRight(int i) {
         return i > 0 && i % 2 == 0;
     }
 
-    protected int bottom() {
-        return up(size - 1);
+    default int bottom() {
+        return up(size() - 1);
     }
+
+    public int size();
 
     // public default int right(int i){
     // return i*2+2;
@@ -49,16 +35,16 @@ public abstract class HeapADT {
     // return r;
     // }
 
-    protected abstract boolean heapUp(int i);
+    public boolean heapUp(int i);
 
-    protected abstract boolean heapDown(int i);
+    public boolean heapDown(int i);
 
-    public void heapify() {
+    public default void heapify() {
         for (int i = bottom(); i >= 0; i--)
             heapDown(i);
     }
 
-    public void update(int index) {
+    public default void update(int index) {
         heapUp(index);
         heapDown(index);
     }
