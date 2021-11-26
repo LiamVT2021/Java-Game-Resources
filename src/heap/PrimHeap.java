@@ -1,9 +1,14 @@
 package heap;
 
-public abstract class PrimHeap extends HeapADT implements PrimPushPop {
+public class PrimHeap extends Expand.Int implements PushPop.Prim, HeapADT {
 
-    public PrimHeap(int cap, boolean max) {
-        super(cap);
+    public PrimHeap(boolean max, int length) {
+        super(length);
+        this.max = max;
+    }
+
+    public PrimHeap(boolean max, int... ints) {
+        super(ints);
         this.max = max;
     }
 
@@ -11,16 +16,16 @@ public abstract class PrimHeap extends HeapADT implements PrimPushPop {
 
     @Override
     public boolean push(int i) {
-        if (isFull())
+        if (!expand())
             return false;
-        heapUp(size++, i);
+        heapUp(size++, i, true);
         return true;
     }
 
     @Override
     public int primPop() {
         int ret = peek();
-        heapDown(0, get(--size));
+        heapDown(0, get(--size), true);
         return ret;
     }
 
@@ -30,49 +35,50 @@ public abstract class PrimHeap extends HeapADT implements PrimPushPop {
     }
 
     @Override
-    protected void heapUp(int index) {
-        heapUp(index, get(index));
-    }
-
-    private void heapUp(int index, int value) {
-        while (index > 0) {
-            int up = up(index);
-            int top = get(up);
-            if (compare(value, top))
-                index = helpHeap(index, up, top);
-            else {
-                set(index, value);
-                break;
-            }
-        }
+    public boolean heapUp(int index) {
+        return heapUp(index, get(index), false);
     }
 
     @Override
-    protected void heapDown(int index) {
-        heapDown(index, get(index));
+    public boolean heapDown(int index) {
+        return heapDown(index, get(index), false);
     }
 
-    private void heapDown(int index, int value) {
-        int bottom = bottom();
-        while (index <= bottom) {
-            int l = left(index);
-            int left = get(l);
-            int r = l + 1;
-            if (r >= size) {
-                if (compare(left, value))
-                    index = helpHeap(index, l, left);
-                else
-                    break;
-            }
-            int right = get(r);
-            if (compare(left, value) && !compare(right, left))
-                index = helpHeap(index, l, left);
-            else if (compare(right, value))
-                index = helpHeap(index, r, right);
+    private boolean heapUp(int start, int value, boolean writeOnStart) {
+        int i = start;
+        while (i > 0) {
+            int up = up(i);
+            int top = arr[up];
+            if (compare(value, top))
+                i = helpHeap(i, up, top);
             else
                 break;
         }
-        set(index, value);
+        return write(start, value, writeOnStart, i);
+    }
+
+    private boolean heapDown(int start, int value, boolean writeOnStart) {
+        int i = start;
+        int bottom = bottom();
+        while (i <= bottom) {
+            int l = left(i);
+            int left = arr[l];
+            int r = l + 1;
+            if (r >= size) {
+                if (compare(left, value))
+                    i = helpHeap(i, l, left);
+                else
+                    break;
+            }
+            int right = arr[r];
+            if (compare(left, value) && !compare(right, left))
+                i = helpHeap(i, l, left);
+            else if (compare(right, value))
+                i = helpHeap(i, r, right);
+            else
+                break;
+        }
+        return write(start, value, writeOnStart, i);
     }
 
     private int helpHeap(int index, int next, int value) {
@@ -80,33 +86,26 @@ public abstract class PrimHeap extends HeapADT implements PrimPushPop {
         return next;
     }
 
+    private boolean write(int start, int value, boolean writeOnStart, int i) {
+        if (i == start && !writeOnStart)
+            return false;
+        arr[i] = value;
+        return true;
+    }
+
     private boolean compare(int a, int b) {
         return max ? a < b : a > b;
     }
 
-    protected abstract int get(int index);
-
-    protected abstract void set(int index, int value);
-
-    public static class Int extends PrimHeap {
-
-        public Int(int cap, int length, boolean max) {
-            super(cap, max);
-            arr = new int[length];
-        }
-
-        private int[] arr;
-
-        @Override
-        protected int get(int index) {
-            return arr[index];
-        }
-
-        @Override
-        protected void set(int index, int value) {
-            arr[index] = value;
-        }
-
+    private int get(int index) {
+        return arr[index];
     }
 
+    private void set(int index, int value) {
+        arr[index] = value;
+    }
+
+    public PrimHeap lock() {
+        return (PrimHeap) super.lock();
+    }
 }

@@ -43,7 +43,7 @@ public class MiddleQueue<E> implements PushPop<E> {
     @Override
     public E peek() {
         if (!queue.isEmpty())
-            return queue.poll();
+            return queue.peek();
         if (supply == null)
             return null;
         push(supply.get());
@@ -52,7 +52,7 @@ public class MiddleQueue<E> implements PushPop<E> {
 
     @Override
     public boolean isEmpty() {
-        return queue.isEmpty();
+        return queue.isEmpty() && supply == null;
     }
 
 }
