@@ -36,7 +36,7 @@ public class Heap<E> extends Expand.Array<E> implements HeapADT, PushPop<E>, Clo
 
     @Override
     public boolean push(E e) {
-        if (isFull())
+        if (!expand())
             return false;
         heapUp(size++, e, true);
         return true;
@@ -134,6 +134,11 @@ public class Heap<E> extends Expand.Array<E> implements HeapADT, PushPop<E>, Clo
     @Override
     public Heap<E> clone() {
         return new Heap<E>(this);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Heap<E> lock() {
+        return (Heap<E>) super.lock();
     }
 
     public E[] sorted(IntFunction<E[]> newArr, boolean clone, boolean reverse) {

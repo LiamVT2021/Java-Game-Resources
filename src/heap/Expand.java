@@ -30,21 +30,22 @@ public abstract class Expand {
         return size;
     }
 
-    public void setRange(int min, int capacity) {
+    public Expand setRange(int min, int capacity) {
         this.min = min;
         this.capacity = capacity;
+        return this;
     }
 
-    public void setRange(int lock) {
-        setRange(lock, lock);
+    public Expand setRange(int lock) {
+        return setRange(lock, lock);
     }
 
-    public void free() {
-        setRange(-1);
+    public Expand free() {
+        return setRange(-1);
     }
 
-    public void lock() {
-        setRange(length());
+    public Expand lock() {
+        return setRange(length());
     }
 
     public abstract int length();
