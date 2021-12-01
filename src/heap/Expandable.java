@@ -7,7 +7,7 @@ import java.util.function.IntUnaryOperator;
 
 import util.Math;
 
-public interface Expand {
+public interface Expandable {
 
     public int size();
 
@@ -17,17 +17,17 @@ public interface Expand {
 
     public boolean setLength(int length);
 
-    public Expand setRange(int min, int capacity);
+    public Expandable setRange(int min, int capacity);
 
-    public default Expand setRange(int lock) {
+    public default Expandable setRange(int lock) {
         return setRange(lock, lock);
     }
 
-    public default Expand free() {
+    public default Expandable free() {
         return setRange(-1);
     }
 
-    public default Expand lock() {
+    public default Expandable lock() {
         return setRange(length());
     }
 
