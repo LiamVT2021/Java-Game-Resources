@@ -1,7 +1,6 @@
 package check;
 
 import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
 import util.Math;
@@ -16,7 +15,7 @@ public enum CountType {
 
 	ORDER, SUM, MAX, MIN;
 
-	private boolean isUnCountable(Object[] arr, Object val) {
+	public static boolean isUnCountable(Object[] arr, Object val) {
 		return val == null || arr == null || arr.length == 0;
 	}
 
@@ -49,20 +48,52 @@ public enum CountType {
 		return count;
 	}
 
-	public <E> int count(ToIntFunction<E>[] checks, E val) {
-		if (isUnCountable(checks, val))
+	public <E> int quickCount(Predicate<E>[] preds, E val, int goal) {
+		if (isUnCountable(preds, val) || goal <= 0)
 			return 0;
-		switch (this) {
-			case SUM:
-				return Math.sum(Stream.of(checks), val);
-			case MIN:
-				return Math.min(Stream.of(checks), val);
-			case MAX:
-				return Math.max(Stream.of(checks), val);
-			default:
-				return 0;
+		int count = 0;
+		if (this == SUM) {
+			for (Predicate<E> pred : preds) {
+				if (pred.test(val)) {
+					count++;
+					if (count >= goal)
+						return count;
+				}
+			}
+		} else if (this == ORDER) {
+			for (count = 0; count < Math.min(goal, preds.length); count++)
+				if (!preds[count].test(val))
+					return count;
+		} else if (this == MAX) {
+			for (Predicate<E> pred : preds) {
+				if (!pred.test(val))
+					return count;
+				count++;
+			}
+		} else if (this == MIN) {
+			for (Predicate<E> pred : preds) {
+				count++;
+				if (pred.test(val))
+					return count;
+			}
 		}
+		return count;
 	}
+
+	// public <E> int count(ToIntFunction<E>[] checks, E val) {
+	// if (isUnCountable(checks, val))
+	// return 0;
+	// switch (this) {
+	// case SUM:
+	// return Math.sum(Stream.of(checks), val);
+	// case MIN:
+	// return Math.min(Stream.of(checks), val);
+	// case MAX:
+	// return Math.max(Stream.of(checks), val);
+	// default:
+	// return 0;
+	// }
+	// }
 
 	// public CountType(To)
 

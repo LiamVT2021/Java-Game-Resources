@@ -29,8 +29,6 @@ public interface PushPop<E> extends Iterable<E> {
     public default E swap(E e) {
         if (e == null || isEmpty())
             return e;
-        if (push(e))
-            return pop();
         E ret = pop();
         push(e);
         return ret;
@@ -70,11 +68,13 @@ public interface PushPop<E> extends Iterable<E> {
 
         public int primPeek();
 
+        public default Integer swap(Integer i) {
+            return i == null ? null : swap((int) i);
+        }
+
         public default int swap(int i) {
             if (isEmpty())
                 return i;
-            if (push(i))
-                return pop();
             int ret = pop();
             push(i);
             return ret;

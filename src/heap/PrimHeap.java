@@ -1,46 +1,39 @@
 package heap;
 
-public class PrimHeap extends Expand.Int implements PushPop.Prim, HeapADT {
-
-    public PrimHeap(boolean max, int length) {
-        super(length);
-        this.max = max;
-    }
-
-    public PrimHeap(boolean max, int... ints) {
-        super(ints);
-        this.max = max;
-    }
-
-    private boolean max;
+public interface PrimHeap extends Expand, PushPop.Prim, HeapADT {
 
     @Override
-    public boolean push(int i) {
+    public default boolean isEmpty() {
+        return Expand.super.isEmpty();
+    }
+
+    @Override
+    public default boolean push(int i) {
         if (!expand())
             return false;
-        heapUp(size++, i, true);
+        heapUp(sizePP(), i, true);
         return true;
     }
 
     @Override
-    public int primPop() {
+    public default int primPop() {
         int ret = peek();
-        heapDown(0, get(--size), true);
+        heapDown(0, get(mmSize()), true);
         return ret;
     }
 
     @Override
-    public int primPeek() {
+    public default int primPeek() {
         return get(0);
     }
 
     @Override
-    public boolean heapUp(int index) {
+    public default boolean heapUp(int index) {
         return heapUp(index, get(index), false);
     }
 
     @Override
-    public boolean heapDown(int index) {
+    public default boolean heapDown(int index) {
         return heapDown(index, get(index), false);
     }
 
@@ -48,7 +41,7 @@ public class PrimHeap extends Expand.Int implements PushPop.Prim, HeapADT {
         int i = start;
         while (i > 0) {
             int up = up(i);
-            int top = arr[up];
+            int top = get(up);
             if (compare(value, top))
                 i = helpHeap(i, up, top);
             else
@@ -62,15 +55,15 @@ public class PrimHeap extends Expand.Int implements PushPop.Prim, HeapADT {
         int bottom = bottom();
         while (i <= bottom) {
             int l = left(i);
-            int left = arr[l];
+            int left = get(l);
             int r = l + 1;
-            if (r >= size) {
+            if (r >= size()) {
                 if (compare(left, value))
                     i = helpHeap(i, l, left);
                 else
                     break;
             }
-            int right = arr[r];
+            int right = get(r);
             if (compare(left, value) && !compare(right, left))
                 i = helpHeap(i, l, left);
             else if (compare(right, value))
@@ -89,23 +82,78 @@ public class PrimHeap extends Expand.Int implements PushPop.Prim, HeapADT {
     private boolean write(int start, int value, boolean writeOnStart, int i) {
         if (i == start && !writeOnStart)
             return false;
-        arr[i] = value;
+        set(i, value);
         return true;
     }
 
     private boolean compare(int a, int b) {
-        return max ? a < b : a > b;
+        return max() ? a < b : a > b;
     }
 
-    private int get(int index) {
-        return arr[index];
+    public default PrimHeap lock() {
+        return (PrimHeap) Expand.super.lock();
     }
 
-    private void set(int index, int value) {
-        arr[index] = value;
+    public boolean max();
+
+    public void set(int index, int value);
+
+    public int get(int index);
+
+    public class Int extends Expand.Int implements PrimHeap {
+        public Int(boolean max, int length) {
+            super(length);
+            this.max = max;
+        }
+
+        public Int(boolean max, int... ints) {
+            super(ints);
+            this.max = max;
+        }
+
+        private boolean max;
+
+        @Override
+        public boolean max() {
+            return max;
+        }
     }
 
-    public PrimHeap lock() {
-        return (PrimHeap) super.lock();
+    public class Short extends Expand.Short implements PrimHeap {
+        public Short(boolean max, int length) {
+            super(length);
+            this.max = max;
+        }
+
+        public Short(boolean max, short... ints) {
+            super(ints);
+            this.max = max;
+        }
+
+        private boolean max;
+
+        @Override
+        public boolean max() {
+            return max;
+        }
+    }
+
+    public class Byte extends Expand.Byte implements PrimHeap {
+        public Byte(boolean max, int length) {
+            super(length);
+            this.max = max;
+        }
+
+        public Byte(boolean max, byte... ints) {
+            super(ints);
+            this.max = max;
+        }
+
+        private boolean max;
+
+        @Override
+        public boolean max() {
+            return max;
+        }
     }
 }

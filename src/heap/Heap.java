@@ -22,8 +22,13 @@ public class Heap<E> extends Expand.Array<E> implements HeapADT, PushPop<E>, Clo
     private Heap(Heap<E> heap) {
         super(heap.array());
         this.comp = heap.comp;
-        this.capacity = heap.capacity;
-        this.min = heap.min;
+        // this.capacity = heap.capacity;
+        // this.min = heap.min;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return super.isEmpty();
     }
 
     public static <E> BiPredicate<E, E> min(Comparator<? super E> comp) {

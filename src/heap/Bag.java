@@ -6,6 +6,10 @@ import util.Math;
 
 public class Bag<E> extends Expand.Array<E> implements PushPop<E> {
 
+    public boolean isEmpty() {
+        return super.isEmpty();
+    }
+
     public Bag(IntFunction<E[]> newArr, int length) {
         super(newArr, length);
     }
@@ -46,6 +50,10 @@ public class Bag<E> extends Expand.Array<E> implements PushPop<E> {
     }
 
     public static class Int extends Expand.Int implements PushPop.Prim {
+        
+        public boolean isEmpty() {
+            return super.isEmpty();
+        }
 
         public Int(int length) {
             super(length);
