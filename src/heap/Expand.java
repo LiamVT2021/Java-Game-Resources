@@ -11,11 +11,11 @@ public interface Expand {
 
     public int size();
 
-    public int mmSize();
+    public int capacity();
 
-    public int sizeMM();
+    public int length();
 
-    public int sizePP();
+    public boolean setLength(int length);
 
     public Expand setRange(int min, int capacity);
 
@@ -30,10 +30,6 @@ public interface Expand {
     public default Expand lock() {
         return setRange(length());
     }
-
-    public int length();
-
-    public int capacity();
 
     public default boolean isEmpty() {
         return size() <= 0;
@@ -57,11 +53,7 @@ public interface Expand {
 
     public boolean trim();
 
-    public boolean expand();
-
-    public boolean arrCopy(int newSize);
-
-    public abstract class ADT implements Expand {
+    public static abstract class ADT implements Expandable {
 
         private ADT(int size, int min, int capacity) {
             this.size = size;
@@ -87,27 +79,21 @@ public interface Expand {
         }
 
         @Override
-        public int mmSize() {
-            return --size;
-        }
-
-        @Override
-        public int sizeMM() {
-            return size--;
-        }
-
-        @Override
-        public int sizePP() {
-            return size++;
-        }
-
-        @Override
         public int capacity() {
             return capacity;
         }
 
         @Override
-        public Expand setRange(int min, int capacity) {
+        public boolean setLength(int length) {
+            if (length == length())
+                return true;
+            if (length < min || length > capacity)
+                return false;
+            return arrCopy(length);
+        }
+
+        @Override
+        public Expandable setRange(int min, int capacity) {
             this.min = min;
             this.capacity = capacity;
             return this;
@@ -118,8 +104,7 @@ public interface Expand {
             return arrCopy(Math.Max.reduce(size, min, 0));
         }
 
-        @Override
-        public boolean expand() {
+        protected boolean expand() {
             if (isFull())
                 return false;
             if (size < length())
@@ -127,12 +112,15 @@ public interface Expand {
             return arrCopy(Math.min(capacity, newSize()));
         }
 
-        protected int newSize() {
+        private int newSize() {
             return size * 2 + 1;
         }
+
+        protected abstract boolean arrCopy(int newSize);
+
     }
 
-    static abstract class Array<E> extends ADT {
+    static class Array<E> extends ADT {
 
         protected Array(IntFunction<E[]> newArr, int length) {
             super();
@@ -145,7 +133,7 @@ public interface Expand {
             this.arr = arr;
         }
 
-        protected E[] arr;
+        private E[] arr;
 
         @Override
         public int length() {
@@ -153,18 +141,18 @@ public interface Expand {
         }
 
         @Override
-        public boolean arrCopy(int newSize) {
+        protected boolean arrCopy(int newSize) {
             if (newSize == arr.length)
                 return false;
             arr = Arrays.copyOf(arr, newSize);
             return true;
         }
 
-        public E[] array() {
+        protected E[] array() {
             return Arrays.copyOf(arr, size);
         }
 
-        public E[] sorted(Comparator<? super E> comp) {
+        protected E[] sorted(Comparator<? super E> comp) {
             E[] ret = array();
             Arrays.sort(ret, comp);
             return ret;
@@ -181,9 +169,9 @@ public interface Expand {
             super(size);
         }
 
-        public abstract void set(int index, int value);
+        protected abstract void set(int index, int value);
 
-        public abstract int get(int index);
+        protected abstract int get(int index);
 
         protected void map(int index, IntUnaryOperator mapper) {
             set(index, mapper.applyAsInt(get(index)));
@@ -199,7 +187,7 @@ public interface Expand {
 
     }
 
-    static abstract class Int extends Prim {
+    static class Int extends Prim {
 
         protected Int(int length) {
             super();
@@ -214,16 +202,16 @@ public interface Expand {
         protected int[] arr;
 
         @Override
-        public void set(int index, int value) {
+        protected void set(int index, int value) {
             arr[index] = value;
         }
 
         @Override
-        public int get(int index) {
+        protected int get(int index) {
             return arr[index];
         }
 
-        public void setArr(int... arr) {
+        protected void setArr(int... arr) {
             this.arr = arr;
         }
 
@@ -240,12 +228,12 @@ public interface Expand {
             return true;
         }
 
-        public int[] array() {
+        protected int[] array() {
             return Arrays.copyOf(arr, size);
         }
     }
 
-    static abstract class Short extends Prim {
+    static class Short extends Prim {
 
         protected Short(int length) {
             super();
@@ -260,16 +248,16 @@ public interface Expand {
         protected short[] arr;
 
         @Override
-        public void set(int index, int value) {
+        protected void set(int index, int value) {
             arr[index] = (short) value;
         }
 
         @Override
-        public int get(int index) {
+        protected int get(int index) {
             return arr[index];
         }
 
-        public void setArr(short... arr) {
+        protected void setArr(short... arr) {
             this.arr = arr;
         }
 
@@ -286,12 +274,12 @@ public interface Expand {
             return true;
         }
 
-        public short[] array() {
+        protected short[] array() {
             return Arrays.copyOf(arr, size);
         }
     }
 
-    static abstract class Byte extends Prim {
+    static class Byte extends Prim {
 
         protected Byte(int length) {
             super();
@@ -306,16 +294,16 @@ public interface Expand {
         protected byte[] arr;
 
         @Override
-        public void set(int index, int value) {
+        protected void set(int index, int value) {
             arr[index] = (byte) value;
         }
 
         @Override
-        public int get(int index) {
+        protected int get(int index) {
             return arr[index];
         }
 
-        public void setArr(byte... arr) {
+        protected void setArr(byte... arr) {
             this.arr = arr;
         }
 
@@ -332,7 +320,7 @@ public interface Expand {
             return true;
         }
 
-        public byte[] array() {
+        protected byte[] array() {
             return Arrays.copyOf(arr, size);
         }
     }
