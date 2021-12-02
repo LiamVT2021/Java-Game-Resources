@@ -7,25 +7,23 @@ import java.util.function.IntUnaryOperator;
 
 import util.Math;
 
-public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
+public abstract class ExpandableArray<ArrType> implements Expandable<ArrType> {
 
-    private ExpandableADT(int size, int min, int capacity) {
+    private ExpandableArray(int size, int min, int capacity, ArrType arr) {
         this.size = size;
         this.min = min;
         this.capacity = capacity;
+        this.arr = arr;
     }
 
-    private ExpandableADT(int size) {
-        this(size, -1, -1);
-    }
-
-    private ExpandableADT() {
-        this(0);
+    private ExpandableArray(ArrType arr, int size) {
+        this(size, -1, -1, arr);
     }
 
     protected int size;
     private int min;
     private int capacity;
+    protected ArrType arr;
 
     @Override
     public int size() {
@@ -70,24 +68,30 @@ public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
         return size * 2 + 1;
     }
 
-    protected abstract boolean arrCopy(int newSize);
+    @Override
+    public ArrType array() {
+        return arrCopy(arr, size);
+    }
 
-    protected abstract void setArr(ArrType arr);
+    protected boolean arrCopy(int newSize) {
+        if (newSize == length())
+            return false;
+        arr = arrCopy(arr, newSize);
+        return true;
+    }
 
-    protected static class Array<E> extends ExpandableADT<E[]> {
+    protected abstract ArrType arrCopy(ArrType array, int length);
+
+    protected static final class Array<E> extends ExpandableArray<E[]> {
 
         protected Array(IntFunction<E[]> newArr, int length) {
-            super();
-            setArr(newArr.apply(length));
+            super(newArr.apply(length), 0);
         }
 
         @SafeVarargs
         protected Array(E... arr) {
-            super(arr.length);
-            setArr(arr);
+            super(arr, arr.length);
         }
-
-        private E[] arr;
 
         @Override
         public int length() {
@@ -95,13 +99,8 @@ public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
         }
 
         @Override
-        public E[] array() {
-            return Arrays.copyOf(arr, size);
-        }
-
-        @Override
-        protected void setArr(E[] arr) {
-            this.arr = arr;
+        protected E[] arrCopy(E[] array, int length) {
+            return Arrays.copyOf(array, length);
         }
 
         protected E[] sorted(Comparator<? super E> comp) {
@@ -110,24 +109,12 @@ public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
             return ret;
         }
 
-        @Override
-        protected boolean arrCopy(int newSize) {
-            if (newSize == arr.length)
-                return false;
-            arr = Arrays.copyOf(arr, newSize);
-            return true;
-        }
-
     }
 
-    protected static abstract class Prim<ArrType> extends ExpandableADT<ArrType> {
+    protected static abstract class Prim<ArrType> extends ExpandableArray<ArrType> {
 
-        private Prim() {
-            super();
-        }
-
-        private Prim(int size) {
-            super(size);
+        private Prim(ArrType arr, int size) {
+            super(arr, size);
         }
 
         protected abstract void set(int index, int value);
@@ -148,19 +135,15 @@ public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
 
     }
 
-    protected static class Int extends Prim<int[]> {
+    protected static final class Int extends Prim<int[]> {
 
         protected Int(int length) {
-            super();
-            setArr(new int[length]);
+            super(new int[length], 0);
         }
 
         protected Int(int... arr) {
-            super(arr.length);
-            setArr(arr);
+            super(arr, arr.length);
         }
-
-        private int[] arr;
 
         @Override
         protected void set(int index, int value) {
@@ -173,42 +156,26 @@ public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
         }
 
         @Override
-        protected void setArr(int[] arr) {
-            this.arr = arr;
-        }
-
-        @Override
         public int length() {
             return arr.length;
         }
 
         @Override
-        public boolean arrCopy(int newSize) {
-            if (newSize == arr.length)
-                return false;
-            arr = Arrays.copyOf(arr, newSize);
-            return true;
+        public int[] arrCopy(int[] array, int length) {
+            return Arrays.copyOf(array, length);
         }
 
-        @Override
-        public int[] array() {
-            return Arrays.copyOf(arr, size);
-        }
     }
 
-    protected static class Short extends Prim<short[]> {
+    protected static final class Short extends Prim<short[]> {
 
         protected Short(int length) {
-            super();
-            setArr(new short[length]);
+            super(new short[length], 0);
         }
 
         protected Short(short... arr) {
-            super(arr.length);
-            setArr(arr);
+            super(arr, arr.length);
         }
-
-        private short[] arr;
 
         @Override
         protected void set(int index, int value) {
@@ -220,42 +187,26 @@ public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
             return arr[index];
         }
 
-        protected void setArr(short... arr) {
-            this.arr = arr;
-        }
-
         @Override
         public int length() {
             return arr.length;
         }
 
         @Override
-        public boolean arrCopy(int newSize) {
-            if (newSize == arr.length)
-                return false;
-            arr = Arrays.copyOf(arr, newSize);
-            return true;
-        }
-
-        @Override
-        public short[] array() {
-            return Arrays.copyOf(arr, size);
+        public short[] arrCopy(short[] array, int length) {
+            return Arrays.copyOf(array, length);
         }
     }
 
-    protected static class Byte extends Prim<byte[]> {
+    protected static final class Byte extends Prim<byte[]> {
 
         protected Byte(int length) {
-            super();
-            setArr(new byte[length]);
+            super(new byte[length], 0);
         }
 
         protected Byte(byte... arr) {
-            super(arr.length);
-            setArr(arr);
+            super(arr, arr.length);
         }
-
-        private byte[] arr;
 
         @Override
         protected void set(int index, int value) {
@@ -277,15 +228,8 @@ public abstract class ExpandableADT<ArrType> implements Expandable<ArrType> {
         }
 
         @Override
-        public boolean arrCopy(int newSize) {
-            if (newSize == arr.length)
-                return false;
-            arr = Arrays.copyOf(arr, newSize);
-            return true;
-        }
-
-        public byte[] array() {
-            return Arrays.copyOf(arr, size);
+        public byte[] arrCopy(byte[] array, int length) {
+            return Arrays.copyOf(array, length);
         }
     }
 }

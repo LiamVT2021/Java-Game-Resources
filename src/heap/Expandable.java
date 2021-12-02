@@ -1,10 +1,8 @@
 package heap;
 
-public interface Expandable<ArrType> {
+import util.Sized;
 
-    public int size();
-
-    public int capacity();
+public interface Expandable<ArrType> extends Sized {
 
     public int length();
 
@@ -24,28 +22,16 @@ public interface Expandable<ArrType> {
         return setRange(length());
     }
 
-    public default boolean isEmpty() {
-        return size() <= 0;
-    }
-
-    public default boolean isFull() {
-        return size() >= capacity() && capacity() >= 0;
-    }
-
-    public default boolean isOver() {
-        return size() > capacity() && capacity() >= 0;
-    }
-
-    public default boolean hasRoom() {
-        return size() < capacity() || capacity() < 0;
-    }
-
-    public default boolean hasRoom(int ex) {
-        return size() + ex <= capacity() || capacity() < 0;
-    }
-
     public boolean trim();
 
     public ArrType array();
+
+    public static interface PushPop<E> extends Expandable<E[]>, heap.PushPop<E> {
+        
+    }
+
+    public static interface Prim<ArrType> extends Expandable<ArrType>, heap.PushPop.Prim {
+
+    }
 
 }

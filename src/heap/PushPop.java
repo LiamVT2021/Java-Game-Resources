@@ -2,10 +2,9 @@ package heap;
 
 import java.util.Iterator;
 
-public interface PushPop<E> extends Iterable<E> {
+import util.Container;
 
-    public boolean isEmpty();
-
+public interface PushPop<E> extends Iterable<E>, Container {
     public boolean push(E e);
 
     public default boolean pushAll(E[] es) {
