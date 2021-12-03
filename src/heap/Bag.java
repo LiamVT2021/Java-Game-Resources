@@ -4,11 +4,7 @@ import java.util.function.IntFunction;
 
 import util.Math;
 
-public class Bag<E> extends Expand.Array<E> implements PushPop<E> {
-
-    public boolean isEmpty() {
-        return super.isEmpty();
-    }
+public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
 
     public Bag(IntFunction<E[]> newArr, int length) {
         super(newArr, length);
@@ -27,7 +23,7 @@ public class Bag<E> extends Expand.Array<E> implements PushPop<E> {
         return true;
     }
 
-    private int randInt() {
+    private static int randInt(int size) {
         return Math.random.nextInt(size);
     }
 
@@ -35,7 +31,7 @@ public class Bag<E> extends Expand.Array<E> implements PushPop<E> {
     public E pop() {
         if (isEmpty())
             return null;
-        int rand = randInt();
+        int rand = randInt(size);
         E ret = arr[rand];
         arr[rand] = arr[--size];
         arr[size] = null;
@@ -46,48 +42,75 @@ public class Bag<E> extends Expand.Array<E> implements PushPop<E> {
     public E peek() {
         if (isEmpty())
             return null;
-        return arr[randInt()];
+        return arr[randInt(size)];
     }
 
-    public static class Int extends Expand.Int implements PushPop.Prim {
-        
-        public boolean isEmpty() {
-            return super.isEmpty();
+    private static abstract class Prim<P extends PrimArray<ArrType>, ArrType> extends ExpandableArray.Prim<P, ArrType>
+            implements PushPop.Prim {
+
+        private Prim(P primArr) {
+            super(primArr);
         }
 
-        public Int(int length) {
-            super(length);
-        }
-
-        public Int(int... arr) {
-            super(arr);
+        private Prim(P primArr, int size) {
+            super(primArr, size);
         }
 
         @Override
         public boolean push(int i) {
             if (!expand())
                 return false;
-            arr[size++] = i;
+            arr.set(size++, i);
             return true;
-        }
-
-        private int randInt() {
-            return Math.random.nextInt(size);
         }
 
         @Override
         public int primPop() {
-            int rand = randInt();
-            int ret = arr[rand];
-            arr[rand] = arr[--size];
+            int rand = randInt(size);
+            int ret = arr.get(rand);
+            arr.move(size--, rand);
             return ret;
         }
 
         @Override
         public int primPeek() {
-            return arr[randInt()];
+            return arr.get(randInt(size));
+        }
+    }
+
+    public static class Int extends Prim<PrimArray.Int, int[]> {
+
+        public Int(int length) {
+            super(new PrimArray.Int(length), 0);
+        }
+
+        public Int(int... array) {
+            super(new PrimArray.Int(array));
         }
 
     }
 
+    public static class Short extends Prim<PrimArray.Short, short[]> {
+
+        public Short(int length) {
+            super(new PrimArray.Short(length), 0);
+        }
+
+        public Short(short... array) {
+            super(new PrimArray.Short(array));
+        }
+
+    }
+
+    public static class Byte extends Prim<PrimArray.Byte, byte[]> {
+
+        public Byte(int length) {
+            super(new PrimArray.Byte(length), 0);
+        }
+
+        public Byte(byte... array) {
+            super(new PrimArray.Byte(array));
+        }
+
+    }
 }

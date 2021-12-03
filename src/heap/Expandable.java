@@ -26,12 +26,4 @@ public interface Expandable<ArrType> extends Sized {
 
     public ArrType array();
 
-    public static interface PushPop<E> extends Expandable<E[]>, heap.PushPop<E> {
-        
-    }
-
-    public static interface Prim<ArrType> extends Expandable<ArrType>, heap.PushPop.Prim {
-
-    }
-
 }

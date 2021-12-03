@@ -7,23 +7,23 @@ import java.util.function.IntUnaryOperator;
 
 import util.Math;
 
-public abstract class ExpandableArray<ArrType> implements Expandable<ArrType> {
+public abstract class ExpandableArray<Store, ArrType> implements Expandable<ArrType> {
 
-    private ExpandableArray(int size, int min, int capacity, ArrType arr) {
+    private ExpandableArray(int size, int min, int capacity, Store arr) {
         this.size = size;
         this.min = min;
         this.capacity = capacity;
         this.arr = arr;
     }
 
-    private ExpandableArray(ArrType arr, int size) {
+    private ExpandableArray(Store arr, int size) {
         this(size, -1, -1, arr);
     }
 
     protected int size;
     private int min;
     private int capacity;
-    protected ArrType arr;
+    protected Store arr;
 
     @Override
     public int size() {
@@ -76,13 +76,15 @@ public abstract class ExpandableArray<ArrType> implements Expandable<ArrType> {
     protected boolean arrCopy(int newSize) {
         if (newSize == length())
             return false;
-        arr = arrCopy(arr, newSize);
+        setArr(arrCopy(arr, newSize));
         return true;
     }
 
-    protected abstract ArrType arrCopy(ArrType array, int length);
+    protected abstract void setArr(ArrType array);
 
-    protected static final class Array<E> extends ExpandableArray<E[]> {
+    protected abstract ArrType arrCopy(Store array, int length);
+
+    protected static class Array<E> extends ExpandableArray<E[], E[]> {
 
         protected Array(IntFunction<E[]> newArr, int length) {
             super(newArr.apply(length), 0);
@@ -99,6 +101,11 @@ public abstract class ExpandableArray<ArrType> implements Expandable<ArrType> {
         }
 
         @Override
+        protected void setArr(E[] array) {
+            arr = array;
+        }
+
+        @Override
         protected E[] arrCopy(E[] array, int length) {
             return Arrays.copyOf(array, length);
         }
@@ -111,125 +118,37 @@ public abstract class ExpandableArray<ArrType> implements Expandable<ArrType> {
 
     }
 
-    protected static abstract class Prim<ArrType> extends ExpandableArray<ArrType> {
+    protected static class Prim<P extends PrimArray<ArrType>, ArrType> extends ExpandableArray<P, ArrType> {
 
-        private Prim(ArrType arr, int size) {
-            super(arr, size);
+        protected Prim(P primArr) {
+            super(primArr, primArr.length());
         }
 
-        protected abstract void set(int index, int value);
+        protected Prim(P primArr, int size) {
+            super(primArr, size);
+        }
 
-        protected abstract int get(int index);
+        @Override
+        public int length() {
+            return arr.length();
+        }
 
-        protected void map(int index, IntUnaryOperator mapper) {
-            set(index, mapper.applyAsInt(get(index)));
+        @Override
+        protected void setArr(ArrType array) {
+            arr.setArr(array);
+        }
+
+        @Override
+        protected ArrType arrCopy(P array, int length) {
+            return array.arrCopy(array.arr, length);
         }
 
         protected boolean map(IntUnaryOperator mapper) {
             if (mapper == null)
                 return false;
             for (int i = 0; i < size; i++)
-                map(i, mapper);
+                arr.map(i, mapper);
             return true;
-        }
-
-    }
-
-    protected static final class Int extends Prim<int[]> {
-
-        protected Int(int length) {
-            super(new int[length], 0);
-        }
-
-        protected Int(int... arr) {
-            super(arr, arr.length);
-        }
-
-        @Override
-        protected void set(int index, int value) {
-            arr[index] = value;
-        }
-
-        @Override
-        protected int get(int index) {
-            return arr[index];
-        }
-
-        @Override
-        public int length() {
-            return arr.length;
-        }
-
-        @Override
-        public int[] arrCopy(int[] array, int length) {
-            return Arrays.copyOf(array, length);
-        }
-
-    }
-
-    protected static final class Short extends Prim<short[]> {
-
-        protected Short(int length) {
-            super(new short[length], 0);
-        }
-
-        protected Short(short... arr) {
-            super(arr, arr.length);
-        }
-
-        @Override
-        protected void set(int index, int value) {
-            arr[index] = (short) value;
-        }
-
-        @Override
-        protected int get(int index) {
-            return arr[index];
-        }
-
-        @Override
-        public int length() {
-            return arr.length;
-        }
-
-        @Override
-        public short[] arrCopy(short[] array, int length) {
-            return Arrays.copyOf(array, length);
-        }
-    }
-
-    protected static final class Byte extends Prim<byte[]> {
-
-        protected Byte(int length) {
-            super(new byte[length], 0);
-        }
-
-        protected Byte(byte... arr) {
-            super(arr, arr.length);
-        }
-
-        @Override
-        protected void set(int index, int value) {
-            arr[index] = (byte) value;
-        }
-
-        @Override
-        protected int get(int index) {
-            return arr[index];
-        }
-
-        protected void setArr(byte... arr) {
-            this.arr = arr;
-        }
-
-        @Override
-        public int length() {
-            return arr.length;
-        }
-
-        @Override
-        public byte[] arrCopy(byte[] array, int length) {
-            return Arrays.copyOf(array, length);
         }
     }
 }
