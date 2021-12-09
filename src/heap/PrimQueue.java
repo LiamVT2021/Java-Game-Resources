@@ -1,65 +1,71 @@
 package heap;
 
-public class PrimQueue extends Expand.Int implements PushPop.Prim {
+public abstract class PrimQueue<P extends PrimArray<ArrType>, ArrType> extends ExpandableArray.Prim<P, ArrType>
+        implements PushPop.Prim {
 
-    private int index;
-
-    public PrimQueue(int length) {
-        super(length);
+    private PrimQueue(P primArr) {
+        super(primArr);
     }
 
-    public PrimQueue(int... arr) {
-        super(arr);
+    private PrimQueue(P primArr, int size) {
+        super(primArr, size);
     }
 
-    protected PrimQueue(PrimQueue queue) {
-        super(queue.arr);
-        this.index = queue.index;
-        this.size = queue.size;
-    }
+    protected int index;
 
-    @Override
-    public boolean isEmpty() {
-        return super.isEmpty();
-    }
-
-    public boolean arrCopy(int newSize) {
-        if (newSize == arr.length)
-            return false;
-        int[] newArr = new int[newSize];
-        int l = Math.min(newSize, size);
-        for (int i = 0; i < l; i++)
-            newArr[i] = arr[(i + index) % arr.length];
-        arr = newArr;
-        index = 0;
-        return true;
+    protected int end(int s) {
+        return (index + s) % arr.length();
     }
 
     @Override
     public boolean push(int i) {
-        if (isFull())
-            arr[(index + size++) % arr.length] = i;
+        if (!expand())
+            return false;
+        arr.set(end(size++), i);
         return true;
     }
 
     @Override
     public int primPop() {
-        size--;
-        return arr[index++ % arr.length];
+        return arr.get(end(--size));
     }
 
     @Override
     public int primPeek() {
-        return arr[index];
+        return arr.get(end(size - 1));
     }
 
-    public int primChop() {
-        return arr[(index + size--) % arr.length];
+    public static class Int extends PrimQueue<PrimArray.Int, int[]> {
+
+        public Int(int length) {
+            super(new PrimArray.Int(length), 0);
+        }
+
+        public Int(int... array) {
+            super(new PrimArray.Int(array));
+        }
     }
 
-    @Override
-    public PrimQueue lock() {
-        return (PrimQueue) super.lock();
+    public static class Short extends PrimQueue<PrimArray.Short, short[]> {
+
+        public Short(int length) {
+            super(new PrimArray.Short(length), 0);
+        }
+
+        public Short(short... array) {
+            super(new PrimArray.Short(array));
+        }
+    }
+
+    public static class Byte extends PrimQueue<PrimArray.Byte, byte[]> {
+
+        public Byte(int length) {
+            super(new PrimArray.Byte(length), 0);
+        }
+
+        public Byte(byte... array) {
+            super(new PrimArray.Byte(array));
+        }
     }
 
 }
