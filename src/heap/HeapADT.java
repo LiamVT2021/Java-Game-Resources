@@ -1,6 +1,8 @@
 package heap;
 
-public interface HeapADT {
+import util.Sized;
+
+public interface HeapADT extends Sized {
 
     default int up(int i) {
         return (i - 1) / 2;
@@ -21,8 +23,6 @@ public interface HeapADT {
     default int bottom() {
         return up(size() - 1);
     }
-
-    public int size();
 
     // public default int right(int i){
     // return i*2+2;
