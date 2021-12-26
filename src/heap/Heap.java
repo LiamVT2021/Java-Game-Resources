@@ -27,7 +27,7 @@ public class Heap<E> extends Expand.Array<E> implements HeapADT, PushPop<E>, Clo
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty(){
         return super.isEmpty();
     }
 
