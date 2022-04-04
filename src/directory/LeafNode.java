@@ -1,13 +1,6 @@
 package directory;
 
-import java.util.Map;
-
-public interface LeafNode<E extends DirNode<E>> extends DirNode<E> {
-
-    @Override
-    default Map<String, E> children() {
-        return null;
-    }
+public interface LeafNode extends DirNodeADT<DirNodeADT<?>> {
 
     @Override
     default boolean isLeaf() {
@@ -15,8 +8,13 @@ public interface LeafNode<E extends DirNode<E>> extends DirNode<E> {
     }
 
     @Override
-    default boolean put(E child) {
+    default boolean addChild(DirNodeADT<?> child) {
         return false;
+    }
+
+    @Override
+    default boolean prune() {
+        return isEmpty();
     }
 
 }

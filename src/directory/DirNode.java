@@ -2,36 +2,40 @@ package directory;
 
 import java.util.Map;
 
-public interface DirNode<E extends DirNode<?>> {
+public abstract class DirNode<E extends DirNodeADT<?>> implements DirNodeADT<E> {
 
-    String dir();
+    protected Map<String, E> children;
 
-    String entry();
-
-    String title();
-
-    String dirPage();
-
-    Map<String, E> children();
-
-    default boolean isLeaf() {
-        return children().isEmpty();
+    @Override
+    public boolean isLeaf() {
+        return children.isEmpty();
     }
 
-    default boolean put(E child) {
-        children().put(child.dir(), child);
+    @Override
+    public boolean addChild(E child) {
+        if (!canAdd(child))
+            return false;
+        children.put(child.dir(), child);
         return true;
     }
 
-    default String dump() {
-        StringBuilder str = new StringBuilder(dir());
-        str.append("\nEntry: ");
-        str.append(entry());
-        str.append("\nTitle: ");
-        str.append(title());
-        str.append("\n");
-        str.append(dirPage());
-        return str.toString();
+    private boolean canAdd(DirNodeADT<?> node) {
+        if (node == this)
+            return false;
+        if (node.isLeaf())
+            return true;
+        return ((DirNode<?>) node).children.values().stream().allMatch(this::canAdd);
+    }
+
+    @Override
+    public void removeChild(String dir) {
+        children.remove(dir);
+    }
+
+    @Override
+    public boolean prune() {
+        children.values().stream().filter(n -> n.prune()).map(n -> n.dir()).forEach(this::removeChild);
+        return isLeaf() && isEmpty();
     }
 
 }
