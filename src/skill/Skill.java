@@ -3,11 +3,17 @@ package skill;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class Skill<U> {
+public class Skill {
 
-    private SkillNode<?> skillNode;
-    private int[] levels;
-    private List<?> perks;
+    private final SkillNode<?> skillNode;
+    private final int[] levels;
+    private final List<?> perks;
+
+    public Skill(SkillNode<?> skillNode, int[] levels) {
+        this.skillNode = skillNode;
+        this.levels = levels;
+        perks = List.of();
+    }
 
     public String id() {
         return skillNode.id;
