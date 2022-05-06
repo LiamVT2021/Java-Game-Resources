@@ -5,7 +5,7 @@ import java.util.function.IntFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
-public class SkillNode<U> {
+public class SkillNode<U extends SkillUser> {
 
     public final String id;
     public final IntFunction<String> nameFunc;

@@ -5,7 +5,7 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-public class SkillNodeBuilder<U> {
+public class SkillNodeBuilder<U extends SkillUser> {
 
     private String id;
     private IntFunction<String> nameFunc;
@@ -13,19 +13,24 @@ public class SkillNodeBuilder<U> {
     private List<ToIntFunction<U>> unlockList;
     private List<ToIntFunction<U>> aquireList;
     private List<String> prev;
+    private boolean root;
 
     public SkillNodeBuilder() {
         unlockList = List.of();
         aquireList = List.of();
-        prev=List.of();
+        prev = List.of();
     }
 
     public SkillNode<U> toNode(IntFunction<ToIntFunction<U>[]> arrGen) {
         return new SkillNode<>(id, nameFunc, descFunc, unlockList.toArray(arrGen), unlockList.toArray(arrGen));
     }
 
-    public Iterable<String> prev(){
+    public Iterable<String> prev() {
         return prev;
+    }
+
+    public boolean isRoot() {
+        return root;
     }
 
     //
