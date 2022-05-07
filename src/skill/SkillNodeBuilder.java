@@ -35,17 +35,18 @@ public class SkillNodeBuilder<U extends SkillUser> {
 
     //
 
+    public void withName(IntFunction<String> nameFunction) {
+        nameFunc = nameFunction;
+    }
+
+    public void withName(String name) {
+        nameFunc = value -> name + ": " + value;
+    }
+
+    //
+
     private ToIntFunction<U> ordered(Predicate<U>... predicates) {
-        return (predicates == null || predicates.length == 0) ? null : user -> {
-            int i = 0;
-            for (Predicate<U> pred : predicates) {
-                if (!pred.test(user))
-                    return i;
-                else
-                    i++;
-            }
-            return i;
-        };
+        return (predicates == null || predicates.length == 0) ? null : user -> SkillReqs.orderedReqs(user, predicates);
     }
 
     //
