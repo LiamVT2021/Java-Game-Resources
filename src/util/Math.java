@@ -111,4 +111,8 @@ public class Math {
 		return intCheck -> intCheck.quickInt(val, goal);
 	}
 
+	public static String roman(int value) {
+		return NumberBuilder.ROMAN.apply(value);
+	}
+
 }
