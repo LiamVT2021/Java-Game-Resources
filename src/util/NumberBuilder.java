@@ -1,19 +1,25 @@
 package util;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.IntFunction;
 
 public class NumberBuilder implements IntFunction<String> {
 
     protected final char[] chars;
     protected final int[] num;
+    private final Map<Integer, String> cache;
 
-    public NumberBuilder(char[] characters, int[] charValues) {
+    public NumberBuilder(char[] characters, int[] charValues, boolean cache) {
         chars = characters;
         num = charValues;
+        this.cache = cache ? new HashMap<>() : null;
     }
 
     @Override
     public String apply(int value) {
+        String str = cache.get(value);
+        if (str != null) return str;
         StringBuilder strB = new StringBuilder();
         if (value < 0) {
             strB.append('-');
@@ -21,7 +27,9 @@ public class NumberBuilder implements IntFunction<String> {
         }
         for (int i = 0; i < num.length; i++)
             value = indexFunc(i, value, strB);
-        return strB.toString();
+        str = strB.toString();
+        cache.put(value, str);
+        return str;
     }
 
     protected int indexFunc(int index, int value, StringBuilder strB) {
@@ -35,7 +43,7 @@ public class NumberBuilder implements IntFunction<String> {
     }
 
     public static final NumberBuilder ROMAN = new NumberBuilder(new char[] { 'C', 'L', 'X', 'V', 'I' },
-            new int[] { 100, 50, 10, 5, 1 }) {
+            new int[] { 100, 50, 10, 5, 1 }, true) {
         @Override
         protected int indexFunc(int index, int value, StringBuilder strB) {
             value = super.indexFunc(index, value, strB);
