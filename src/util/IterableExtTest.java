@@ -29,25 +29,25 @@ public class IterableExtTest {
 		comp = new SComp<Integer>();
 	}
 
-	@Test
-	public void testGetMax() {
-		assertEquals(12, arr.getMax(comp));
-		assertArrayEquals(new Integer[] { 12, 10, 8, 6 },
-				arr.getMax(comp, new Integer[4]));
-		assertEquals(null, empty.getMax(comp));
-		assertArrayEquals(new Integer[] { null, null, null, null },
-				empty.getMax(comp, new Integer[4]));
-		assertArrayEquals(new Integer[] { 2, 1, null, null },
-				small.getMax(comp, new Integer[4]));
-	}
+	// @Test
+	// public void testGetMax() {
+	// 	assertEquals(12, arr.getMax(comp));
+	// 	assertArrayEquals(new Integer[] { 12, 10, 8, 6 },
+	// 			arr.getMax(comp, new Integer[4]));
+	// 	assertEquals(null, empty.getMax(comp));
+	// 	assertArrayEquals(new Integer[] { null, null, null, null },
+	// 			empty.getMax(comp, new Integer[4]));
+	// 	assertArrayEquals(new Integer[] { 2, 1, null, null },
+	// 			small.getMax(comp, new Integer[4]));
+	// }
 
-	@Test
-	public void testGetMin() {
-		assertEquals(-2, arr.getMin(comp));
-		assertArrayEquals(new Integer[] { -2, 1, 2, 3 },
-				arr.getMin(comp, new Integer[4]));
-		assertArrayEquals(new Integer[] { 1, 2, null, null },
-				small.getMin(comp, new Integer[4]));
-	}
+	// @Test
+	// public void testGetMin() {
+	// 	assertEquals(-2, arr.getMin(comp));
+	// 	assertArrayEquals(new Integer[] { -2, 1, 2, 3 },
+	// 			arr.getMin(comp, new Integer[4]));
+	// 	assertArrayEquals(new Integer[] { 1, 2, null, null },
+	// 			small.getMin(comp, new Integer[4]));
+	// }
 
 }

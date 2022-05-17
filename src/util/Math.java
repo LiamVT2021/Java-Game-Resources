@@ -107,8 +107,8 @@ public class Math {
 		return intCheck -> intCheck.applyAsInt(val);
 	}
 
-	public static <E> ToIntFunction<IntCheck<E>> intChecker(E val, int goal) {
-		return intCheck -> intCheck.quickInt(val, goal);
-	}
+	// public static <E> ToIntFunction<IntCheck<E>> intChecker(E val, int goal) {
+	// 	return intCheck -> intCheck.quickInt(val, goal);
+	// }
 
 }
