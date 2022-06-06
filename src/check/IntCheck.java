@@ -1,106 +1,69 @@
 package check;
 
+import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
 /**
- * Converts ToIntFunction to Check by comparing against a goal Integer
- * 
- * @author Liam
- * @version 7/22/21
+ * extends the ToIntFunction interface with CheckItem UI strings
  *
- * @param <C> the class we will be converting to an int
+ * @author Liam
+ * @version 5/17/22
+ *
+ * @param <C> the class of object we are testing
  */
 @FunctionalInterface
-public interface IntCheck<C> extends ToIntFunction<C> {
+public interface IntCheck<C> extends ToIntFunction<C>, checkItem<C> {
 
-	/**
-	 * only implement if start at zero and can only go up.
-	 */
-	public default int quickInt(C checkItem, int goal) {
-		return applyAsInt(checkItem);
+	@Override
+	default String message(C t) {
+		return String.valueOf(applyAsInt(t));
 	}
 
-	public default boolean test(C checkItem, int goal) {
-		return quickInt(checkItem, goal) >= goal;
+	public static final IntCheck<Object> Zero = new Desc<>(o -> 0, "Zero");
+
+	public static class Desc<C> implements IntCheck<C> {
+
+		private final ToIntFunction<C> check;
+		private final String desc;
+
+		public Desc(ToIntFunction<C> check, String description) {
+			this.check = check;
+			desc = description;
+		}
+
+		@Override
+		public int applyAsInt(C t) {
+			return check.applyAsInt(t);
+		}
+
+		@Override
+		public String description() {
+			return desc;
+		}
+
 	}
 
-	public default boolean revTest(C checkItem, int goal) {
-		return quickInt(checkItem, goal) < goal;
+	public static class Prog<C> extends Desc<C> {
+
+		private final Function<C, String> progFunc;
+
+		public Prog(ToIntFunction<C> check, String description, Function<C, String> progFunc) {
+			super(check, description);
+			this.progFunc = progFunc;
+		}
+
+		@Override
+		public String progString(C t) {
+			return progFunc.apply(t);
+		}
 	}
-
-	//
-
-	public default boolean range(C checkItem, int min, int max) {
-		int i = quickInt(checkItem, max + 1);
-		return i >= min && i <= max;
-	}
-
-	//
-
-	public default Check<C> check(int goal) {
-		return c -> test(c, goal);
-	}
-
-	public default Check<C> range(int min, int max) {
-		return c -> range(c, min, max);
-	}
-
-	//
-
-	public default boolean contest(C first, C second) {
-		return applyAsInt(first) >= applyAsInt(second);
-	}
-
-	public default SimpleContest<C> contest() {
-		return c -> applyAsInt(c);
-	}
-
-	//
-
-	public static final IntCheck<Object> Zero = o -> 0;
-
-	// public default IntCheck<C> sum(ToIntFunction<? super C> other) {
-	// if (other == null)
-	// return this;
-	// return (c, g) -> {
-	// int i = quickInt(c, g);
-	// if (i >= g)
-	// return i;
-	// return i + cast(other).quickInt(c, g - i);
-	// };
-	// }
-
-	// public default <D> IntBiCheck<C, D> biSum(
-	// ToIntFunction<? super D> other) {
-	// if (other == null)
-	// return (c, d, g) -> quickInt(c, g);
-	// return (c, d, g) -> {
-	// int i = quickInt(c, g);
-	// if (i >= g)
-	// return i;
-	// return i + cast(other).quickInt(d, g - i);
-	// };
-	// }
-
-	// public default <D> IntBiCheck<D, C> revBiSum(
-	// ToIntFunction<? super D> other) {
-	// if (other == null)
-	// return (d, c, g) -> quickInt(c, g);
-	// return (d, c, g) -> {
-	// int i = quickInt(c, g);
-	// if (i >= g)
-	// return i;
-	// return i + cast(other).quickInt(d, g - i);
-	// };
-	// }
-
-	// public static <D> IntCheck<? super D> cast(
-	// ToIntFunction<? super D> intFunc) {
-	// if (intFunc instanceof IntCheck<?>)
-	// return (IntCheck<? super D>) intFunc;
-	// if (intFunc == null)
-	// return Zero;
-	// return (d, g) -> intFunc.applyAsInt(d);
-	// }
 
 }
+
+// public default boolean contest(C first, C second) {
+// return applyAsInt(first) >= applyAsInt(second);
+// }
+
+// public default SimpleContest<C> contest() {
+// return c -> applyAsInt(c);
+// }

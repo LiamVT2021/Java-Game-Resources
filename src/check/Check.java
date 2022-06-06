@@ -1,74 +1,77 @@
 package check;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * extends the Predicate interface to allow converting to BiChecks
- * 
+ * extends the Predicate interface with CheckItem UI strings
+ *
  * @author Liam
- * @version 7/22/21
+ * @version 5/17/22
  *
  * @param <C> the class of object we are testing
  */
 @FunctionalInterface
-public interface Check<C> extends Predicate<C> {
+public interface Check<C> extends Predicate<C>, IntCheck<C> {
 
-	public default <D> BiCheck<C, D> biAnd(
-			Predicate<? super D> other) {
-		if (other == null)
-			return biNull();
-		return (c, d) -> test(c) && other.test(d);
-	}
-
-	public default <D> BiCheck<C, D> biOr(
-			Predicate<? super D> other) {
-		if (other == null)
-			return biNull();
-		return (c, d) -> test(c) || other.test(d);
-	}
-
-	public default <D> BiCheck<C, D> biNull() {
-		return (c, d) -> test(c);
-	}
-
-	public default <D> BiCheck<D, C> revNull() {
-		return (d, c) -> test(c);
-	}
-
-	// static methods
-
-	public static final Check<Object> True = c -> true;
-	public static final Check<Object> False = c -> false;
-	public static final Check<Object> NotNull = c -> c != null;
-
-	public static <D> Check<? super D> cast(
-			Predicate<? super D> pred) {
-		if (pred instanceof Check)
-			return (Check<? super D>) pred;
-		if (pred == null)
-			return False;
-		return d -> pred.test(d);
-	}
-
-	// Override default methods to ensure typing
-
-	@Override
-	public default Check<C> and(Predicate<? super C> other) {
-		if (other == null)
-			return this;
-		return c -> test(c) && other.test(c);
+	public default int value() {
+		return 1;
 	}
 
 	@Override
-	public default Check<C> or(Predicate<? super C> other) {
-		if (other == null)
-			return this;
-		return c -> test(c) || other.test(c);
+	public default int applyAsInt(C t) {
+		return test(t) ? value() : 0;
 	}
 
 	@Override
-	public default Check<C> negate() {
-		return c -> !test(c);
+	default String message(C t) {
+		String v = String.valueOf(value());
+		return test(t) ? v : "(" + v + ")";
 	}
+
+	// sub classes
+
+	public static class Desc<C> implements Check<C> {
+
+		private final Predicate<C> pred;
+		private final String desc;
+
+		public Desc(Predicate<C> predicate, String description) {
+			pred = predicate;
+			desc = description;
+		}
+
+		@Override
+		public boolean test(C t) {
+			return pred.test(t);
+		}
+
+		@Override
+		public String description() {
+			return desc;
+		}
+
+	}
+
+	public static class Prog<C> extends Desc<C> {
+
+		private final Function<C, String> progFunc;
+
+		public Prog(Predicate<C> predicate, String description, Function<C, String> progressFunction) {
+			super(predicate, description);
+			progFunc = progressFunction;
+		}
+
+		@Override
+		public String progString(C t) {
+			return progFunc.apply(t);
+		}
+	}
+
+	// static classes
+
+	public static final Check<Object> True = new Desc<>(o -> true, "Always True");
+	public static final Check<Object> False = new Desc<>(o -> false, "Always False");
+	public static final Check<Object> NotNull = new Desc<>(o -> o != null, "Not Null");
 
 }

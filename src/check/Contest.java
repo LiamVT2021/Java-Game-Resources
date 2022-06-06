@@ -11,35 +11,39 @@ import java.util.function.ToIntFunction;
  * @param <A> the class of the first object in the contest
  * @param <B> the class of the second object in the contest
  */
-public class Contest<A, B> implements ContestedCheck<A, B> {
+public interface Contest<A, B> {
 
-	private ToIntFunction<? super A> aFunc;
-	private ToIntFunction<? super B> bFunc;
+	public boolean contest(A a, B b);
 
-	public Contest(ToIntFunction<? super A> aFunc,
-			ToIntFunction<? super B> bFunc) {
-		this.aFunc = aFunc;
-		this.bFunc = bFunc;
+	public static class Simple<C> implements Contest<C, C> {
+
+		private final ToIntFunction<? super C> func;
+
+		public Simple(ToIntFunction<? super C> func) {
+			this.func = func;
+		}
+
+		@Override
+		public boolean contest(C a, C b) {
+			return func.applyAsInt(a) >= func.applyAsInt(b);
+		}
+
 	}
 
-	@Override
-	public ToIntFunction<? super A> aFunc() {
-		return aFunc;
-	}
+	public static class Int<A, B> implements Contest<A, B> {
 
-	@Override
-	public ToIntFunction<? super B> bFunc() {
-		return bFunc;
-	}
+		private final ToIntFunction<? super A> aFunc;
+		private final ToIntFunction<? super B> bFunc;
 
-	@Override
-	public int aVal(A a) {
-		return aFunc.applyAsInt(a);
-	}
+		public Int(ToIntFunction<? super A> aFunc, ToIntFunction<? super B> bFunc) {
+			this.aFunc = aFunc;
+			this.bFunc = bFunc;
+		}
 
-	@Override
-	public int bVal(B b) {
-		return bFunc.applyAsInt(b);
+		@Override
+		public boolean contest(A a, B b) {
+			return aFunc.applyAsInt(a) >= bFunc.applyAsInt(b);
+		}
 	}
 
 }

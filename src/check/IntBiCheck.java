@@ -47,13 +47,13 @@ public interface IntBiCheck<A, B> extends ToIntBiFunction<A, B> {
 		};
 	}
 
-	public default IntCheck<A> check(B b) {
-		return (a, g) -> quickInt(a, b, g);
-	}
+	// public default IntCheck<A> check(B b) {
+	// 	return (a, g) -> quickInt(a, b, g);
+	// }
 
-	public default IntCheck<B> revCheck(A a) {
-		return (b, g) -> quickInt(a, b, g);
-	}
+	// public default IntCheck<B> revCheck(A a) {
+	// 	return (b, g) -> quickInt(a, b, g);
+	// }
 
 	public static final IntBiCheck<Object, Object> Zero = (a, b,
 			g) -> 0;
@@ -70,10 +70,10 @@ public interface IntBiCheck<A, B> extends ToIntBiFunction<A, B> {
 	public static <C, D> IntBiCheck<? super C, ? super D> make(
 			ToIntFunction<? super C> aFunc,
 			ToIntFunction<? super D> bFunc) {
-		if (aFunc != null)
-			return IntCheck.<C>cast(aFunc).<D>biSum(bFunc);
-		if (bFunc != null)
-			return IntCheck.<D>cast(bFunc).<C>revBiSum(aFunc);
+		// if (aFunc != null)
+		// 	return IntCheck.<C>cast(aFunc).<D>biSum(bFunc);
+		// if (bFunc != null)
+		// 	return IntCheck.<D>cast(bFunc).<C>revBiSum(aFunc);
 		return Zero;
 	}
 

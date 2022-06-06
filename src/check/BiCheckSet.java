@@ -26,7 +26,7 @@ public class BiCheckSet<A, B> implements IntBiCheck<A, B> {
 	public int quickInt(A a, B b, Integer goal) {
 		if (a == null && b == null)
 			return 0;
-		return type.count(new It(a, b), goal);
+		return 0;//type.count(new It(a, b), goal);
 	}
 
 	private class It extends CountIt<BiPredicate<A, B>> {
