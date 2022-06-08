@@ -2,51 +2,56 @@ package grid;
 
 import javax.swing.JFrame;
 import java.awt.Dimension;
-import java.awt.Polygon;
 
 public class HexGrid extends Grid {
 
-    private int half;
-    private int rt;
-    private int w, h;
-    private static final double rt3 = Math.sqrt(3);
+    private int w, h, cut;
+    private static final double rt3 = Math.sqrt(3) / 2;
 
     public HexGrid(int X, int Y, int scale) {
         super(X, Y, scale, 0);
     }
 
     @Override
-    protected void setScale(int scale, int rotation) {
-        super.setScale(scale, rotation);
-        half = scale / 2;
-        double root = rt3 * scale;
-        rt = (int) (root / 2);
-        w=rt;
-        h = scale * 3 / 4;
+    public int sides() {
+        return 6;
+    }
+
+    @Override
+    public void makePoly() {
+        w = (int) (rt3 * scale);
+        h = scale * 3 / 2;
+        cut = Y / 2;
+        int half = scale / 2;
+        polyX = new int[] { 0, w, w, 0, -w, -w };
+        polyY = new int[] { -scale, -half, half, scale, half, -half };
+        super.makePoly();
     }
 
     @Override
     public Tile makeTile(int x, int y) {
-        int cx = (2 * x + y) * w;
-        int cy = 2 * y * h;
-        int x1 = cx + rt;
-        int x2 = cx - rt;
-        int y1 = cy - scale;
-        int y2 = cy - half;
-        int y3 = cy + half;
-        int y4 = cy + scale;
-        return new Tile(cx, cy, new Polygon(new int[] { cx, x1, x1, cx, x2, x2 },
-                new int[] { y1, y2, y3, y4, y3, y2 }, 6));
+        return super.makeTile((2 * x + y + 2 - cut) * w, (y + 1) * h);
     }
 
     @Override
     public Dimension dimensions() {
-        return new Dimension((2 * X + 1) * scale, (2 * Y + 1) * scale);
+        return new Dimension((2 * X + 2) * w, (Y + 1) * h);
+    }
+
+    @Override
+    protected void allCells(CoordFunc func) {
+        for (int y = 0; y < Y; y++) {
+            int s = Math.max(cut - y, 0);
+            int e = Math.min(X + cut - y, X);
+            System.out.println(y + ',' + s + ',' + e);
+            for (int x = s; x < e; x++)
+                func.apply(x, y);
+        }
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.add(new HexGrid(10, 7, 60));
+        frame.add(new HexGrid(17, 11, 40));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
