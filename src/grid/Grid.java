@@ -24,7 +24,7 @@ public abstract class Grid extends JPanel {
         });
     }
 
-    private void setScale(int scale, int rotation) {
+    protected void setScale(int scale, int rotation) {
         setBackground(Color.BLUE);
         this.scale = scale;
         this.rotation = rotation;

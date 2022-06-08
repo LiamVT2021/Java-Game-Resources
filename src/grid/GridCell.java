@@ -13,7 +13,7 @@ public class GridCell {
     public GridCell() {
         tileColor = Color.PINK;
         borderColor = Color.BLACK;
-        borderwidth = 3;
+        borderwidth = 2;
     }
 
     public void draw(Graphics graph, Tile tile, int scale, int rotation) {
