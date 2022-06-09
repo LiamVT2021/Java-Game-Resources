@@ -5,7 +5,7 @@ import java.awt.Dimension;
 
 public class HexGrid extends Grid {
 
-    private int w, h, cut;
+    private int cut;
     private static final double rt3 = Math.sqrt(3) / 2;
 
     public HexGrid(int X, int Y, int scale) {
@@ -19,23 +19,23 @@ public class HexGrid extends Grid {
 
     @Override
     public void makePoly() {
-        w = (int) (rt3 * scale);
-        h = scale * 3 / 2;
+        cellWidth = (int) (rt3 * scale);
+        cellHeight = scale * 3 / 2;
         cut = numRows / 2;
         int half = scale / 2;
-        polyX = new int[] { 0, w, w, 0, -w, -w };
+        polyX = new int[] { 0, cellWidth, cellWidth, 0, -cellWidth, -cellWidth };
         polyY = new int[] { -scale, -half, half, scale, half, -half };
         super.makePoly();
     }
 
     @Override
-    public Tile makeTile(int x, int y) {
-        return super.makeTile((2 * x + y + 2 - cut) * w, (y + 1) * h);
+    public int centerX(int x, int y) {
+        return (2 * x + y + 2 - cut) * cellWidth;
     }
 
     @Override
     public Dimension dimensions() {
-        return new Dimension((2 * numColumns + 2) * w, (numRows + 1) * h);
+        return new Dimension(2 * (numColumns + 1) * cellWidth, (numRows + 1) * cellHeight);
     }
 
     @Override

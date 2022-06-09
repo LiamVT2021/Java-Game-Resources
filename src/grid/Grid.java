@@ -11,7 +11,7 @@ public abstract class Grid extends JPanel {
 
     protected GridCell[][] cells;
     protected Tile[][] tiles;
-    protected int numColumns, numRows, cellWidth, cellHieght, scale;
+    protected int numColumns, numRows, cellWidth, cellHeight, scale;
     protected int[] polyX, polyY, highX, highY;
 
     public Grid(int width, int height, int scale) {
@@ -43,7 +43,7 @@ public abstract class Grid extends JPanel {
     }
 
     public Dimension dimensions() {
-        return new Dimension((numColumns + 1) * cellWidth, (numRows + 1) * cellHieght);
+        return new Dimension((numColumns + 1) * cellWidth, (numRows + 1) * cellHeight);
     }
 
     public void makePoly() {
@@ -56,6 +56,8 @@ public abstract class Grid extends JPanel {
     public abstract int sides();
 
     public Tile makeTile(int x, int y) {
+        int centerX = centerX(x, y);
+        int centerY = (y + 1) * cellWidth;
         Polygon outer = new Polygon();
         Polygon inner = new Polygon();
         for (int i = 0; i < sides(); i++) {
@@ -64,6 +66,8 @@ public abstract class Grid extends JPanel {
         }
         return new Tile(x, y, outer, inner);
     }
+
+    protected abstract int centerX(int x, int y);
 
     private void draw(Graphics map, int x, int y) {
         cells[x][y].draw(map, tiles[x][y], scale);

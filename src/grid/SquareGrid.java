@@ -18,13 +18,13 @@ public class SquareGrid extends Grid {
         polyX = new int[] { -scale, scale, scale, -scale };
         polyY = new int[] { -scale, -scale, scale, scale };
         cellWidth = 2 * scale;
-        cellHieght = 2 * scale;
+        cellHeight = 2 * scale;
         super.makePoly();
     }
 
     @Override
-    public Tile makeTile(int x, int y) {
-        return super.makeTile((x + 1) * scale * 2, (y + 1) * scale * 2);
+    public int centerX(int x, int y) {
+        return (x + 1) * cellWidth;
     }
 
     public static void main(String[] args) {
