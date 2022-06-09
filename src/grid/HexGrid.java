@@ -25,7 +25,6 @@ public class HexGrid extends Grid {
         int half = scale / 2;
         polyX = new int[] { 0, cellWidth, cellWidth, 0, -cellWidth, -cellWidth };
         polyY = new int[] { -scale, -half, half, scale, half, -half };
-        super.makePoly();
     }
 
     @Override

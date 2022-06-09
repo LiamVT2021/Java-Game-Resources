@@ -19,7 +19,6 @@ public class SquareGrid extends Grid {
         polyY = new int[] { -scale, -scale, scale, scale };
         cellWidth = 2 * scale;
         cellHeight = 2 * scale;
-        super.makePoly();
     }
 
     @Override

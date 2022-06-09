@@ -28,14 +28,14 @@ public abstract class Grid extends JPanel {
         });
     }
 
-    protected void setScale(int scale) {
+    public void setScale(int scale) {
         setBackground(Color.BLUE);
         this.scale = scale;
         makePoly();
-        setSize();
-    }
-
-    private void setSize() {
+        for (int i = 0; i < sides(); i++) {
+            highX[i] = polyX[i] * 5 / 6;
+            highY[i] = polyY[i] * 5 / 6;
+        }
         Dimension d = dimensions();
         setPreferredSize(d);
         setMinimumSize(d);
@@ -46,12 +46,7 @@ public abstract class Grid extends JPanel {
         return new Dimension((numColumns + 1) * cellWidth, (numRows + 1) * cellHeight);
     }
 
-    public void makePoly() {
-        for (int i = 0; i < sides(); i++) {
-            highX[i] = polyX[i] * 5 / 6;
-            highY[i] = polyY[i] * 5 / 6;
-        }
-    }
+    public abstract void makePoly();
 
     public abstract int sides();
 
