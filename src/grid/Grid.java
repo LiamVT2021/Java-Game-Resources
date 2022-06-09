@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Polygon;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public abstract class Grid extends JPanel {
 
@@ -84,5 +86,17 @@ public abstract class Grid extends JPanel {
             for (int x = 0; x < numColumns; x++)
                 func.apply(x, y);
     }
+
+    protected void allCells(Consumer<GridCell> func) {
+        Stream.of(cells).parallel().forEach(col -> Stream.of(col).parallel().forEach(func));
+    }
+
+    public String coords(int x, int y) {
+        return vector(x - numColumns / 2, y - numRows / 2);
+    }
+
+    public abstract String vector(int x, int y);
+
+    public abstract int distance(int x, int y);
 
 }

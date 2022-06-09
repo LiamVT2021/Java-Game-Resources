@@ -58,4 +58,32 @@ public class HexGrid extends Grid {
         frame.setResizable(false);
     }
 
+    @Override
+    public String vector(int x, int y) {
+        if (x == -y)
+            return x == 0 ? "0" : String.valueOf(y) + "z";
+        if (y == 0)
+            return String.valueOf(x) + 'x';
+        if (x == 0)
+            return String.valueOf(-y) + 'y';
+        if (x > 0) {
+            if (y > 0)
+                return String.valueOf(x) + "x - " + y + 'y';
+            if (x > -y)
+                return String.valueOf(x + y) + "x - " + -y + 'z';
+            return String.valueOf(-x - y) + "y - " + x + 'z';
+        } else {
+            if (y < 0)
+                return String.valueOf(-y) + "y - " + -x + 'x';
+            if (y > -x)
+                return String.valueOf(-x) + "z - " + (x + y) + 'y';
+            return String.valueOf(y) + "z - " + (-x - y) + 'x';
+        }
+    }
+
+    @Override
+    public int distance(int x, int y) {
+        return (Math.abs(x) + Math.abs(x + y) + Math.abs(y)) / 2;
+    }
+
 }

@@ -36,4 +36,14 @@ public class SquareGrid extends Grid {
         frame.setResizable(false);
     }
 
+    @Override
+    public String vector(int x, int y) {
+        return "(" + x + ", " + -y + ")";
+    }
+
+    @Override
+    public int distance(int x, int y) {
+        return Math.abs(x) + Math.abs(y);
+    }
+
 }
