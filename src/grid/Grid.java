@@ -26,7 +26,6 @@ public abstract class Grid extends JPanel {
             cells[x][y] = new GridCell();
             tiles[x][y] = makeTile(x, y);
         });
-        cells[4][4].borderColor = Color.RED;
     }
 
     protected void setScale(int scale, int rotation) {
