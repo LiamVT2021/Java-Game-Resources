@@ -57,14 +57,14 @@ public abstract class Grid extends JPanel {
 
     public Tile makeTile(int x, int y) {
         int centerX = centerX(x, y);
-        int centerY = (y + 1) * cellWidth;
+        int centerY = (y + 1) * cellHeight;
         Polygon outer = new Polygon();
         Polygon inner = new Polygon();
         for (int i = 0; i < sides(); i++) {
-            outer.addPoint(polyX[i] + x, polyY[i] + y);
-            inner.addPoint(highX[i] + x, highY[i] + y);
+            outer.addPoint(polyX[i] + centerX, polyY[i] + centerY);
+            inner.addPoint(highX[i] + centerX, highY[i] + centerY);
         }
-        return new Tile(x, y, outer, inner);
+        return new Tile(centerX, centerY, outer, inner);
     }
 
     protected abstract int centerX(int x, int y);
