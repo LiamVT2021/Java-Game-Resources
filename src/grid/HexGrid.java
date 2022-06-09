@@ -9,7 +9,7 @@ public class HexGrid extends Grid {
     private static final double rt3 = Math.sqrt(3) / 2;
 
     public HexGrid(int X, int Y, int scale) {
-        super(X, Y, scale, 0);
+        super(X, Y, scale);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class HexGrid extends Grid {
     public void makePoly() {
         w = (int) (rt3 * scale);
         h = scale * 3 / 2;
-        cut = Y / 2;
+        cut = numRows / 2;
         int half = scale / 2;
         polyX = new int[] { 0, w, w, 0, -w, -w };
         polyY = new int[] { -scale, -half, half, scale, half, -half };
@@ -35,14 +35,14 @@ public class HexGrid extends Grid {
 
     @Override
     public Dimension dimensions() {
-        return new Dimension((2 * X + 2) * w, (Y + 1) * h);
+        return new Dimension((2 * numColumns + 2) * w, (numRows + 1) * h);
     }
 
     @Override
     protected void allCells(CoordFunc func) {
-        for (int y = 0; y < Y; y++) {
+        for (int y = 0; y < numRows; y++) {
             int s = Math.max(cut - y, 0);
-            int e = Math.min(X + cut - y, X);
+            int e = Math.min(numColumns + cut - y, numColumns);
             System.out.println(y + ',' + s + ',' + e);
             for (int x = s; x < e; x++)
                 func.apply(x, y);

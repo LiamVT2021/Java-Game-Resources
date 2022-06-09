@@ -14,7 +14,7 @@ public class GridCell {
         return tileColor;
     }
 
-    public void draw(Graphics graph, Tile tile, int scale, int rotation) {
+    public void draw(Graphics graph, Tile tile, int scale) {
         tile.drawTile(graph, this);
     }
 }

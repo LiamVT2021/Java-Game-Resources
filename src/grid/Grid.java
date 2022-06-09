@@ -11,27 +11,26 @@ public abstract class Grid extends JPanel {
 
     protected GridCell[][] cells;
     protected Tile[][] tiles;
-    protected int X, Y, scale, rotation;
+    protected int numColumns, numRows, cellWidth, cellHieght, scale;
     protected int[] polyX, polyY, highX, highY;
 
-    public Grid(int X, int Y, int scale, int rotation) {
-        cells = new GridCell[X][Y];
-        tiles = new Tile[X][Y];
+    public Grid(int width, int height, int scale) {
+        cells = new GridCell[width][height];
+        tiles = new Tile[width][height];
         highX = new int[sides()];
         highY = new int[sides()];
-        this.X = X;
-        this.Y = Y;
-        setScale(scale, rotation);
+        this.numColumns = width;
+        this.numRows = height;
+        setScale(scale);
         allCells((x, y) -> {
             cells[x][y] = new GridCell();
             tiles[x][y] = makeTile(x, y);
         });
     }
 
-    protected void setScale(int scale, int rotation) {
+    protected void setScale(int scale) {
         setBackground(Color.BLUE);
         this.scale = scale;
-        this.rotation = rotation;
         makePoly();
         setSize();
     }
@@ -43,7 +42,9 @@ public abstract class Grid extends JPanel {
         setMaximumSize(d);
     }
 
-    public abstract Dimension dimensions();
+    public Dimension dimensions() {
+        return new Dimension((numColumns + 1) * cellWidth, (numRows + 1) * cellHieght);
+    }
 
     public void makePoly() {
         for (int i = 0; i < sides(); i++) {
@@ -65,7 +66,7 @@ public abstract class Grid extends JPanel {
     }
 
     private void draw(Graphics map, int x, int y) {
-        cells[x][y].draw(map, tiles[x][y], scale, rotation);
+        cells[x][y].draw(map, tiles[x][y], scale);
     }
 
     @Override
@@ -80,8 +81,8 @@ public abstract class Grid extends JPanel {
     }
 
     protected void allCells(CoordFunc func) {
-        for (int y = 0; y < Y; y++)
-            for (int x = 0; x < X; x++)
+        for (int y = 0; y < numRows; y++)
+            for (int x = 0; x < numColumns; x++)
                 func.apply(x, y);
     }
 
