@@ -29,15 +29,15 @@ public class Tile extends Point {
         return outer.contains(point);
     }
 
-    public void drawTile(Graphics map, GridCell cell) {
+    public void drawTile(Graphics map, Color tileColor, Color highLightColor) {
         Graphics2D graph = (Graphics2D) map;
-        if (cell.borderColor != null) {
-            graph.setColor(cell.borderColor);
+        if (highLightColor != null) {
+            graph.setColor(highLightColor);
             graph.fillPolygon(outer);
-            graph.setColor(cell.tileColor());
+            graph.setColor(tileColor);
             graph.fillPolygon(inner);
         } else {
-            graph.setColor(cell.tileColor());
+            graph.setColor(tileColor);
             graph.fillPolygon(outer);
         }
         graph.setColor(Color.BLACK);

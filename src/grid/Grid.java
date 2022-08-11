@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Polygon;
+
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -13,6 +14,7 @@ public abstract class Grid extends JPanel {
 
     protected GridCell[][] cells;
     protected Tile[][] tiles;
+    protected GridOperation gridOp;
     protected int numColumns, numRows, cellWidth, cellHeight, scale;
     protected int[] polyX, polyY, highX, highY;
 
@@ -67,7 +69,7 @@ public abstract class Grid extends JPanel {
     protected abstract int centerX(int x, int y);
 
     private void draw(Graphics map, int x, int y) {
-        cells[x][y].draw(map, tiles[x][y], scale);
+        cells[x][y].draw(map, tiles[x][y], scale, gridOp != null ? gridOp.highlight(x, y) : null);
     }
 
     @Override
