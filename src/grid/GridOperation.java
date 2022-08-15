@@ -1,11 +1,20 @@
 package grid;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.function.Consumer;
 
 public interface GridOperation {
 
+    public default void onClick(Point p) {
+        onClick(p.x, p.y);
+    }
+
     public void onClick(int x, int y);
+
+    public default void onHover(Point p) {
+        onHover(p.x, p.y);
+    }
 
     public void onHover(int x, int y);
 

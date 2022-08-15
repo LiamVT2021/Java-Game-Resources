@@ -1,11 +1,14 @@
 package grid;
 
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Color;
+import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.event.MouseEvent;
 
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -30,6 +33,63 @@ public abstract class Grid extends JPanel {
             cells[x][y] = new GridCell();
             tiles[x][y] = makeTile(x, y);
         });
+        MouseInputListener clicker = new MouseInputListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (gridOp != null)
+                    gridOp.onClick(clickLoc(e));
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (gridOp != null)
+                    gridOp.onHover(clickLoc(e));
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        };
+        this.addMouseListener(clicker);
+        this.addMouseMotionListener(clicker);
+        this.gridOp = new GridOperation() {
+
+            @Override
+            public void onClick(int x, int y) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onHover(int x, int y) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public Color highlight(int x, int y) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+        };
     }
 
     public void setScale(int scale) {
@@ -100,5 +160,7 @@ public abstract class Grid extends JPanel {
     public abstract String vector(int x, int y);
 
     public abstract int distance(int x, int y);
+
+    public abstract Point clickLoc(MouseEvent e);
 
 }

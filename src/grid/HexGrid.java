@@ -2,6 +2,8 @@ package grid;
 
 import javax.swing.JFrame;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 public class HexGrid extends Grid {
 
@@ -84,6 +86,34 @@ public class HexGrid extends Grid {
     @Override
     public int distance(int x, int y) {
         return (Math.abs(x) + Math.abs(x + y) + Math.abs(y)) / 2;
+    }
+
+    @Override
+    public Point clickLoc(MouseEvent e) {
+        double q = (double) e.getX() / cellWidth / 2
+                - (double) e.getY() / cellHeight / 2
+                + cells[0].length / 4. - .75;
+        double r = (double) e.getY() / cellHeight - 1;
+        System.out.println("q: " + q + "  r: " + r);
+        return new Point(hexRound(q, r));
+    }
+
+    private Point hexRound(double x, double y) {
+        double z = -x - y;
+        int q = (int) Math.round(x);
+        int r = (int) Math.round(y);
+        int s = (int) Math.round(z);
+
+        double q_diff = Math.abs(q - x);
+        double r_diff = Math.abs(r - y);
+        double s_diff = Math.abs(s - z);
+
+        if (q_diff > r_diff && q_diff > s_diff)
+            q = -r - s;
+        else if (r_diff > s_diff)
+            r = -q - s;
+        System.out.println("q: " + q + "  r: " + r);
+        return new Point(q, r);
     }
 
 }
