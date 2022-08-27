@@ -69,7 +69,7 @@ public abstract class Grid extends JPanel {
         };
         this.addMouseListener(clicker);
         this.addMouseMotionListener(clicker);
-        this.gridOp = new GridOperation() {
+        this.gridOp = new GridOperation(this) {
 
             @Override
             public void onClick(int x, int y) {
@@ -162,5 +162,9 @@ public abstract class Grid extends JPanel {
     public abstract int distance(int x, int y);
 
     public abstract Point clickLoc(MouseEvent e);
+
+    public boolean inbounds(int x, int y) {
+        return x >= 0 && x < cells.length && y >= 0 && y < cells[0].length;
+    }
 
 }

@@ -11,7 +11,7 @@ public interface Shape {
 
     public abstract boolean contains(int x, int y);
 
-    public abstract void allCoords(BiConsumer<Number, Number> func);
+    public abstract void allCoords(BiConsumer<Integer, Integer> func);
 
     public static abstract class Circle implements Shape {
 
