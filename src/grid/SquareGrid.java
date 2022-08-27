@@ -1,5 +1,8 @@
 package grid;
 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JFrame;
 
 public class SquareGrid extends Grid {
@@ -44,6 +47,16 @@ public class SquareGrid extends Grid {
     @Override
     public int distance(int x, int y) {
         return Math.abs(x) + Math.abs(y);
+    }
+
+    @Override
+    public Point clickLoc(MouseEvent e) {
+        return new Point(fromClick(e.getX()), fromClick(e.getY()));
+    }
+
+    private int fromClick(int v) {
+        int n = v / scale;
+        return n <= 0 ? -1 : (n - 1) / 2;
     }
 
 }
