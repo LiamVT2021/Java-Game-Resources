@@ -84,6 +84,11 @@ public class HexGrid extends Grid {
     }
 
     @Override
+    public boolean inbounds(int x, int y) {
+        return super.inbounds(x, y) && x + y >= cut && x + y < numColumns + cut;
+    }
+
+    @Override
     public int distance(int x, int y) {
         return (Math.abs(x) + Math.abs(x + y) + Math.abs(y)) / 2;
     }
