@@ -37,14 +37,14 @@ public abstract class Grid extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (gridOp != null)
-                    gridOp.onClick(clickLoc(e));
+                if (gridOp != null && gridOp.onClick(clickLoc(e)))
+                    repaint();
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (gridOp != null)
-                    gridOp.onHover(clickLoc(e));
+                if (gridOp != null && gridOp.onHover(clickLoc(e)))
+                    repaint();
             }
 
             @Override
@@ -69,27 +69,6 @@ public abstract class Grid extends JPanel {
         };
         this.addMouseListener(clicker);
         this.addMouseMotionListener(clicker);
-        this.gridOp = new GridOperation(this) {
-
-            @Override
-            public void onClick(int x, int y) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onHover(int x, int y) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public Color highlight(int x, int y) {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
-        };
     }
 
     public void setScale(int scale) {
