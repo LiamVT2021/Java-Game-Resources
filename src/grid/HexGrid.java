@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 public class HexGrid extends Grid {
 
     private int cut;
-    private static final double rt3 = Math.sqrt(3) / 2;
+    private static final double rt3 = 2.0 / Math.sqrt(3);
 
     public HexGrid(int X, int Y, int scale) {
         super(X, Y, scale);
@@ -21,12 +21,13 @@ public class HexGrid extends Grid {
 
     @Override
     public void makePoly() {
-        cellWidth = (int) (rt3 * scale);
-        cellHeight = scale * 3 / 2;
         cut = numRows / 2;
-        int half = scale / 2;
+        cellWidth = scale;
+        int height = (int) (rt3 * scale);
+        cellHeight = height * 3 / 2;
+        int half = height / 2;
         polyX = new int[] { 0, cellWidth, cellWidth, 0, -cellWidth, -cellWidth };
-        polyY = new int[] { -scale, -half, half, scale, half, -half };
+        polyY = new int[] { -height, -half, half, height, half, -half };
     }
 
     @Override
@@ -44,7 +45,7 @@ public class HexGrid extends Grid {
         for (int y = 0; y < numRows; y++) {
             int s = Math.max(cut - y, 0);
             int e = Math.min(numColumns + cut - y, numColumns);
-            System.out.println(y + ',' + s + ',' + e);
+            // System.out.println(y + ',' + s + ',' + e);
             for (int x = s; x < e; x++)
                 func.apply(x, y);
         }
@@ -99,7 +100,7 @@ public class HexGrid extends Grid {
                 - (double) e.getY() / cellHeight / 2
                 + cells[0].length / 4. - .75;
         double r = (double) e.getY() / cellHeight - 1;
-        System.out.println("q: " + q + "  r: " + r);
+        // System.out.println("q: " + q + " r: " + r);
         return new Point(hexRound(q, r));
     }
 
@@ -117,7 +118,7 @@ public class HexGrid extends Grid {
             q = -r - s;
         else if (r_diff > s_diff)
             r = -q - s;
-        System.out.println("q: " + q + "  r: " + r);
+        // System.out.println("q: " + q + " r: " + r);
         return new Point(q, r);
     }
 
