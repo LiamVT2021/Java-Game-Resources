@@ -6,19 +6,26 @@ import javax.swing.event.MouseInputListener;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
+import java.awt.BasicStroke;
+import java.awt.Font;
+import java.awt.FontMetrics;
 
 import java.util.function.Consumer;
+import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
 public abstract class Grid extends JPanel {
 
+    public static final BasicStroke stroke = new BasicStroke(2);
+
     protected GridCell[][] cells;
     protected Tile[][] tiles;
     protected GridOperation gridOp;
-    protected int numColumns, numRows, cellWidth, cellHeight, scale;
+    protected int numColumns, numRows, cellWidth, cellHeight, scale, radius;
     protected int[] polyX, polyY, highX, highY;
 
     public Grid(int width, int height, int scale) {
@@ -74,6 +81,7 @@ public abstract class Grid extends JPanel {
     public void setScale(int scale) {
         setBackground(Color.BLUE);
         this.scale = scale;
+        radius = 7 * scale / 9;
         makePoly();
         for (int i = 0; i < sides(); i++) {
             highX[i] = polyX[i] * 5 / 6;
@@ -107,14 +115,22 @@ public abstract class Grid extends JPanel {
 
     protected abstract int centerX(int x, int y);
 
-    private void draw(Graphics map, int x, int y) {
-        cells[x][y].draw(map, tiles[x][y], scale, gridOp != null ? gridOp.highlight(x, y) : null);
+    private void draw(Graphics2D map, int x, int y, int height, ToIntFunction<String> width) {
+        cells[x][y].draw(map, tiles[x][y], gridOp != null ? gridOp.highlight(x, y) : null,
+                radius, height, width);
     }
 
     @Override
     protected void paintComponent(Graphics map) {
         super.paintComponent(map);
-        allCells((x, y) -> draw(map, x, y));
+        Graphics2D graph = (Graphics2D) map;
+        Font font = new Font("", 0, radius);
+        FontMetrics metrics = graph.getFontMetrics(font);
+        graph.setStroke(Grid.stroke);
+        graph.setFont(font);
+        int height = (metrics.getAscent() - metrics.getDescent()) / 2;
+        ToIntFunction<String> width = metrics::stringWidth;
+        allCells((x, y) -> draw(graph, x, y, height, width));
     }
 
     @FunctionalInterface

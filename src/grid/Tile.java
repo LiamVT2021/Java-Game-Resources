@@ -2,10 +2,8 @@ package grid;
 
 import java.awt.Point;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.BasicStroke;
 
 public class Tile extends Point {
 
@@ -29,8 +27,7 @@ public class Tile extends Point {
         return outer.contains(point);
     }
 
-    public void drawTile(Graphics map, Color tileColor, Color highLightColor) {
-        Graphics2D graph = (Graphics2D) map;
+    public void drawTile(Graphics2D graph, Color tileColor, Color highLightColor) {
         if (highLightColor != null) {
             graph.setColor(highLightColor);
             graph.fillPolygon(outer);
@@ -41,10 +38,7 @@ public class Tile extends Point {
             graph.fillPolygon(outer);
         }
         graph.setColor(Color.BLACK);
-        graph.setStroke(stroke);
         graph.drawPolygon(outer);
     }
-
-    private static final BasicStroke stroke = new BasicStroke(2);
 
 }
