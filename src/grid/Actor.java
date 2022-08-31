@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.function.ToIntFunction;
 
-public class Entity {
+public class Actor {
 
     private final String logo;
     private final Color color;
 
-    public Entity(String logo, Color color) {
+    public Actor(String logo, Color color) {
         this.logo = logo;
         this.color = color;
     }

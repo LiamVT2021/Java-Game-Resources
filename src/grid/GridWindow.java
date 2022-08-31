@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -67,24 +69,14 @@ public class GridWindow {
         window.setJMenuBar(menuBar);
         JMenu drawMenu = new JMenu("Draw");
         menuBar.add(drawMenu);
-        JMenu entityMenu = new JMenu("Entity");
-        menuBar.add(entityMenu);
+        JMenu actorMenu = new JMenu("Actor");
+        menuBar.add(actorMenu);
 
-        JPanel drawBar = new JPanel();
-        drawBar.add(color);
-        addBar(drawMenu, "Draw Color", drawBar,
-                new GridOperation.DrawShape(grid, () -> null, this::getColor,
-                        () -> (cell) -> cell.setTileColor(getColor())));
-
-        JPanel addEntity = new JPanel();
-        addEntity.add(color);
-        addEntity.add(text);
-        addBar(entityMenu, "Add Entity", addEntity,
-                new GridOperation.Simple(grid, (cell) -> cell.seEntity(new Entity(getText(), getColor()))));
-
-        JPanel removeEntity = new JPanel();
-        addBar(entityMenu, "Remove Entity", removeEntity,
-                new GridOperation.Simple(grid, (cell) -> cell.seEntity(null)));
+        addBar(drawMenu, "Draw Color", new GridOperation.DrawShape(grid, () -> null, this::getColor,
+                () -> (cell) -> cell.setTileColor(getColor())), color);
+        addBar(actorMenu, "Add Actor", new GridOperation.Simple(grid,
+                (cell) -> cell.setActor(new Actor(getText(), getColor()))), color, text);
+        addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, (cell) -> cell.setActor(null)));
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
@@ -94,7 +86,9 @@ public class GridWindow {
 
     }
 
-    private void addBar(JMenu menu, String str, JPanel bar, GridOperation op) {
+    private void addBar(JMenu menu, String str, GridOperation op, JComponent... components) {
+        JPanel bar = new JPanel();
+        Arrays.stream(components).forEach(bar::add);
         menu.add(new SelectOp(str, bar, op));
     }
 
@@ -124,7 +118,7 @@ public class GridWindow {
 
     public static void main(String[] args) {
         GridWindow dm = new GridWindow(new HexGrid(9, 9, 50));
-        dm.grid.cells[2][2].seEntity(new Entity("LS", Color.GREEN));
+        dm.grid.cells[2][2].setActor(new Actor("LS", Color.GREEN));
         dm.grid.repaint();
     }
 
