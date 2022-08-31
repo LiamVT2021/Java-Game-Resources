@@ -27,6 +27,33 @@ public abstract class GridOperation {
 
     public abstract Color highlight(int x, int y);
 
+    public static class Simple extends GridOperation {
+
+        private Consumer<GridCell> func;
+
+        public Simple(Grid grid, Consumer<GridCell> function) {
+            super(grid);
+            func = function;
+        }
+
+        @Override
+        public boolean onClick(int x, int y) {
+            func.accept(grid.cells[x][y]);
+            return true;
+        }
+
+        @Override
+        public boolean onHover(int x, int y) {
+            return false;
+        }
+
+        @Override
+        public Color highlight(int x, int y) {
+            return null;
+        }
+
+    }
+
     public static class DrawShape extends GridOperation {
 
         public DrawShape(Grid grid, Supplier<Shape.Builder> builder,
