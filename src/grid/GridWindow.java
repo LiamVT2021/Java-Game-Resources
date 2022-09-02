@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -40,12 +42,19 @@ public class GridWindow {
 
     private final JFrame window;
     private final Grid grid;
-    private final JComboBox<Object> color;
+    private final Font font;
+    private final ComboBoxModel<String> color;
     private final JTextField text;
     private JPanel opBar;
 
     private Color getColor() {
         return colors.get(color.getSelectedItem());
+    }
+
+    private JComboBox<String> newColor() {
+        JComboBox<String> colorBox = new JComboBox<>(color);
+        colorBox.setFont(font);
+        return colorBox;
     }
 
     private String getText() {
@@ -58,10 +67,9 @@ public class GridWindow {
         window.setLayout(new BorderLayout());
         window.add(grid, BorderLayout.CENTER);
 
-        Font font = new Font(null, 0, 24);
+        font = new Font(null, 0, 24);
 
-        color = new JComboBox<Object>(colors.keySet().toArray());
-        color.setFont(font);
+        color = new DefaultComboBoxModel<String>(colors.keySet().toArray(String[]::new));
         text = new JTextField(3);
         text.setFont(font);
 
@@ -73,9 +81,9 @@ public class GridWindow {
         menuBar.add(actorMenu);
 
         addBar(drawMenu, "Draw Color", new GridOperation.DrawShape(grid, () -> null, this::getColor,
-                () -> (cell) -> cell.setTileColor(getColor())), color);
+                () -> (cell) -> cell.setTileColor(getColor())), newColor());
         addBar(actorMenu, "Add Actor", new GridOperation.Simple(grid,
-                (cell) -> cell.setActor(new Actor(getText(), getColor()))), color, text);
+                (cell) -> cell.setActor(new Actor(getText(), getColor()))), newColor(), text);
         addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, (cell) -> cell.setActor(null)));
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -87,8 +95,11 @@ public class GridWindow {
     }
 
     private void addBar(JMenu menu, String str, GridOperation op, JComponent... components) {
-        JPanel bar = new JPanel();
-        Arrays.stream(components).forEach(bar::add);
+        JPanel bar = null;
+        if (components.length > 0) {
+            bar = new JPanel();
+            Arrays.stream(components).forEach(bar::add);
+        }
         menu.add(new SelectOp(str, bar, op));
     }
 
@@ -100,7 +111,8 @@ public class GridWindow {
                 if (opBar != null)
                     window.remove(opBar);
                 opBar = bar;
-                window.add(bar, BorderLayout.NORTH);
+                if (bar != null)
+                    window.add(bar, BorderLayout.NORTH);
                 grid.gridOp = op;
                 System.out.println(name);
                 window.validate();
