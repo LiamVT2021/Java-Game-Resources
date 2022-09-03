@@ -56,6 +56,7 @@ public abstract class Grid extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                mouseClicked(e);
             }
 
             @Override
