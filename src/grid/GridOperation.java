@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import javax.swing.text.JTextComponent;
+
 public abstract class GridOperation {
 
     protected Grid grid;
@@ -26,6 +28,8 @@ public abstract class GridOperation {
     public abstract boolean onHover(int x, int y);
 
     public abstract Color highlight(int x, int y);
+
+    public abstract void reset();
 
     public static class Simple extends GridOperation {
 
@@ -50,6 +54,68 @@ public abstract class GridOperation {
         @Override
         public Color highlight(int x, int y) {
             return null;
+        }
+
+        @Override
+        public void reset() {
+        }
+
+    }
+
+    public static class Move extends GridOperation {
+
+        public Move(Grid grid, JTextComponent icon) {
+            super(grid);
+            // this.icon = icon;
+            // icon.setEditable(false);
+        }
+
+        // private final JTextComponent icon;
+        private GridCell prev;
+        private int x, y;
+
+        @Override
+        public boolean onClick(int x, int y) {
+            if (prev == null) {
+                prev = grid.cells[x][y];
+                this.x = x;
+                this.y = y;
+                Actor actor = prev.getActor();
+                if (actor != null) {
+                    // icon.setText(actor.logo());
+                    // icon.setBackground(actor.color());
+                } else
+                    reset();
+            } else {
+                GridCell next = grid.cells[x][y];
+                if (next.getActor() == null) {
+                    next.setActor(prev.getActor());
+                    prev.setActor(null);
+                    reset();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onHover(int x, int y) {
+            boolean ret = this.x != x || this.y != y;
+            this.x = x;
+            this.y = y;
+            return ret;
+        }
+
+        @Override
+        public Color highlight(int x, int y) {
+            return (prev != null && this.x == x && this.y == y) ? prev.getActor().color() : null;
+        }
+
+        @Override
+        public void reset() {
+            prev = null;
+            // icon.setText("");
+            // icon.setBackground(null);
         }
 
     }
@@ -112,6 +178,11 @@ public abstract class GridOperation {
         @Override
         public Color highlight(int x, int y) {
             return active && ((shape == null) ? (x == x2 && y == y2) : shape.contains(x, y)) ? highlight.get() : null;
+        }
+
+        @Override
+        public void reset() {
+            started = false;
         }
 
     }

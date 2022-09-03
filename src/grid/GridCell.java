@@ -28,6 +28,10 @@ public class GridCell {
         tileColor = color;
     }
 
+    public Actor getActor() {
+        return actor;
+    }
+
     public Actor setActor(Actor actor) {
         Actor old = this.actor;
         this.actor = actor;

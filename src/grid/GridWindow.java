@@ -84,6 +84,7 @@ public class GridWindow {
                 () -> (cell) -> cell.setTileColor(getColor())), newColor());
         addBar(actorMenu, "Add Actor", new GridOperation.Simple(grid,
                 (cell) -> cell.setActor(new Actor(getText(), getColor()))), newColor(), text);
+        addBar(actorMenu, "Move Actor", new GridOperation.Move(grid, null));
         addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, (cell) -> cell.setActor(null)));
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
