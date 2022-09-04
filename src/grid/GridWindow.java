@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,8 +20,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import grid.Actor.Generic;
 import ui.SimpleAction;
 import ui.SimpleWindow;
+import util.GenericList;
 
 import static java.awt.Color.*;
 
@@ -44,9 +47,10 @@ public class GridWindow extends SimpleWindow {
     }
 
     private final Grid grid;
-    private final Font font;
-    private final ComboBoxModel<String> color;
-    private final JTextField text;
+    private final Font font = new Font(null, 0, 24);
+    private final ComboBoxModel<String> color = new DefaultComboBoxModel<String>(
+            colors.keySet().toArray(String[]::new));
+    private final Map<Color, Map<String, GenericList<Actor>>> generics = new HashMap<>();
     private JPanel opBar;
 
     private Color getColor() {
@@ -55,12 +59,26 @@ public class GridWindow extends SimpleWindow {
 
     private JComboBox<String> newColor() {
         JComboBox<String> colorBox = new JComboBox<>(color);
-        colorBox.setFont(font);
         return colorBox;
     }
 
-    private String getText() {
-        return text.getText();
+    private Actor newGeneric(String name, Color color) {
+        generics.putIfAbsent(color, new HashMap<>());
+        generics.get(color).putIfAbsent(name, new GenericList<>());
+        GenericList<Actor> list = generics.get(color).get(name);
+        Actor actor = new Actor.Generic(name, color, list.next());
+        list.add(actor);
+        return actor;
+    }
+
+    private void remove(GridCell cell) {
+        Actor actor = cell.setActor(null);
+        if (actor instanceof Actor.Generic) {
+            GenericList<Actor> list = generics.get(actor.color()).get(((Generic) actor).name());
+            list.remove(actor);
+            if (list.isEmpty())
+                generics.get(actor.color()).remove(((Generic) actor).name());
+        }
     }
 
     public GridWindow(Grid grid) {
@@ -68,12 +86,6 @@ public class GridWindow extends SimpleWindow {
         this.grid = grid;
         window.setLayout(new BorderLayout());
         window.add(grid, BorderLayout.CENTER);
-
-        font = new Font(null, 0, 24);
-
-        color = new DefaultComboBoxModel<String>(colors.keySet().toArray(String[]::new));
-        text = new JTextField(3);
-        text.setFont(font);
 
         JMenuBar menuBar = new JMenuBar();
         window.setJMenuBar(menuBar);
@@ -84,13 +96,20 @@ public class GridWindow extends SimpleWindow {
 
         addBar(drawMenu, "Draw Color", new GridOperation.DrawShape(grid, () -> null, this::getColor,
                 () -> (cell) -> cell.setTileColor(getColor())), newColor());
-        addBar(actorMenu, "Add Actor", new GridOperation.Simple(grid,
-                (cell) -> cell.setActor(new Actor(getText(), getColor()))), newColor(), text);
+
+        JTextField addUnique = new JTextField(4);
+        JTextField addGeneric = new JTextField(3);
+        addBar(actorMenu, "Add Unique",
+                new GridOperation.Add(grid, () -> new Actor(addUnique.getText(), getColor()), this::getColor),
+                newColor(), addUnique);
+        addBar(actorMenu, "Add Generic",
+                new GridOperation.Add(grid, () -> newGeneric(addGeneric.getText(), getColor()), this::getColor),
+                newColor(), addGeneric);
+
         JLabel moveLogo = new JLabel("  ");
-        moveLogo.setFont(font);
-        moveLogo.setBorder(new EmptyBorder(10,10,10,10));
+        moveLogo.setBorder(new EmptyBorder(10, 10, 10, 10));
         addBar(actorMenu, "Move Actor", new GridOperation.Move(grid, moveLogo), moveLogo);
-        addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, (cell) -> cell.setActor(null)));
+        addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, this::remove));
 
         start();
     }
@@ -98,7 +117,10 @@ public class GridWindow extends SimpleWindow {
     private void addBar(JMenu menu, String str, GridOperation op, JComponent... components) {
         JPanel bar = components.length > 0 ? new JPanel() : null;
         if (bar != null)
-            Arrays.stream(components).forEach(bar::add);
+            Arrays.stream(components).forEach(comp -> {
+                comp.setFont(font);
+                bar.add(comp);
+            });
         menu.add(new SimpleAction(str, () -> {
             if (opBar != null)
                 window.remove(opBar);

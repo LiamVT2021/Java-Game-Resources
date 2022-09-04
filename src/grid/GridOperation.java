@@ -62,64 +62,6 @@ public abstract class GridOperation {
 
     }
 
-    public static class Move extends GridOperation {
-
-        public Move(Grid grid, JLabel label) {
-            super(grid);
-            this.label = label;
-            label.setOpaque(true);
-        }
-
-        private final JLabel label;
-        private GridCell prev;
-        private int x, y;
-
-        @Override
-        public boolean onClick(int x, int y) {
-            if (prev == null) {
-                prev = grid.cells[x][y];
-                this.x = x;
-                this.y = y;
-                Actor actor = prev.getActor();
-                if (actor != null) {
-                    label.setText(actor.logo());
-                    label.setBackground(actor.color());
-                } else
-                    reset();
-            } else {
-                GridCell next = grid.cells[x][y];
-                if (next.getActor() == null) {
-                    next.setActor(prev.getActor());
-                    prev.setActor(null);
-                    reset();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public boolean onHover(int x, int y) {
-            boolean ret = this.x != x || this.y != y;
-            this.x = x;
-            this.y = y;
-            return ret;
-        }
-
-        @Override
-        public Color highlight(int x, int y) {
-            return (prev != null && this.x == x && this.y == y) ? prev.getActor().color() : null;
-        }
-
-        @Override
-        public void reset() {
-            prev = null;
-            label.setText("  ");
-            label.setBackground(null);
-        }
-
-    }
-
     public static class DrawShape extends GridOperation {
 
         public DrawShape(Grid grid, Supplier<Shape.Builder> builder,
@@ -187,4 +129,119 @@ public abstract class GridOperation {
 
     }
 
+    public static abstract class OneTile extends GridOperation {
+
+        protected int x, y;
+
+        public OneTile(Grid grid) {
+            super(grid);
+        }
+
+        @Override
+        public boolean onHover(int x, int y) {
+            boolean ret = this.x != x || this.y != y;
+            this.x = x;
+            this.y = y;
+            return ret;
+        }
+
+        @Override
+        public Color highlight(int x, int y) {
+            return (this.x == x && this.y == y) ? color() : null;
+        }
+
+        abstract Color color();
+
+    }
+
+    public static class Add extends OneTile {
+
+        private final Supplier<Actor> actor;
+        private final Supplier<Color> color;
+
+        public Add(Grid grid, Supplier<Actor> actor, Supplier<Color> color) {
+            super(grid);
+            this.actor = actor;
+            this.color = color;
+        }
+
+        @Override
+        public boolean onClick(int x, int y) {
+            GridCell cell = grid.cells[x][y];
+            if (cell.getActor() == null) {
+                cell.setActor(actor.get());
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public Color highlight(int x, int y) {
+            return grid.cells[x][y].getActor() == null ? super.highlight(x, y) : null;
+        }
+
+        @Override
+        public void reset() {
+        }
+
+        @Override
+        Color color() {
+            return color.get();
+        }
+
+    }
+
+    public static class Move extends OneTile {
+
+        public Move(Grid grid, JLabel label) {
+            super(grid);
+            this.label = label;
+            label.setOpaque(true);
+        }
+
+        private final JLabel label;
+        private GridCell prev;
+
+        @Override
+        public boolean onClick(int x, int y) {
+            if (prev == null) {
+                prev = grid.cells[x][y];
+                this.x = x;
+                this.y = y;
+                Actor actor = prev.getActor();
+                if (actor != null) {
+                    label.setText(actor.logo());
+                    label.setBackground(actor.color());
+                } else
+                    reset();
+            } else {
+                GridCell next = grid.cells[x][y];
+                if (next.getActor() == null) {
+                    next.setActor(prev.getActor());
+                    prev.setActor(null);
+                    reset();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public Color highlight(int x, int y) {
+            return prev != null && grid.cells[x][y].getActor() == null ? super.highlight(x, y) : null;
+        }
+
+        @Override
+        public void reset() {
+            prev = null;
+            label.setText("  ");
+            label.setBackground(null);
+        }
+
+        @Override
+        Color color() {
+            return prev.getActor().color();
+        }
+
+    }
 }

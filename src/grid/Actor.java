@@ -34,4 +34,23 @@ public class Actor {
         graph.drawString(text, tile.x - width.applyAsInt(text) / 2, tile.y + height);
     }
 
+    public static class Generic extends Actor {
+        private final int num;
+
+        public Generic(String logo, Color color, int num) {
+            super(logo, color);
+            this.num = num;
+        }
+
+        public String name() {
+            return super.logo();
+        }
+
+        @Override
+        public String logo() {
+            return super.logo() + num;
+        }
+
+    }
+
 }
