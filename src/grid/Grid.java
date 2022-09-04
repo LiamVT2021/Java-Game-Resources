@@ -34,6 +34,7 @@ public abstract class Grid extends JPanel {
     }
 
     public Grid(int width, int height, int scale) {
+        setBackground(Color.LIGHT_GRAY);
         cells = new GridCell[width][height];
         tiles = new Tile[width][height];
         highX = new int[sides()];
@@ -85,7 +86,6 @@ public abstract class Grid extends JPanel {
     }
 
     public void setScale(int scale) {
-        setBackground(Color.BLUE);
         this.scale = scale;
         radius = 7 * scale / 9;
         makePoly();

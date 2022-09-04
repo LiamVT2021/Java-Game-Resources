@@ -10,7 +10,7 @@ public class GridCell {
     private Actor actor;
 
     public GridCell() {
-        tileColor = Color.PINK;
+        tileColor = Color.WHITE;
     }
 
     public void draw(Graphics2D graph, Tile tile, Color highlightColor,
