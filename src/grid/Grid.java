@@ -13,11 +13,17 @@ import java.awt.event.MouseEvent;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.FontMetrics;
-
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
+/**
+ * Grid class for storing and displaying all grid data
+ * 
+ * @author Liam Snyder
+ * @version 9/4/22
+ */
 public abstract class Grid extends JPanel {
 
     public static final BasicStroke stroke = new BasicStroke(2);
@@ -33,6 +39,11 @@ public abstract class Grid extends JPanel {
         public Grid make(int width, int height, int scale);
     }
 
+    /**
+     * @param width  the number of columns wide
+     * @param height the number of rows high
+     * @param scale  the inner radial distance of the tiles
+     */
     public Grid(int width, int height, int scale) {
         setBackground(Color.LIGHT_GRAY);
         cells = new GridCell[width][height];
@@ -42,9 +53,9 @@ public abstract class Grid extends JPanel {
         this.numColumns = width;
         this.numRows = height;
         setScale(scale);
-        allCells((x, y) -> {
-            cells[x][y] = new GridCell();
-            tiles[x][y] = makeTile(x, y);
+        allCells((q, r) -> {
+            cells[q][r] = new GridCell();
+            tiles[q][r] = makeTile(q, r);
         });
         MouseInputListener clicker = new MouseInputListener() {
 
@@ -102,13 +113,25 @@ public abstract class Grid extends JPanel {
         return new Dimension((numColumns + 1) * cellWidth, (numRows + 1) * cellHeight);
     }
 
+    /**
+     * sets the default polygon the tiles are constructed from
+     */
     public abstract void makePoly();
 
+    /**
+     * @return the number of sides of the tiles
+     */
     public abstract int sides();
 
-    public Tile makeTile(int x, int y) {
-        int centerX = centerX(x, y);
-        int centerY = (y + 1) * cellHeight;
+    /**
+     * @param q the column of the tile
+     * @param r the row of the tile
+     * @return a new tile representing the row and column,
+     *         tiles need to be recreated when any dimensions change
+     */
+    public Tile makeTile(int q, int r) {
+        int centerX = centerX(q, r);
+        int centerY = (r + 1) * cellHeight;
         Polygon outer = new Polygon();
         Polygon inner = new Polygon();
         for (int i = 0; i < sides(); i++) {
@@ -118,12 +141,12 @@ public abstract class Grid extends JPanel {
         return new Tile(centerX, centerY, outer, inner);
     }
 
-    protected abstract int centerX(int x, int y);
-
-    private void draw(Graphics2D map, int x, int y, int height, ToIntFunction<String> width) {
-        cells[x][y].draw(map, tiles[x][y], gridOp != null ? gridOp.highlight(x, y) : null,
-                radius, height, width);
-    }
+    /**
+     * @param q the column of the tile
+     * @param r the row of the tile
+     * @return the x pixel to center the tile
+     */
+    protected abstract int centerX(int q, int r);
 
     @Override
     protected void paintComponent(Graphics map) {
@@ -135,36 +158,66 @@ public abstract class Grid extends JPanel {
         graph.setFont(font);
         int height = (metrics.getAscent() - metrics.getDescent()) / 2;
         ToIntFunction<String> width = metrics::stringWidth;
-        allCells((x, y) -> draw(graph, x, y, height, width));
+        allCells((q, r) -> cells[q][r].draw(graph, tiles[q][r], gridOp != null ? gridOp.highlight(q, r) : null,
+                radius, height, width));
     }
 
-    @FunctionalInterface
-    public interface CoordFunc {
-        public void apply(int x, int y);
+    /**
+     * performs an operation on all cells in the grid
+     * 
+     * @param func the operation
+     */
+    protected void allCells(BiConsumer<Integer, Integer> func) {
+        for (int r = 0; r < numRows; r++)
+            for (int q = 0; q < numColumns; q++)
+                func.accept(q, r);
     }
 
-    protected void allCells(CoordFunc func) {
-        for (int y = 0; y < numRows; y++)
-            for (int x = 0; x < numColumns; x++)
-                func.apply(x, y);
-    }
-
+    /**
+     * performs an operation on all cells in the grid
+     * 
+     * @param func the operation
+     */
     protected void allCells(Consumer<GridCell> func) {
-        Stream.of(cells).parallel().forEach(col -> Stream.of(col).parallel().forEach(func));
+        Stream.of(cells).parallel().forEach(col -> Stream.of(col).filter(c -> c != null).forEach(func));
     }
 
-    public String coords(int x, int y) {
-        return vector(x - numColumns / 2, y - numRows / 2);
+    /**
+     * @param q the column of the cell
+     * @param r the row of the cell
+     * @return vector from the center of the grid
+     */
+    public String coords(int q, int r) {
+        return vector(q - numColumns / 2, r - numRows / 2);
     }
 
-    public abstract String vector(int x, int y);
+    /**
+     * @param q the diffrence in columns
+     * @param r the diffrence in rows
+     * @return a string representing the vector
+     */
+    public abstract String vector(int q, int r);
 
-    public abstract int distance(int x, int y);
+    /**
+     * @param q the diffrence in columns
+     * @param r the diffrence in rows
+     * @return the distance between the cells
+     */
+    public abstract int distance(int q, int r);
 
+    /**
+     * @param e the mouse event
+     * @return the q, r grid coordinates of the mouse
+     */
     public abstract Point clickLoc(MouseEvent e);
 
-    public boolean inbounds(int x, int y) {
-        return x >= 0 && x < cells.length && y >= 0 && y < cells[0].length;
+    /**
+     * @param q the column of the cell
+     * @param r the row of the cell
+     * @return if the coordinates are inside the grid
+     */
+    public boolean inbounds(int q, int r) {
+        return q >= 0 && q < cells.length && r >= 0 && r < cells[0].length;
     }
 
 }

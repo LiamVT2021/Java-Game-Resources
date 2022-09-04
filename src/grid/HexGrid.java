@@ -4,7 +4,14 @@ import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.function.BiConsumer;
 
+/**
+ * Hex Grid
+ * 
+ * @author Liam Snyder
+ * @version 9/4/22
+ */
 public class HexGrid extends Grid {
 
     private int cut;
@@ -41,13 +48,12 @@ public class HexGrid extends Grid {
     }
 
     @Override
-    protected void allCells(CoordFunc func) {
-        for (int y = 0; y < numRows; y++) {
-            int s = Math.max(cut - y, 0);
-            int e = Math.min(numColumns + cut - y, numColumns);
-            // System.out.println(y + ',' + s + ',' + e);
-            for (int x = s; x < e; x++)
-                func.apply(x, y);
+    protected void allCells(BiConsumer<Integer, Integer> func) {
+        for (int r = 0; r < numRows; r++) {
+            int start = Math.max(cut - r, 0);
+            int end = Math.min(numColumns + cut - r, numColumns);
+            for (int q = start; q < end; q++)
+                func.accept(q, r);
         }
     }
 
@@ -104,6 +110,13 @@ public class HexGrid extends Grid {
         return new Point(hexRound(q, r));
     }
 
+    /**
+     * rounds the hex coordinates to the nearest integers
+     * 
+     * @param x the q double
+     * @param y the r double
+     * @return nearest integer coordinates
+     */
     private Point hexRound(double x, double y) {
         double z = -x - y;
         int q = (int) Math.round(x);

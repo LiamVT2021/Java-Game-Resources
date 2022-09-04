@@ -7,15 +7,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
-import ui.SimpleAction;
-import ui.SimpleWindow;
-
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.Font;
 
-public class DM_Launcher extends SimpleWindow{
+import ui.SimpleAction;
+import ui.SimpleWindow;
+
+/**
+ * Launcher for creating new Grids
+ * 
+ * @author Liam Snyder
+ * @version 9/4/22
+ */
+public class DM_Launcher extends SimpleWindow {
 
     private static Font font = new Font(null, 0, 24);
     private static String WIDTH = "Width";
@@ -38,6 +44,12 @@ public class DM_Launcher extends SimpleWindow{
         start();
     }
 
+    /**
+     * helper method for creating the input fields
+     * 
+     * @param str  the name of this field
+     * @param base the default value for this field
+     */
     private void addIntRow(String str, int base) {
         JLabel label = new JLabel(str);
         label.setFont(font);
@@ -50,10 +62,17 @@ public class DM_Launcher extends SimpleWindow{
         window.add(text);
     }
 
+    /**
+     * @param key Width, Height, or Scale
+     * @return the input value from the associated field
+     */
     public int getValue(String key) {
         return Integer.valueOf(ints.get(key).getText());
     }
 
+    /**
+     * creates a new grid based on the input values
+     */
     public void createGrid() {
         Grid.Constructor grid = hex.isSelected() ? HexGrid::new : SquareGrid::new;
         new GridWindow(grid.make(getValue(WIDTH), getValue(HEIGHT), getValue(SCALE)));

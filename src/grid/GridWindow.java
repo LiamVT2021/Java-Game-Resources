@@ -27,6 +27,12 @@ import util.GenericList;
 
 import static java.awt.Color.*;
 
+/**
+ * DM Grid Window, with click operations at the top
+ * 
+ * @author Liam Snyder
+ * @version 9/4/22
+ */
 public class GridWindow extends SimpleWindow {
 
     private static final Map<String, Color> colors = new LinkedHashMap<>();
@@ -62,7 +68,12 @@ public class GridWindow extends SimpleWindow {
         return colorBox;
     }
 
-    private Actor newGeneric(String name, Color color) {
+    /**
+     * @param name prefix of generic actor
+     * @return a new generic actor with a unused count
+     */
+    private Actor newGeneric(String name) {
+        Color color = getColor();
         generics.putIfAbsent(color, new HashMap<>());
         generics.get(color).putIfAbsent(name, new GenericList<>());
         GenericList<Actor> list = generics.get(color).get(name);
@@ -71,6 +82,11 @@ public class GridWindow extends SimpleWindow {
         return actor;
     }
 
+    /**
+     * removes an actor from a cell, and the generic list if needed
+     * 
+     * @param cell the cell we are removing the actor from
+     */
     private void remove(GridCell cell) {
         Actor actor = cell.setActor(null);
         if (actor instanceof Actor.Generic) {
@@ -103,7 +119,7 @@ public class GridWindow extends SimpleWindow {
                 new GridOperation.Add(grid, () -> new Actor(addUnique.getText(), getColor()), this::getColor),
                 newColor(), addUnique);
         addBar(actorMenu, "Add Generic",
-                new GridOperation.Add(grid, () -> newGeneric(addGeneric.getText(), getColor()), this::getColor),
+                new GridOperation.Add(grid, () -> newGeneric(addGeneric.getText()), this::getColor),
                 newColor(), addGeneric);
 
         JLabel moveLogo = new JLabel("  ");
@@ -114,6 +130,14 @@ public class GridWindow extends SimpleWindow {
         start();
     }
 
+    /**
+     * creates a new Bar for a operation
+     * 
+     * @param menu       the menu to add the operation to
+     * @param str        the name of the operation
+     * @param op         the operation
+     * @param components list of components in the bar
+     */
     private void addBar(JMenu menu, String str, GridOperation op, JComponent... components) {
         JPanel bar = components.length > 0 ? new JPanel() : null;
         if (bar != null)

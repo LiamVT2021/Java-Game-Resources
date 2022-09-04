@@ -4,6 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.function.ToIntFunction;
 
+/**
+ * class representing an character on the grid
+ * 
+ * @author Liam Snyder
+ * @version 9/4/22
+ */
 public class Actor {
 
     private final String logo;
@@ -22,6 +28,15 @@ public class Actor {
         return color;
     }
 
+    /**
+     * draws the actor on a graphics object
+     * 
+     * @param graph  the graphics object for the grid
+     * @param tile   tile with location of cell
+     * @param radius radius of the circle
+     * @param height text height
+     * @param width  text width function
+     */
     public void draw(Graphics2D graph, Tile tile, int radius, int height, ToIntFunction<String> width) {
         int x = tile.x - radius;
         int y = tile.y - radius;
@@ -34,6 +49,9 @@ public class Actor {
         graph.drawString(text, tile.x - width.applyAsInt(text) / 2, tile.y + height);
     }
 
+    /**
+     * add number field for generic npcs
+     */
     public static class Generic extends Actor {
         private final int num;
 

@@ -5,10 +5,16 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
+/**
+ * Square Grid
+ * 
+ * @author Liam Snyder
+ * @version 9/4/22
+ */
 public class SquareGrid extends Grid {
 
-    public SquareGrid(int X, int Y, int scale) {
-        super(X, Y, scale);
+    public SquareGrid(int width, int height, int scale) {
+        super(width, height, scale);
     }
 
     @Override
