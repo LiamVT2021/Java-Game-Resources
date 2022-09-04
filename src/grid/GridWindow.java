@@ -18,10 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import ui.SimpleAction;
+import ui.SimpleWindow;
 
 import static java.awt.Color.*;
 
-public class GridWindow {
+public class GridWindow extends SimpleWindow {
 
     private static final Map<String, Color> colors = new LinkedHashMap<>();
     static {
@@ -40,7 +41,6 @@ public class GridWindow {
         colors.put("Dark Gray", DARK_GRAY);
     }
 
-    private final JFrame window;
     private final Grid grid;
     private final Font font;
     private final ComboBoxModel<String> color;
@@ -62,7 +62,7 @@ public class GridWindow {
     }
 
     public GridWindow(Grid grid) {
-        window = new JFrame();
+        super(new JFrame());
         this.grid = grid;
         window.setLayout(new BorderLayout());
         window.add(grid, BorderLayout.CENTER);
@@ -87,12 +87,7 @@ public class GridWindow {
         addBar(actorMenu, "Move Actor", new GridOperation.Move(grid, null));
         addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, (cell) -> cell.setActor(null)));
 
-        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.pack();
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-        window.setResizable(false);
-
+        start();
     }
 
     private void addBar(JMenu menu, String str, GridOperation op, JComponent... components) {
@@ -107,12 +102,12 @@ public class GridWindow {
                 window.add(bar, BorderLayout.NORTH);
             grid.gridOp = op;
             System.out.println(str);
-            window.validate();
+            window.pack();
         }));
     }
 
     public static void main(String[] args) {
-        GridWindow dm = new GridWindow(new HexGrid(9, 9, 50));
+        GridWindow dm = new GridWindow(new HexGrid(5, 5, 50));
         dm.grid.cells[2][2].setActor(new Actor("LS", Color.GREEN));
         dm.grid.repaint();
     }
