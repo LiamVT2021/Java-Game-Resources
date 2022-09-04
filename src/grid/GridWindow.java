@@ -3,7 +3,6 @@ package grid;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,7 +16,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.text.TextAction;
+
+import ui.SimpleAction;
 
 import static java.awt.Color.*;
 
@@ -87,7 +87,7 @@ public class GridWindow {
         addBar(actorMenu, "Move Actor", new GridOperation.Move(grid, null));
         addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, (cell) -> cell.setActor(null)));
 
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         window.pack();
         window.setLocationRelativeTo(null);
         window.setVisible(true);
@@ -96,37 +96,19 @@ public class GridWindow {
     }
 
     private void addBar(JMenu menu, String str, GridOperation op, JComponent... components) {
-        JPanel bar = null;
-        if (components.length > 0) {
-            bar = new JPanel();
+        JPanel bar = components.length > 0 ? new JPanel() : null;
+        if (bar != null)
             Arrays.stream(components).forEach(bar::add);
-        }
-        menu.add(new SelectOp(str, bar, op));
-    }
-
-    private class SelectOp extends TextAction {
-
-        public SelectOp(String name, JPanel bar, GridOperation op) {
-            super(name);
-            select = () -> {
-                if (opBar != null)
-                    window.remove(opBar);
-                opBar = bar;
-                if (bar != null)
-                    window.add(bar, BorderLayout.NORTH);
-                grid.gridOp = op;
-                System.out.println(name);
-                window.validate();
-            };
-        }
-
-        private Runnable select;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            select.run();
-        }
-
+        menu.add(new SimpleAction(str, () -> {
+            if (opBar != null)
+                window.remove(opBar);
+            opBar = bar;
+            if (bar != null)
+                window.add(bar, BorderLayout.NORTH);
+            grid.gridOp = op;
+            System.out.println(str);
+            window.validate();
+        }));
     }
 
     public static void main(String[] args) {
