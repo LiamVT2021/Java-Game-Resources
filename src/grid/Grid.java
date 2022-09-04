@@ -28,6 +28,11 @@ public abstract class Grid extends JPanel {
     protected int numColumns, numRows, cellWidth, cellHeight, scale, radius;
     protected int[] polyX, polyY, highX, highY;
 
+    @FunctionalInterface
+    public static interface Constructor {
+        public Grid make(int width, int height, int scale);
+    }
+
     public Grid(int width, int height, int scale) {
         cells = new GridCell[width][height];
         tiles = new Tile[width][height];
