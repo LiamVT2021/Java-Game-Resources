@@ -49,7 +49,7 @@ public abstract class Grid extends JPanel {
         MouseInputListener clicker = new MouseInputListener() {
 
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if (gridOp != null && gridOp.onClick(clickLoc(e)))
                     repaint();
             }
@@ -61,8 +61,7 @@ public abstract class Grid extends JPanel {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
-                mouseClicked(e);
+            public void mouseClicked(MouseEvent e) {
             }
 
             @Override

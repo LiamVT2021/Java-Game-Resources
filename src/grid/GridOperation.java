@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.swing.text.JTextComponent;
+import javax.swing.JLabel;
 
 public abstract class GridOperation {
 
@@ -64,13 +64,13 @@ public abstract class GridOperation {
 
     public static class Move extends GridOperation {
 
-        public Move(Grid grid, JTextComponent icon) {
+        public Move(Grid grid, JLabel label) {
             super(grid);
-            // this.icon = icon;
-            // icon.setEditable(false);
+            this.label = label;
+            label.setOpaque(true);
         }
 
-        // private final JTextComponent icon;
+        private final JLabel label;
         private GridCell prev;
         private int x, y;
 
@@ -82,8 +82,8 @@ public abstract class GridOperation {
                 this.y = y;
                 Actor actor = prev.getActor();
                 if (actor != null) {
-                    // icon.setText(actor.logo());
-                    // icon.setBackground(actor.color());
+                    label.setText(actor.logo());
+                    label.setBackground(actor.color());
                 } else
                     reset();
             } else {
@@ -114,8 +114,8 @@ public abstract class GridOperation {
         @Override
         public void reset() {
             prev = null;
-            // icon.setText("");
-            // icon.setBackground(null);
+            label.setText("  ");
+            label.setBackground(null);
         }
 
     }

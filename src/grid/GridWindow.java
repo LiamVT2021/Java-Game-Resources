@@ -12,10 +12,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import ui.SimpleAction;
 import ui.SimpleWindow;
@@ -84,7 +86,10 @@ public class GridWindow extends SimpleWindow {
                 () -> (cell) -> cell.setTileColor(getColor())), newColor());
         addBar(actorMenu, "Add Actor", new GridOperation.Simple(grid,
                 (cell) -> cell.setActor(new Actor(getText(), getColor()))), newColor(), text);
-        addBar(actorMenu, "Move Actor", new GridOperation.Move(grid, null));
+        JLabel moveLogo = new JLabel("  ");
+        moveLogo.setFont(font);
+        moveLogo.setBorder(new EmptyBorder(10,10,10,10));
+        addBar(actorMenu, "Move Actor", new GridOperation.Move(grid, moveLogo), moveLogo);
         addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, (cell) -> cell.setActor(null)));
 
         start();
