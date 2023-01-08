@@ -23,11 +23,15 @@ public interface Shape {
             r = radius;
         }
 
-        public abstract int distance(int dx, int dy);
+        public abstract int distance(int x1, int y1, int x2, int y2);
+
+        public int distFromCenter(int x, int y) {
+            return distance(cx, cy, x, y);
+        }
 
         @Override
         public boolean contains(int x, int y) {
-            return distance(x - cx, y - cy) <= r;
+            return distFromCenter(x, y) <= r;
         }
 
     }

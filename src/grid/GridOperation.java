@@ -125,6 +125,7 @@ public abstract class GridOperation {
         @Override
         public void reset() {
             started = false;
+            shape = null;
         }
 
     }

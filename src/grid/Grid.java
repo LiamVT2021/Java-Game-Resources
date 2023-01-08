@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
@@ -205,6 +206,10 @@ public abstract class Grid extends JPanel {
      */
     public abstract int distance(int q, int r);
 
+    public int distance(int q1, int r1, int q2, int r2) {
+        return distance(q2 - q1, r2 - r1);
+    }
+
     /**
      * @param e the mouse event
      * @return the q, r grid coordinates of the mouse
@@ -218,6 +223,12 @@ public abstract class Grid extends JPanel {
      */
     public boolean inbounds(int q, int r) {
         return q >= 0 && q < cells.length && r >= 0 && r < cells[0].length;
+    }
+
+    public abstract Map<String, Shape.Builder> shapes();
+
+    public Shape.Builder getShape(String key) {
+        return shapes().get(key);
     }
 
 }

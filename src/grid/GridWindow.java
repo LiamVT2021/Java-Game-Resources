@@ -3,10 +3,13 @@ package grid;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -53,6 +56,7 @@ public class GridWindow extends SimpleWindow {
     }
 
     private final Grid grid;
+    private final ComboBoxModel<String> shape;
     private final Font font = new Font(null, 0, 24);
     private final ComboBoxModel<String> color = new DefaultComboBoxModel<String>(
             colors.keySet().toArray(String[]::new));
@@ -100,6 +104,9 @@ public class GridWindow extends SimpleWindow {
     public GridWindow(Grid grid) {
         super(new JFrame());
         this.grid = grid;
+        List<String> shapes = new ArrayList<>(List.of("Cell"));
+        shapes.addAll(grid.shapes().keySet());
+        shape = new DefaultComboBoxModel<String>(shapes.toArray(String[]::new));
         window.setLayout(new BorderLayout());
         window.add(grid, BorderLayout.CENTER);
 
@@ -110,8 +117,7 @@ public class GridWindow extends SimpleWindow {
         JMenu actorMenu = new JMenu("Actor");
         menuBar.add(actorMenu);
 
-        addBar(drawMenu, "Draw Color", new GridOperation.DrawShape(grid, () -> null, this::getColor,
-                () -> (cell) -> cell.setTileColor(getColor())), newColor());
+        drawBar(drawMenu, "Draw Color", (cell) -> cell.setTileColor(getColor()));
 
         JTextField addUnique = new JTextField(4);
         JTextField addGeneric = new JTextField(3);
@@ -128,6 +134,14 @@ public class GridWindow extends SimpleWindow {
         addBar(actorMenu, "Remove Actor", new GridOperation.Simple(grid, this::remove));
 
         start();
+    }
+
+    private void drawBar(JMenu menu, String name, Consumer<GridCell> op) {
+        GridOperation gridOp = new GridOperation.DrawShape(grid, () -> grid.getShape((String) shape.getSelectedItem()),
+                this::getColor, () -> op);
+        JComboBox<String> shapeBox = new JComboBox<>(shape);
+        shapeBox.addActionListener(a -> gridOp.reset());
+        addBar(menu, name, gridOp, shapeBox, newColor());
     }
 
     /**
@@ -152,13 +166,14 @@ public class GridWindow extends SimpleWindow {
             if (bar != null)
                 window.add(bar, BorderLayout.NORTH);
             grid.gridOp = op;
-            System.out.println(str);
+            op.reset();
             window.pack();
+            window.repaint();
         }));
     }
 
     public static void main(String[] args) {
-        GridWindow dm = new GridWindow(new HexGrid(5, 5, 50));
+        GridWindow dm = new GridWindow(new SquareGrid(5, 5, 50));
         dm.grid.cells[2][2].setActor(new Actor("LS", Color.GREEN));
         dm.grid.repaint();
     }

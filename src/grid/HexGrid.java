@@ -1,9 +1,9 @@
 package grid;
 
-import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -55,16 +55,6 @@ public class HexGrid extends Grid {
             for (int q = start; q < end; q++)
                 func.accept(q, r);
         }
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.add(new HexGrid(17, 11, 40));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-        frame.setResizable(false);
     }
 
     @Override
@@ -133,6 +123,31 @@ public class HexGrid extends Grid {
             r = -q - s;
         // System.out.println("q: " + q + " r: " + r);
         return new Point(q, r);
+    }
+
+    // Shapes
+
+    @Override
+    public Map<String, Shape.Builder> shapes() {
+        return Map.of("Circle", Circle::new);
+    }
+
+    private class Circle extends Shape.Circle {
+
+        public Circle(int x1, int y1, int x2, int y2) {
+            super(x1, y1, HexGrid.this.distance(x1, y1, x2, y2));
+        }
+
+        @Override
+        public void allCoords(BiConsumer<Integer, Integer> func) {
+
+        }
+
+        @Override
+        public int distance(int x1, int y1, int x2, int y2) {
+            return HexGrid.this.distance(x1, y1, x2, y2);
+        }
+
     }
 
 }
