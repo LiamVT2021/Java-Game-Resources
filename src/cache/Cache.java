@@ -8,25 +8,45 @@ public class Cache<V> {
 
     private final Map<String, Key> keys = new HashMap<>();
 
-    public final class Key {
+    public abstract class Key {
         public final String str;
-        private final Function<Instance, V> func;
 
-        public Key(String str, Function<Instance, V> func) {
+        public Key(String str) {
             if (keys.containsKey(str))
                 throw new RuntimeException("key named " + str + " already present in cache.");
             this.str = str;
-            this.func = func;
             keys.put(str, this);
         }
 
-        public V get(Instance cache) {
+        public abstract V get(Instance cache);
+    }
+
+    public final class Func extends Key {
+        private final Function<Instance, V> func;
+
+        public Func(String str, Function<Instance, V> func) {
+            super(str);
+            this.func = func;
+        }
+
+        @Override
+        public V get(Cache<V>.Instance cache) {
             return func.apply(cache);
         }
     }
 
-    public Key base(String str, V base) {
-        return new Key(str, i -> base);
+    public final class Base extends Key {
+        private final V base;
+
+        public Base(String str, V base) {
+            super(str);
+            this.base = base;
+        }
+
+        @Override
+        public V get(Cache<V>.Instance cache) {
+            return base;
+        }
     }
 
     public final class Instance {
@@ -38,7 +58,7 @@ public class Cache<V> {
         }
 
         public V get(Key key) {
-            return Utils.firstNotNull(key,  set::get, cache::get, this::calc);
+            return Utils.firstNotNull(key, set::get, cache::get, this::calc);
         }
 
         public void set(Key key, V value) {
