@@ -1,8 +1,8 @@
 package dice;
 
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.function.IntSupplier;
+
+import enums.PrimMap;
 
 public class Dice implements IntSupplier {
 
@@ -11,39 +11,46 @@ public class Dice implements IntSupplier {
         return roll();
     }
 
-    private final Map<Die, Integer> map = new EnumMap<>(Die.class);
-    public int mod = 0;
+    private final PrimMap.Byte<Die> map = new PrimMap.Byte<>(Die.class);
+    private String str;
 
     public int roll() {
-        return map.entrySet().parallelStream().mapToInt(e -> e.getKey().roll(e.getValue())).sum() + mod;
+        return roll(0);
+    }
+
+    public int roll(int mod) {
+        int ret = mod;
+        for (Die die : Die.values())
+            ret += die.roll(map.getByte(die));
+        return ret;
     }
 
     public Dice setDice(int count, Die die) {
-        if (count == 0)
-            map.remove(die);
-        else
-            map.put(die, count);
+        str = null;
+        map.set(die, count);
         return this;
     }
 
     public Dice addDice(int count, Die die) {
-        return setDice(count + map.getOrDefault(die, 0), die);
+        return setDice(count + map.getByte(die), die);
     }
 
-    private static String forceSign(int i) {
+    private static String forceSign(byte i) {
         return (i < 0 ? "" : "+") + i;
     }
 
     public String toString() {
+        if (str != null)
+            return str;
         if (map.isEmpty())
-            return String.valueOf(mod);
-        StringBuilder str = new StringBuilder();
-        map.forEach((die, count) -> {
-            str.append(forceSign(count));
-            str.append(die.toString());
-        });
-        str.append(forceSign(mod));
-        return str.charAt(0) != '+' ? str.toString() : str.substring(1);
+            return null;
+        StringBuilder builder = new StringBuilder();
+        for (Die die : Die.values()) {
+            builder.append(forceSign(map.getByte(die)));
+            builder.append(die.toString());
+        }
+        str = builder.charAt(0) != '+' ? builder.toString() : builder.substring(1);
+        return str;
     }
 
 }
