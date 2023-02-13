@@ -5,19 +5,16 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.IntFunction;
 
 public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
-
-    private static int size(Class<?> enumClass) {
-        return enumClass.getEnumConstants().length;
-    }
 
     private final Class<E> enumClass;
     protected final A array;
 
-    private PrimMap(Class<E> enumClass, A array) {
+    private PrimMap(Class<E> enumClass, IntFunction<A> arrGen) {
         this.enumClass = enumClass;
-        this.array = array;
+        array = arrGen.apply(size());
     }
 
     @Override
@@ -27,7 +24,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     @Override
     public int size() {
-        return size(enumClass);
+        return enumClass.getEnumConstants().length;
     }
 
     @Override
@@ -101,7 +98,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
     public static class Bool<E extends Enum<E>> extends PrimMap<E, boolean[], Boolean> {
 
         public Bool(Class<E> enumClass) {
-            super(enumClass, new boolean[size(enumClass)]);
+            super(enumClass, boolean[]::new);
         }
 
         public boolean getBool(E key) {
@@ -138,7 +135,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     private static abstract class Num<E extends Enum<E>, A> extends PrimMap<E, A, Number> {
 
-        public Num(Class<E> enumClass, A array) {
+        public Num(Class<E> enumClass, IntFunction<A> array) {
             super(enumClass, array);
         }
 
@@ -157,7 +154,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
     public static class Int<E extends Enum<E>> extends Num<E, int[]> {
 
         public Int(Class<E> enumClass) {
-            super(enumClass, new int[size(enumClass)]);
+            super(enumClass, int[]::new);
         }
 
         public int getInt(E key) {
@@ -185,7 +182,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
     public static class Byte<E extends Enum<E>> extends Num<E, byte[]> {
 
         public Byte(Class<E> enumClass) {
-            super(enumClass, new byte[size(enumClass)]);
+            super(enumClass, byte[]::new);
         }
 
         public byte getByte(E key) {
