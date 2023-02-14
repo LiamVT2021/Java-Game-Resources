@@ -6,8 +6,11 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.IntFunction;
 import java.util.function.ToIntBiFunction;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
@@ -40,7 +43,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     @Override
     public V get(Object key) {
-        return containsKey(key) ? get(((Enum<E>) key).ordinal()) : null;
+        return containsKey(key) ? get(((E) key).ordinal()) : null;
     }
 
     protected abstract V get(int index);
@@ -105,6 +108,12 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
             func.accept(keys[i], get(i));
     }
 
+    public <R> Stream<R> mapStream(BiFunction<? super E, ? super V, ? extends R> func) {
+        Stream.Builder<R> builder = Stream.builder();
+        forEach((e, v) -> builder.accept(func.apply(e, v)));
+        return builder.build();
+    }
+
     public static class Bool<E extends Enum<E>> extends PrimMap<E, boolean[], Boolean> {
 
         public Bool(Class<E> enumClass) {
@@ -153,20 +162,18 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
             setAll(0);
         }
 
+        public IntStream intStream(ToIntBiFunction<E, Number> func) {
+            IntStream.Builder builder = IntStream.builder();
+            forEach((e, v) -> builder.accept(func.applyAsInt(e, v)));
+            return builder.build();
+        }
+
         public int sum(ToIntBiFunction<E, Number> func) {
-            E[] keys = keys();
-            int i = 0, sum = 0;
-            for (; i < keys.length; i++)
-                sum += func.applyAsInt(keys[i], get(i));
-            return sum;
+            return intStream(func).sum();
         }
 
         public int product(ToIntBiFunction<E, Number> func) {
-            E[] keys = keys();
-            int i = 0, prod = 1;
-            for (; prod != 0 && i < keys.length; i++)
-                prod *= func.applyAsInt(keys[i], get(i));
-            return prod;
+            return intStream(func).reduce(1, (a, b) -> a * b);
         }
 
     }
