@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.IntFunction;
+import java.util.function.ToIntBiFunction;
 
 public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
@@ -17,6 +19,10 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         array = arrGen.apply(size());
     }
 
+    protected E[] keys() {
+        return enumClass.getEnumConstants();
+    }
+
     @Override
     public boolean isEmpty() {
         return false;
@@ -24,7 +30,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     @Override
     public int size() {
-        return enumClass.getEnumConstants().length;
+        return keys().length;
     }
 
     @Override
@@ -75,24 +81,28 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     @Override
     public Set<E> keySet() {
-        return Set.of(enumClass.getEnumConstants());
+        return Set.of(keys());
     }
 
     @Override
     public Collection<V> values() {
         ArrayList<V> ret = new ArrayList<>(size());
-        copyValues(ret);
+        forEach((e, v) -> ret.add(v));
         return ret;
     }
-
-    protected abstract void copyValues(ArrayList<V> list);
 
     @Override
     public Set<Entry<E, V>> entrySet() {
         EnumMap<E, V> map = new EnumMap<>(enumClass);
-        for (E e : enumClass.getEnumConstants())
-            map.put(e, get(e.ordinal()));
+        forEach(map::put);
         return map.entrySet();
+    }
+
+    @Override
+    public void forEach(BiConsumer<? super E, ? super V> func) {
+        E[] keys = keys();
+        for (int i = 0; i < keys.length; i++)
+            func.accept(keys[i], get(i));
     }
 
     public static class Bool<E extends Enum<E>> extends PrimMap<E, boolean[], Boolean> {
@@ -125,12 +135,6 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
             setAll(false);
         }
 
-        @Override
-        public void copyValues(ArrayList<Boolean> list) {
-            for (boolean bool : array)
-                list.add(bool);
-        }
-
     }
 
     private static abstract class Num<E extends Enum<E>, A> extends PrimMap<E, A, Number> {
@@ -147,6 +151,22 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         @Override
         public void clear() {
             setAll(0);
+        }
+
+        public int sum(ToIntBiFunction<E, Number> func) {
+            E[] keys = keys();
+            int i = 0, sum = 0;
+            for (; i < keys.length; i++)
+                sum += func.applyAsInt(keys[i], get(i));
+            return sum;
+        }
+
+        public int product(ToIntBiFunction<E, Number> func) {
+            E[] keys = keys();
+            int i = 0, prod = 1;
+            for (; prod != 0 && i < keys.length; i++)
+                prod *= func.applyAsInt(keys[i], get(i));
+            return prod;
         }
 
     }
@@ -171,12 +191,6 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
             array[index] = (int) value;
         }
 
-        @Override
-        public void copyValues(ArrayList<Number> list) {
-            for (int i : array)
-                list.add(i);
-        }
-
     }
 
     public static class Byte<E extends Enum<E>> extends Num<E, byte[]> {
@@ -197,12 +211,6 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         @Override
         protected void set(int index, Number value) {
             array[index] = (byte) value;
-        }
-
-        @Override
-        public void copyValues(ArrayList<Number> list) {
-            for (byte i : array)
-                list.add(i);
         }
 
     }

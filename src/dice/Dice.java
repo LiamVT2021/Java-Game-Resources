@@ -15,14 +15,7 @@ public class Dice implements IntSupplier {
     private String str;
 
     public int roll() {
-        return roll(0);
-    }
-
-    public int roll(int mod) {
-        int ret = mod;
-        for (Die die : Die.values())
-            ret += die.roll(map.getByte(die));
-        return ret;
+        return map.sum((die, count) -> die.roll(count.byteValue()));
     }
 
     public Dice setDice(int count, Die die) {
