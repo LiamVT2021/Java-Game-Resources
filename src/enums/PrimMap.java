@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.ToIntBiFunction;
 import java.util.stream.IntStream;
@@ -142,6 +143,26 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         @Override
         public void clear() {
             setAll(false);
+        }
+
+        public void ifElse(Consumer<? super E> ifTrue, Consumer<? super E> ifFalse) {
+            E[] keys = keys();
+            for (int i = 0; i < keys.length; i++) {
+                Consumer<? super E> func = get(i) ? ifTrue : ifFalse;
+                func.accept(keys[i]);
+            }
+        }
+
+        public Stream<E> trueStream() {
+            Stream.Builder<E> builder = Stream.builder();
+            ifElse(builder::accept, Vacuous::NOOP);
+            return builder.build();
+        }
+
+        public Stream<E> falseStream() {
+            Stream.Builder<E> builder = Stream.builder();
+            ifElse(Vacuous::NOOP, builder::accept);
+            return builder.build();
         }
 
     }
