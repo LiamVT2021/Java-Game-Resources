@@ -13,6 +13,8 @@ import java.util.function.ToIntBiFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static enums.StreamUtils.buildStream;
+
 public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     private final Class<E> enumClass;
@@ -110,9 +112,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
     }
 
     public <R> Stream<R> mapStream(BiFunction<? super E, ? super V, ? extends R> func) {
-        Stream.Builder<R> builder = Stream.builder();
-        forEach((e, v) -> builder.accept(func.apply(e, v)));
-        return builder.build();
+        return buildStream(builder -> forEach((e, v) -> builder.accept(func.apply(e, v))));
     }
 
     public static class Bool<E extends Enum<E>> extends PrimMap<E, boolean[], Boolean> {
@@ -154,15 +154,11 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         }
 
         public Stream<E> trueStream() {
-            Stream.Builder<E> builder = Stream.builder();
-            ifElse(builder::accept, Vacuous::NOOP);
-            return builder.build();
+            return buildStream(builder -> ifElse(builder::accept, Vacuous::NOOP));
         }
 
         public Stream<E> falseStream() {
-            Stream.Builder<E> builder = Stream.builder();
-            ifElse(Vacuous::NOOP, builder::accept);
-            return builder.build();
+            return buildStream(builder -> ifElse(Vacuous::NOOP, builder::accept));
         }
 
     }
