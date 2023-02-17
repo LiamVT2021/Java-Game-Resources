@@ -20,11 +20,11 @@ import common.util.Vacuous;
 public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     private final Class<E> enumClass;
-    protected final A array;
+    protected A array;
 
     private PrimMap(Class<E> enumClass, IntFunction<A> arrGen) {
         this.enumClass = enumClass;
-        array = arrGen.apply(size());
+        clear(arrGen);
     }
 
     protected E[] keys() {
@@ -80,6 +80,14 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
     @Override
     public boolean containsValue(Object value) {
         return values().contains(value);
+    }
+
+    protected V removeHelp(Object key, V base) {
+        return containsKey(key) ? put((E) key, base) : null;
+    }
+
+    protected void clear(IntFunction<A> arrGen) {
+        array = arrGen.apply(size());
     }
 
     @Override
@@ -139,12 +147,12 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
         @Override
         public Boolean remove(Object key) {
-            return containsKey(key) ? put((E) key, false) : null;
+            return removeHelp(key, false);
         }
 
         @Override
         public void clear() {
-            setAll(false);
+            clear(boolean[]::new);
         }
 
         public void ifElse(Consumer<? super E> ifTrue, Consumer<? super E> ifFalse) {
@@ -165,20 +173,10 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     }
 
-    private static abstract class Num<E extends Enum<E>, A> extends PrimMap<E, A, Number> {
+    private static abstract class Num<E extends Enum<E>, A, R extends Number> extends PrimMap<E, A, R> {
 
         public Num(Class<E> enumClass, IntFunction<A> array) {
             super(enumClass, array);
-        }
-
-        @Override
-        public Number remove(Object key) {
-            return containsKey(key) ? put((E) key, 0) : null;
-        }
-
-        @Override
-        public void clear() {
-            setAll(0);
         }
 
         public IntStream intStream(ToIntBiFunction<E, Number> func) {
@@ -197,7 +195,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     }
 
-    public static class Int<E extends Enum<E>> extends Num<E, int[]> {
+    public static class Int<E extends Enum<E>> extends Num<E, int[], Integer> {
 
         public Int(Class<E> enumClass) {
             super(enumClass, int[]::new);
@@ -208,18 +206,28 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         }
 
         @Override
-        protected Number get(int index) {
+        protected Integer get(int index) {
             return array[index];
         }
 
         @Override
-        protected void set(int index, Number value) {
-            array[index] = (int) value;
+        protected void set(int index, Integer value) {
+            array[index] = value;
+        }
+
+        @Override
+        public Integer remove(Object key) {
+            return removeHelp(key, 0);
+        }
+
+        @Override
+        public void clear() {
+            clear(int[]::new);
         }
 
     }
 
-    public static class Byte<E extends Enum<E>> extends Num<E, byte[]> {
+    public static class Byte<E extends Enum<E>> extends Num<E, byte[], java.lang.Byte> {
 
         public Byte(Class<E> enumClass) {
             super(enumClass, byte[]::new);
@@ -230,13 +238,23 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         }
 
         @Override
-        protected Number get(int index) {
+        protected java.lang.Byte get(int index) {
             return array[index];
         }
 
         @Override
-        protected void set(int index, Number value) {
-            array[index] = (byte) value;
+        protected void set(int index, java.lang.Byte value) {
+            array[index] = value;
+        }
+
+        @Override
+        public java.lang.Byte remove(Object key) {
+            return removeHelp(key, (byte) 0);
+        }
+
+        @Override
+        public void clear() {
+            clear(byte[]::new);
         }
 
     }
