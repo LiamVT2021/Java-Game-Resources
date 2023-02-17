@@ -15,8 +15,10 @@ public interface Sheet<A extends Enum<A> & Attribute<A>> {
     public void forEachAttribute(BiConsumer<? super A, Number> func);
 
     public default String attTable(boolean fullName) {
-        return Builders.buildString(str -> forEachAttribute(
-                (att, val) -> str.append((fullName ? att.fullName() : att.toString()) + ": " + val)));
+        return Builders.buildString(str -> forEachAttribute((att, val) -> str.append(
+                (fullName ? att.fullName() : att.toString())
+                        + (val.intValue() > 0 ? ": +" : ": ")
+                        + att.mod(val) + '(' + val + ')')));
     }
 
 }
