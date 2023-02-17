@@ -1,4 +1,6 @@
-package enums;
+package common.Enum;
+
+import static common.StreamUtils.buildStream;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +15,7 @@ import java.util.function.ToIntBiFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static enums.StreamUtils.buildStream;
+import common.util.Vacuous;
 
 public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 

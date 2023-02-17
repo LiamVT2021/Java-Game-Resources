@@ -1,4 +1,4 @@
-package enums;
+package common.util;
 
 public class Vacuous {
 
