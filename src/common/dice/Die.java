@@ -1,4 +1,4 @@
-package dice;
+package common.dice;
 
 import java.util.Random;
 import java.util.function.IntSupplier;

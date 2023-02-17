@@ -1,8 +1,8 @@
-package dice;
+package common.dice;
 
 import java.util.function.IntSupplier;
 
-import enums.PrimMap;
+import common.Enum.PrimMap;
 
 public class Dice implements IntSupplier {
 
@@ -20,7 +20,7 @@ public class Dice implements IntSupplier {
 
     public Dice setDice(int count, Die die) {
         str = null;
-        map.set(die, count);
+        map.set(die, (byte) count);
         return this;
     }
 
