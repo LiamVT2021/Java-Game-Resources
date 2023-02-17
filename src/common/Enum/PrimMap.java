@@ -1,6 +1,6 @@
 package common.Enum;
 
-import static common.StreamUtils.buildStream;
+import static common.Builders.buildStream;
 
 import java.util.ArrayList;
 import java.util.Collection;
