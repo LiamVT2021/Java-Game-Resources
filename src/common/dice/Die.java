@@ -9,13 +9,11 @@ public enum Die implements IntSupplier {
 
     private static final Random rand = new Random();
     private final int r;
-    private final String str;
 
     private Die(int size) {
         if (size < 2)
             throw new IllegalArgumentException("Die size must be at least 2");
         r = size - 1;
-        str = "d" + size;
     }
 
     @Override
@@ -32,10 +30,6 @@ public enum Die implements IntSupplier {
         for (; i > 0; i--)
             ret += rand.nextInt(r);
         return count >= 0 ? ret : -ret;
-    }
-
-    public String toString() {
-        return str;
     }
 
 }
