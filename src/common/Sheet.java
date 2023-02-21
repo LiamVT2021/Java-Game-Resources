@@ -16,9 +16,11 @@ public interface Sheet<A extends Enum<A> & Attribute<A>> {
 
     public default String attTable(boolean fullName) {
         return Builders.buildString(str -> forEachAttribute((att, val) -> str.append(
-                (fullName ? att.fullName() : att.toString())
-                        + (val.intValue() > 0 ? ": +" : ": ")
-                        + att.mod(val) + '(' + val + ')')));
+                modString(fullName ? att.fullName() : att.toString(), att.mod(val)) + '(' + val + ')')));
+    }
+
+    public static String modString(String key, Number value) {
+        return key + (value.intValue() > 0 ? ": +" : ": ") + value;
     }
 
 }
