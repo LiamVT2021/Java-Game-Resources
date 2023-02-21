@@ -1,8 +1,7 @@
 package common.Enum;
 
-import static common.Builders.buildStream;
+import static common.Builders.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
@@ -102,9 +101,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     @Override
     public Collection<V> values() {
-        ArrayList<V> ret = new ArrayList<>(size());
-        forEach((e, v) -> ret.add(v));
-        return ret;
+        return buildList(size(), list -> forEach((e, v) -> list.add(v)));
     }
 
     @Override

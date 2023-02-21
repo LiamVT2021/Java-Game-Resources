@@ -1,5 +1,7 @@
 package common;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -17,8 +19,12 @@ public class Builders {
         return build(Stream::builder, func, Stream.Builder::build);
     }
 
-    public static String buildString(Consumer<StringBuilder> func){
+    public static String buildString(Consumer<StringBuilder> func) {
         return build(StringBuilder::new, func, StringBuilder::toString);
+    }
+
+    public static <E> List<E> buildList(int size, Consumer<List<E>> func) {
+        return build(() -> new ArrayList<>(size), func, l -> l);
     }
 
 }
