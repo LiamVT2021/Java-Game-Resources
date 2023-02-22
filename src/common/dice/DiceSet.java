@@ -4,7 +4,7 @@ import java.util.function.IntSupplier;
 
 import common.Enum.PrimMap;
 
-public class Dice implements IntSupplier {
+public class DiceSet implements IntSupplier {
 
     @Override
     public int getAsInt() {
@@ -18,13 +18,13 @@ public class Dice implements IntSupplier {
         return map.sum((die, count) -> die.roll(count.byteValue()));
     }
 
-    public Dice setDice(int count, Die die) {
+    public DiceSet setDice(int count, Die die) {
         str = null;
         map.set(die, (byte) count);
         return this;
     }
 
-    public Dice addDice(int count, Die die) {
+    public DiceSet addDice(int count, Die die) {
         return setDice(count + map.getByte(die), die);
     }
 
