@@ -2,8 +2,6 @@ package heap;
 
 import java.util.function.IntSupplier;
 
-import util.Sized;
-
 public class PrimMiddle<P extends PrimArray<ArrType>, ArrType> implements PushPop.Prim {
 
     private PrimHeap<P, ArrType> top;
@@ -35,7 +33,7 @@ public class PrimMiddle<P extends PrimArray<ArrType>, ArrType> implements PushPo
     // top.trim();
     // bottom.trim();
     // return true;
-    // }    
+    // }
 
     @Override
     public boolean push(int i) {
@@ -73,14 +71,15 @@ public class PrimMiddle<P extends PrimArray<ArrType>, ArrType> implements PushPo
         return top.capacity() + bottom.capacity() + middle.capacity();
     }
 
-    public Supply withSupply(IntSupplier supply) {
-        return new Supply(this, supply);
+    public Supply<P, ArrType> withSupply(IntSupplier supply) {
+        return new Supply<>(this, supply);
     }
 
-    public class Supply extends PrimMiddle implements Supplied.Prim {
+    public static class Supply<P extends PrimArray<ArrType>, ArrType> extends PrimMiddle<P, ArrType>
+            implements Supplied.Prim {
 
-        private Supply(PrimMiddle middleQueue, IntSupplier supply) {
-            super(middleQueue, middleQueue.top, middleQueue.bottom);
+        private Supply(PrimMiddle<P, ArrType> middleQueue, IntSupplier supply) {
+            super(middleQueue.bottom, middleQueue.middle, middleQueue.top);
             this.supply = supply;
         }
 
@@ -91,7 +90,7 @@ public class PrimMiddle<P extends PrimArray<ArrType>, ArrType> implements PushPo
         }
 
         @Override
-        public Supply withSupply(IntSupplier supply) {
+        public Supply<P, ArrType> withSupply(IntSupplier supply) {
             this.supply = supply;
             return this;
         }
