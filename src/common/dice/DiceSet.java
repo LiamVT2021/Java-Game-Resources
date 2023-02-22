@@ -1,15 +1,8 @@
 package common.dice;
 
-import java.util.function.IntSupplier;
-
 import common.Enum.PrimMap;
 
-public class DiceSet implements IntSupplier {
-
-    @Override
-    public int getAsInt() {
-        return roll();
-    }
+public class DiceSet implements Dice {
 
     private final PrimMap.Byte<Die> map = new PrimMap.Byte<>(Die.class);
     private String str;

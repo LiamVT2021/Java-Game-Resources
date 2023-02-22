@@ -1,9 +1,8 @@
 package common.dice;
 
 import java.util.Random;
-import java.util.function.IntSupplier;
 
-public enum Die implements IntSupplier {
+public enum Die implements Dice {
 
     d4(4), d6(6), d8(8), d10(10), d12(12), d20(20), d100(100);
 
@@ -14,11 +13,6 @@ public enum Die implements IntSupplier {
         if (size < 2)
             throw new IllegalArgumentException("Die size must be at least 2");
         r = size - 1;
-    }
-
-    @Override
-    public int getAsInt() {
-        return roll();
     }
 
     public int roll() {
