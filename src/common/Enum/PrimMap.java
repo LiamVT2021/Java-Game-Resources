@@ -8,15 +8,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.ToIntBiFunction;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import common.util.Vacuous;
-
-public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
+public abstract class PrimMap<E extends Enum<E>, A, V extends Number> implements Map<E, V> {
 
     private final Class<E> enumClass;
     protected A array;
@@ -122,77 +119,21 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
         return buildStream(builder -> forEach((e, v) -> builder.accept(func.apply(e, v))));
     }
 
-    public static class Bool<E extends Enum<E>> extends PrimMap<E, boolean[], Boolean> {
-
-        public Bool(Class<E> enumClass) {
-            super(enumClass, boolean[]::new);
-        }
-
-        public boolean getBool(E key) {
-            return array[key.ordinal()];
-        }
-
-        @Override
-        protected Boolean get(int index) {
-            return array[index];
-        }
-
-        @Override
-        protected void set(int index, Boolean value) {
-            array[index] = value;
-        }
-
-        @Override
-        public Boolean remove(Object key) {
-            return removeHelp(key, false);
-        }
-
-        @Override
-        public void clear() {
-            clear(boolean[]::new);
-        }
-
-        public void ifElse(Consumer<? super E> ifTrue, Consumer<? super E> ifFalse) {
-            E[] keys = keys();
-            for (int i = 0; i < keys.length; i++) {
-                Consumer<? super E> func = get(i) ? ifTrue : ifFalse;
-                func.accept(keys[i]);
-            }
-        }
-
-        public Stream<E> trueStream() {
-            return buildStream(builder -> ifElse(builder::accept, Vacuous::NOOP));
-        }
-
-        public Stream<E> falseStream() {
-            return buildStream(builder -> ifElse(Vacuous::NOOP, builder::accept));
-        }
-
+    public IntStream intStream(ToIntBiFunction<E, Number> func) {
+        IntStream.Builder builder = IntStream.builder();
+        forEach((e, v) -> builder.accept(func.applyAsInt(e, v)));
+        return builder.build();
     }
 
-    private static abstract class Num<E extends Enum<E>, A, R extends Number> extends PrimMap<E, A, R> {
-
-        public Num(Class<E> enumClass, IntFunction<A> array) {
-            super(enumClass, array);
-        }
-
-        public IntStream intStream(ToIntBiFunction<E, Number> func) {
-            IntStream.Builder builder = IntStream.builder();
-            forEach((e, v) -> builder.accept(func.applyAsInt(e, v)));
-            return builder.build();
-        }
-
-        public int sum(ToIntBiFunction<E, Number> func) {
-            return intStream(func).sum();
-        }
-
-        public int product(ToIntBiFunction<E, Number> func) {
-            return intStream(func).reduce(1, (a, b) -> a * b);
-        }
-
+    public int sum(ToIntBiFunction<E, Number> func) {
+        return intStream(func).sum();
     }
 
-    public static class Int<E extends Enum<E>> extends Num<E, int[], Integer> {
+    public int product(ToIntBiFunction<E, Number> func) {
+        return intStream(func).reduce(1, (a, b) -> a * b);
+    }
+
+    public static class Int<E extends Enum<E>> extends PrimMap<E, int[], Integer> {
 
         public Int(Class<E> enumClass) {
             super(enumClass, int[]::new);
@@ -224,7 +165,7 @@ public abstract class PrimMap<E extends Enum<E>, A, V> implements Map<E, V> {
 
     }
 
-    public static class Byte<E extends Enum<E>> extends Num<E, byte[], java.lang.Byte> {
+    public static class Byte<E extends Enum<E>> extends PrimMap<E, byte[], java.lang.Byte> {
 
         public Byte(Class<E> enumClass) {
             super(enumClass, byte[]::new);

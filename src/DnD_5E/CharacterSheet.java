@@ -1,18 +1,17 @@
 package DnD_5E;
 
+import java.util.EnumSet;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import common.Builders;
 import common.Sheet;
 import common.Enum.PrimMap;
-import common.util.Vacuous;
 
 public class CharacterSheet implements Sheet<Ability> {
 
     public final PrimMap.Int<Ability> abilityScores = new PrimMap.Int<>(Ability.class);
-    public final PrimMap.Bool<Ability> saveProficencies = new PrimMap.Bool<>(Ability.class);
-    public final PrimMap.Bool<Skill> skillProficencies = new PrimMap.Bool<>(Skill.class);
+    public final EnumSet<Ability> saveProficencies = EnumSet.noneOf(Ability.class);
+    public final EnumSet<Skill> skillProficencies = EnumSet.noneOf(Skill.class);
 
     private int level = 0;
 
@@ -31,11 +30,11 @@ public class CharacterSheet implements Sheet<Ability> {
     }
 
     public int saveMod(Ability ability) {
-        return getAttMod(ability) + proficencyBonus(saveProficencies.getBool(ability));
+        return getAttMod(ability) + proficencyBonus(saveProficencies.contains(ability));
     }
 
     public int skillMod(Skill skill) {
-        return getAttMod(skill.ability) + proficencyBonus(skillProficencies.get(skill));
+        return getAttMod(skill.ability) + proficencyBonus(skillProficencies.contains(skill));
     }
 
     public String toString(boolean all) {
@@ -43,11 +42,11 @@ public class CharacterSheet implements Sheet<Ability> {
             builder.append("Ability Scores:\n");
             builder.append(this.attTable(false));
             builder.append("\nSaving Throws:\n");
-            Consumer<Ability> save = ability -> builder.append(Sheet.modString(ability.toString(), saveMod(ability)));
-            saveProficencies.ifElse(save, all ? save : Vacuous::NOOP);
+            (all ? EnumSet.allOf(Ability.class) : saveProficencies)
+                    .forEach(ability -> builder.append(Sheet.modString(ability.toString(), saveMod(ability))));
             builder.append("\nSkills:\n");
-            Consumer<Skill> prof = skill -> builder.append(skill.toString(skillMod(skill)));
-            skillProficencies.ifElse(prof, all ? prof : Vacuous::NOOP);
+            (all ? EnumSet.allOf(Skill.class) : skillProficencies)
+                    .forEach(skill -> builder.append(skill.toString(skillMod(skill))));
         });
     }
 

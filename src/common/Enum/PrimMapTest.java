@@ -13,19 +13,17 @@ public class PrimMapTest {
         A, B, C, D;
     }
 
-    private PrimMap.Bool<Type> boolMap;
     private PrimMap.Byte<Type> byteMap;
     private PrimMap.Int<Type> intMap;
 
     @BeforeEach
     public void setUp() {
-        boolMap = new PrimMap.Bool<>(Type.class);
         byteMap = new PrimMap.Byte<>(Type.class);
         intMap = new PrimMap.Int<>(Type.class);
     }
 
     private void forEach(Consumer<PrimMap<Type, ?, ?>> func) {
-        Stream.of(boolMap, byteMap, intMap).forEach(func);
+        Stream.of(byteMap, intMap).forEach(func);
     }
 
     @Test
@@ -37,10 +35,6 @@ public class PrimMapTest {
             assertFalse(map.containsKey("A"));
             // assertTrue(Type.values() == map.keys());
         });
-    }
-
-    public void testBoolMethods() {
-        
     }
 
 }
