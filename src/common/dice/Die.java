@@ -26,4 +26,20 @@ public enum Die implements Dice {
         return count >= 0 ? ret : -ret;
     }
 
+    public Dice make(int count) {
+        return new Dice() {
+
+            @Override
+            public int roll() {
+                return Die.this.roll(count);
+            }
+
+            @Override
+            public String toString() {
+                return String.valueOf(count) + Die.this;
+            }
+
+        };
+    }
+
 }

@@ -12,6 +12,7 @@ public class CharacterSheet implements Sheet<Ability> {
     public final PrimMap.Int<Ability> abilityScores = new PrimMap.Int<>(Ability.class);
     public final EnumSet<Ability> saveProficencies = EnumSet.noneOf(Ability.class);
     public final EnumSet<Skill> skillProficencies = EnumSet.noneOf(Skill.class);
+    public final EnumSet<Weapon> weaponProficencies = EnumSet.noneOf(Weapon.class);
 
     private int level = 0;
 
