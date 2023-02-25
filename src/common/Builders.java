@@ -1,7 +1,9 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -25,6 +27,10 @@ public class Builders {
 
     public static <E> List<E> buildList(int size, Consumer<List<E>> func) {
         return build(() -> new ArrayList<>(size), func, l -> l);
+    }
+
+    public static <K, V> Map<K, V> buildMap(Consumer<Map<K, V>> func) {
+        return build(HashMap::new, func, m -> m);
     }
 
 }

@@ -22,11 +22,11 @@ public class CharacterSheet implements Sheet<Ability> {
 
     @Override
     public int getAttribute(Ability ability) {
-        return abilityScores.getInt(ability);
+        return abilityScores.get(ability);
     }
 
     @Override
-    public void forEachAttribute(BiConsumer<? super Ability, Number> func) {
+    public void forEachAttribute(BiConsumer<? super Ability, Integer> func) {
         abilityScores.forEach(func);
     }
 

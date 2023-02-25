@@ -12,7 +12,7 @@ public interface Sheet<A extends Enum<A> & Attribute<A>> {
         return attribute.mod(getAttribute(attribute));
     }
 
-    public void forEachAttribute(BiConsumer<? super A, Number> func);
+    public void forEachAttribute(BiConsumer<? super A, Integer> func);
 
     public default String attTable(boolean fullName) {
         return Builders.buildString(str -> forEachAttribute((att, val) -> str.append(

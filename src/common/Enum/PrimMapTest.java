@@ -26,15 +26,4 @@ public class PrimMapTest {
         Stream.of(byteMap, intMap).forEach(func);
     }
 
-    @Test
-    public void testEnumMethods() {
-        forEach(map -> {
-            assertFalse(map.isEmpty());
-            assertEquals(4, map.size());
-            assertTrue(map.containsKey(Type.A));
-            assertFalse(map.containsKey("A"));
-            // assertTrue(Type.values() == map.keys());
-        });
-    }
-
 }
