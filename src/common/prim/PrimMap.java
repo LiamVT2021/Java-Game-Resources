@@ -45,9 +45,13 @@ public interface PrimMap<E extends Enum<E>, A, N extends Number> extends PrimArr
 
         private final Class<E> clazz;
 
-        public Int(Class<E> clazz) {
-            super(clazz.getEnumConstants().length);
+        protected Int(Class<E> clazz, int length) {
+            super(length);
             this.clazz = clazz;
+        }
+
+        public Int(Class<E> clazz) {
+            this(clazz, clazz.getEnumConstants().length);
         }
 
         @Override
@@ -61,9 +65,13 @@ public interface PrimMap<E extends Enum<E>, A, N extends Number> extends PrimArr
 
         private final Class<E> clazz;
 
-        public Byte(Class<E> clazz) {
-            super(clazz.getEnumConstants().length);
+        protected Byte(Class<E> clazz, int length) {
+            super(length);
             this.clazz = clazz;
+        }
+
+        public Byte(Class<E> clazz) {
+            this(clazz, clazz.getEnumConstants().length);
         }
 
         @Override
