@@ -1,4 +1,4 @@
-package common.Enum;
+package common.prim;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;

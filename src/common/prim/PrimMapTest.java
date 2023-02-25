@@ -1,4 +1,4 @@
-package common.Enum;
+package common.prim;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;

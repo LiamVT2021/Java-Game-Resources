@@ -1,4 +1,4 @@
-package common.Enum;
+package common.prim;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
