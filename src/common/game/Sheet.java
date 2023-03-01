@@ -1,7 +1,8 @@
-package common;
+package common.game;
 
 import java.util.function.BiConsumer;
 
+import common.Builders;
 import common.Enum.Attribute;
 
 public interface Sheet<A extends Enum<A> & Attribute<A>> {

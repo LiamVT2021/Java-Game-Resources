@@ -2,7 +2,7 @@ package DnD_5E;
 
 import static DnD_5E.Ability.*;
 
-import common.Sheet;
+import common.game.Sheet;
 
 public enum Skill {
 

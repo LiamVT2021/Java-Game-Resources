@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.function.BiConsumer;
 
 import common.Builders;
-import common.Sheet;
+import common.game.Sheet;
 import common.prim.PrimMap;
 
 public class CharacterSheet implements Sheet<Ability> {
