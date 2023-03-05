@@ -19,7 +19,7 @@ public interface PrimMap<E extends Enum<E>, A, N extends Number> extends PrimArr
         set(key.ordinal(), value);
     }
 
-    default <R> R map(E key, BiFunction<? super E, N, ? extends R> func) {
+    default <R> R map(E key, BiFunction<? super E, ? super N, ? extends R> func) {
         return func.apply(key, get(key));
     }
 
@@ -77,6 +77,30 @@ public interface PrimMap<E extends Enum<E>, A, N extends Number> extends PrimArr
         @Override
         public E[] keys() {
             return clazz.getEnumConstants();
+        }
+
+    }
+
+    static class Float<E extends Enum<E>> extends PrimArr.Float implements PrimMap<E, float[], java.lang.Float> {
+
+        private final Class<E> clazz;
+
+        protected Float(Class<E> clazz, int length) {
+            super(length);
+            this.clazz = clazz;
+        }
+
+        public Float(Class<E> clazz) {
+            this(clazz, clazz.getEnumConstants().length);
+        }
+
+        @Override
+        public E[] keys() {
+            return clazz.getEnumConstants();
+        }
+
+        public float getProduct(E key, int input) {
+            return array[key.ordinal()] * input;
         }
 
     }

@@ -122,4 +122,44 @@ public interface PrimArr<A, N extends Number> {
 
     }
 
+    static class Float extends ADT<float[], java.lang.Float> {
+
+        public Float(float[] array) {
+            super(array);
+        }
+
+        public Float(int size) {
+            super(new float[size]);
+        }
+
+        @Override
+        public java.lang.Float get(int index) {
+            return array[index];
+        }
+
+        @Override
+        public void set(int index, java.lang.Float value) {
+            array[index] = value;
+        }
+
+        @Override
+        public int length() {
+            return array.length;
+        }
+
+        @Override
+        public void clear(int size) {
+            array = new float[size];
+        }
+
+        @Override
+        public Stream<java.lang.Float> stream() {
+            return Builders.buildStream(builder -> {
+                for (float b : array)
+                    builder.accept(b);
+            });
+        }
+
+    }
+
 }
