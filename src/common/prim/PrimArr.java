@@ -27,8 +27,8 @@ public interface PrimArr<A, N extends Number> {
 
         protected A array;
 
-        public ADT(A array) {
-            this.array = array;
+        public ADT(int size) {
+            clear(size);
         }
 
         @Override
@@ -47,12 +47,8 @@ public interface PrimArr<A, N extends Number> {
 
     static class Int extends ADT<int[], Integer> {
 
-        public Int(int[] array) {
-            super(array);
-        }
-
         public Int(int size) {
-            super(new int[size]);
+            super(size);
         }
 
         @Override
@@ -86,14 +82,47 @@ public interface PrimArr<A, N extends Number> {
 
     }
 
-    static class Byte extends ADT<byte[], java.lang.Byte> {
+    static class Short extends ADT<short[], java.lang.Short> {
 
-        public Byte(byte[] array) {
-            super(array);
+        public Short(int size) {
+            super(size);
         }
 
+        @Override
+        public java.lang.Short get(int index) {
+            return array[index];
+        }
+
+        @Override
+        public void set(int index, java.lang.Short value) {
+            array[index] = value;
+        }
+
+        @Override
+        public int length() {
+            return array.length;
+        }
+
+        @Override
+        public void clear(int size) {
+            array = new short[size];
+        }
+
+        @Override
+        public Stream<java.lang.Short> stream() {
+            return Builders.buildStream(builder -> {
+                for (short s : array)
+                    builder.accept(s);
+            });
+        }
+
+    }
+
+    static class Byte extends ADT<byte[], java.lang.Byte> {
+
+
         public Byte(int size) {
-            super(new byte[size]);
+            super(size);
         }
 
         @Override
@@ -128,12 +157,8 @@ public interface PrimArr<A, N extends Number> {
 
     static class Float extends ADT<float[], java.lang.Float> {
 
-        public Float(float[] array) {
-            super(array);
-        }
-
         public Float(int size) {
-            super(new float[size]);
+            super(size);
         }
 
         @Override

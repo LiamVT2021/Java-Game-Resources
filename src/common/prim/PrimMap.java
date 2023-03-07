@@ -100,6 +100,26 @@ public interface PrimMap<E extends Enum<E>, A, N extends Number> extends PrimArr
 
     }
 
+    static class Short<E extends Enum<E>> extends PrimArr.Short implements PrimMap<E, short[], java.lang.Short> {
+
+        private final Class<E> clazz;
+
+        protected Short(Class<E> clazz, int length) {
+            super(length);
+            this.clazz = clazz;
+        }
+
+        public Short(Class<E> clazz) {
+            this(clazz, clazz.getEnumConstants().length);
+        }
+
+        @Override
+        public E[] keys() {
+            return clazz.getEnumConstants();
+        }
+
+    }
+
     static class Byte<E extends Enum<E>> extends PrimArr.Byte implements PrimMap<E, byte[], java.lang.Byte> {
 
         private final Class<E> clazz;
