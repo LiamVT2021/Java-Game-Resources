@@ -1,8 +1,13 @@
 package common.prim;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
+import java.util.function.ToDoubleBiFunction;
+import java.util.function.ToIntBiFunction;
+import java.util.function.ToLongBiFunction;
 import java.util.stream.Stream;
 
 import common.Builders;
@@ -23,23 +28,57 @@ public interface PrimMap<E extends Enum<E>, A, N extends Number> extends PrimArr
         return func.apply(key, get(key));
     }
 
-    default void forEach(BiConsumer<? super E, N> func) {
-        E[] keys = keys();
-        for (int i = 0; i < keys.length; i++)
-            func.accept(keys[i], get(i));
-    }
-
-    default <R> Stream<R> map(BiFunction<? super E, N, ? extends R> func) {
-        E[] keys = keys();
-        return Builders.buildStream(builder -> {
-            for (int i = 0; i < keys.length; i++)
-                builder.accept(func.apply(keys[i], get(i)));
-        });
+    default Stream<N> stream(E... keys) {
+        return Stream.of(keys).map(this::get);
     }
 
     default Map<E, N> map() {
         return Builders.buildMap(map -> forEach((e, n) -> map.put(e, n)));
     }
+
+    // ForEach methods
+
+    default void forEach(BiConsumer<? super E, ? super N> func) {
+        E[] keys = keys();
+        for (int i = 0; i < keys.length; i++)
+            func.accept(keys[i], get(i));
+    }
+
+    default void forEach(BiConsumer<? super E, ? super N> func, Stream<E> keys) {
+        keys.forEach(k -> func.accept(k, get(k)));
+    }
+
+    default void forEach(BiConsumer<? super E, ? super N> func, E... keys) {
+        forEach(func, Stream.of(keys));
+    }
+
+    default void forEach(BiConsumer<? super E, ? super N> func, Collection<E> keys) {
+        forEach(func, keys.stream());
+    }
+
+    default void forEach(BiConsumer<? super E, ? super N> func, Predicate<E> pred) {
+        forEach(func, Stream.of(keys()).filter(pred));
+    }
+
+    // Mappers
+
+    public default Mapper.Int<E, N> mapToInt(ToIntBiFunction<? super E, ? super N> func) {
+        return new Mapper.Int<>(this, func);
+    }
+
+    public default Mapper.Long<E, N> mapToLong(ToLongBiFunction<? super E, ? super N> func) {
+        return new Mapper.Long<>(this, func);
+    }
+
+    public default Mapper.Double<E, N> mapToDouble(ToDoubleBiFunction<? super E, ? super N> func) {
+        return new Mapper.Double<>(this, func);
+    }
+
+    public default <R> Mapper.Generic<E, N, R> map(BiFunction<? super E, ? super N, R> func) {
+        return new Mapper.Generic<>(this, func);
+    }
+
+    // Implementations
 
     static class Int<E extends Enum<E>> extends PrimArr.Int implements PrimMap<E, int[], Integer> {
 

@@ -19,6 +19,10 @@ public interface PrimArr<A, N extends Number> {
 
     Stream<N> stream();
 
+    default Stream<N> stream(int... indexes) {
+        return IntStream.of(indexes).mapToObj(this::get);
+    }
+
     static abstract class ADT<A, N extends Number> implements PrimArr<A, N> {
 
         protected A array;
