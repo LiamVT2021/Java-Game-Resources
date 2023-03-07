@@ -21,21 +21,21 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         this.func = func;
     }
 
-    abstract R array();
+    public abstract R array();
 
-    abstract S all();
+    public abstract S all();
 
-    abstract S stream(Stream<E> keys);
+    public abstract S stream(Stream<E> keys);
 
-    S of(E... keys) {
+    public S of(E... keys) {
         return stream(Stream.of(keys));
     }
 
-    S of(Collection<E> keys) {
+    public S of(Collection<E> keys) {
         return stream(keys.stream());
     }
 
-    S when(Predicate<E> pred) {
+    public S when(Predicate<E> pred) {
         return stream(Stream.of(map.keys()).filter(pred));
     }
 
@@ -47,7 +47,7 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        int[] array() {
+        public int[] array() {
             E[] keys = map.keys();
             int[] ret = new int[keys.length];
             for (int i = 0; i < keys.length; i++)
@@ -56,12 +56,12 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        IntStream all() {
+        public IntStream all() {
             return IntStream.of(array());
         }
 
         @Override
-        IntStream stream(Stream<E> keys) {
+        public IntStream stream(Stream<E> keys) {
             return keys.mapToInt(k -> func.applyAsInt(k, map.get(k)));
         }
 
@@ -75,7 +75,7 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        long[] array() {
+        public long[] array() {
             E[] keys = map.keys();
             long[] ret = new long[keys.length];
             for (int i = 0; i < keys.length; i++)
@@ -84,12 +84,12 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        LongStream all() {
+        public LongStream all() {
             return LongStream.of(array());
         }
 
         @Override
-        LongStream stream(Stream<E> keys) {
+        public LongStream stream(Stream<E> keys) {
             return keys.mapToLong(k -> func.applyAsLong(k, map.get(k)));
         }
 
@@ -103,7 +103,7 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        double[] array() {
+        public double[] array() {
             E[] keys = map.keys();
             double[] ret = new double[keys.length];
             for (int i = 0; i < keys.length; i++)
@@ -112,12 +112,12 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        DoubleStream all() {
+        public DoubleStream all() {
             return DoubleStream.of(array());
         }
 
         @Override
-        DoubleStream stream(Stream<E> keys) {
+        public DoubleStream stream(Stream<E> keys) {
             return keys.mapToDouble(k -> func.applyAsDouble(k, map.get(k)));
         }
 
@@ -131,17 +131,17 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        Object[] array() {
+        public Object[] array() {
             return all().toArray();
         }
 
         @Override
-        Stream<R> all() {
+        public Stream<R> all() {
             return stream(Stream.of(map.keys()));
         }
 
         @Override
-        Stream<R> stream(Stream<E> keys) {
+        public Stream<R> stream(Stream<E> keys) {
             return keys.map(k -> func.apply(k, map.get(k)));
         }
 
