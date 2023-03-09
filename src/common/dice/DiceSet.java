@@ -4,29 +4,37 @@ import java.util.stream.Collectors;
 
 import common.prim.PrimMap;
 
-public class DiceSet implements Dice {
+public class DiceSet<D extends Enum<D> & Die> implements Dice {
 
-    private final PrimMap.Byte<Die> map = new PrimMap.Byte<>(Die.class);
+    private final PrimMap.Byte<D> map;
     private String str;
+
+    public DiceSet(Class<D> clazz) {
+        map = new PrimMap.Byte<>(clazz);
+    }
 
     public int roll() {
         return map.mapToInt((die, count) -> die.roll(count.byteValue())).all().sum();
     }
 
-    public DiceSet setDice(int count, Die die) {
+    public void setDice(int count, D die) {
         str = null;
         map.set(die, (byte) count);
+    }
+
+    public DiceSet<D> withDice(int count, D die) {
+        setDice(count, die);
         return this;
     }
 
-    public DiceSet addDice(int count, Die die) {
-        return setDice(count + map.get(die), die);
+    public void addDice(int count, D die) {
+        setDice(count + map.get(die), die);
     }
 
-    private static String diceStr(Die die, byte count) {
+    private static String diceStr(Object die, byte count) {
         if (count == 0)
             return "";
-        return (count < 0 ? "" : "+") + count + die.toString();
+        return (count < 0 ? "" : "+") + count + die;
     }
 
     public String toString() {

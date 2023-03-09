@@ -6,7 +6,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.IntSupplier;
 
-import static common.dice.Die.*;
+import static common.dice.D20.*;
 import static DnD_5E.Common._2d6;
 import static DnD_5E.DamageType.*;
 import static DnD_5E.WeaponProperties.*;
