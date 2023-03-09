@@ -1,6 +1,8 @@
 package common.dice;
 
-import common.Enum.PrimMap;
+import java.util.stream.Collectors;
+
+import common.prim.PrimMap;
 
 public class DiceSet implements Dice {
 
@@ -8,7 +10,7 @@ public class DiceSet implements Dice {
     private String str;
 
     public int roll() {
-        return map.sum((die, count) -> die.roll(count.byteValue()));
+        return map.mapToInt((die, count) -> die.roll(count.byteValue())).all().sum();
     }
 
     public DiceSet setDice(int count, Die die) {
@@ -18,24 +20,18 @@ public class DiceSet implements Dice {
     }
 
     public DiceSet addDice(int count, Die die) {
-        return setDice(count + map.getByte(die), die);
+        return setDice(count + map.get(die), die);
     }
 
-    private static String forceSign(byte i) {
-        return (i < 0 ? "" : "+") + i;
+    private static String diceStr(Die die, byte count) {
+        if (count == 0)
+            return "";
+        return (count < 0 ? "" : "+") + count + die.toString();
     }
 
     public String toString() {
-        if (str != null)
-            return str;
-        if (map.isEmpty())
-            return null;
-        StringBuilder builder = new StringBuilder();
-        for (Die die : Die.values()) {
-            builder.append(forceSign(map.getByte(die)));
-            builder.append(die.toString());
-        }
-        str = builder.charAt(0) != '+' ? builder.toString() : builder.substring(1);
+        if (str == null)
+            str = map.map(DiceSet::diceStr).all().collect(Collectors.joining());
         return str;
     }
 
