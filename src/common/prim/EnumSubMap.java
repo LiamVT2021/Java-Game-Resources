@@ -1,20 +1,22 @@
 package common.prim;
 
-public interface PrimSubMap<E extends Enum<E>, A, N extends Number> extends PrimMap<E, A, N> {
+import java.util.List;
+
+public interface EnumSubMap<E extends Enum<E>, A, N extends Number> extends PrimEnumMap<E, A, N> {
 
     int offset();
 
     @Override
-    default N get(E key) {
-        return get(key.ordinal() - offset());
+    default int index(E key) {
+        return key.ordinal() - offset();
     }
 
     @Override
-    default void set(E key, N value) {
-        set(key.ordinal() - offset(), value);
+    default List<E> keys() {
+        return PrimEnumMap.super.keys().subList(offset(), offset() + length());
     }
 
-    static class Int<E extends Enum<E>> extends PrimMap.Int<E> implements PrimSubMap<E, int[], Integer> {
+    static class Int<E extends Enum<E>> extends PrimEnumMap.Int<E> implements EnumSubMap<E, int[], Integer> {
 
         private final int offset;
 
@@ -30,7 +32,7 @@ public interface PrimSubMap<E extends Enum<E>, A, N extends Number> extends Prim
 
     }
 
-    static class Byte<E extends Enum<E>> extends PrimMap.Byte<E> implements PrimSubMap<E, byte[], java.lang.Byte> {
+    static class Byte<E extends Enum<E>> extends PrimEnumMap.Byte<E> implements EnumSubMap<E, byte[], java.lang.Byte> {
 
         private final int offset;
 

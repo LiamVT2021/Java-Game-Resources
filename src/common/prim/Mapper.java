@@ -1,6 +1,7 @@
 package common.prim;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleBiFunction;
@@ -11,12 +12,12 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
+public abstract class Mapper<K, N extends Number, F, R, S> {
 
-    protected final PrimMap<E, ?, N> map;
+    protected final PrimMap<K, ?, N> map;
     protected final F func;
 
-    protected Mapper(PrimMap<E, ?, N> map, F func) {
+    protected Mapper(PrimMap<K, ?, N> map, F func) {
         this.map = map;
         this.func = func;
     }
@@ -25,33 +26,33 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
 
     public abstract S all();
 
-    public abstract S stream(Stream<E> keys);
+    public abstract S stream(Stream<K> keys);
 
-    public S of(E... keys) {
+    public S of(K... keys) {
         return stream(Stream.of(keys));
     }
 
-    public S of(Collection<E> keys) {
+    public S of(Collection<K> keys) {
         return stream(keys.stream());
     }
 
-    public S when(Predicate<E> pred) {
-        return stream(Stream.of(map.keys()).filter(pred));
+    public S when(Predicate<K> pred) {
+        return stream(map.keys().stream().filter(pred));
     }
 
-    public static class Int<E extends Enum<E>, N extends Number>
-            extends Mapper<E, N, ToIntBiFunction<? super E, ? super N>, int[], IntStream> {
+    public static class Int<K, N extends Number>
+            extends Mapper<K, N, ToIntBiFunction<? super K, ? super N>, int[], IntStream> {
 
-        protected Int(PrimMap<E, ?, N> map, ToIntBiFunction<? super E, ? super N> func) {
+        protected Int(PrimMap<K, ?, N> map, ToIntBiFunction<? super K, ? super N> func) {
             super(map, func);
         }
 
         @Override
         public int[] array() {
-            E[] keys = map.keys();
-            int[] ret = new int[keys.length];
-            for (int i = 0; i < keys.length; i++)
-                ret[i] = func.applyAsInt(keys[i], map.get(i));
+            List<K> keys = map.keys();
+            int[] ret = new int[keys.size()];
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = func.applyAsInt(keys.get(i), map.get(i));
             return ret;
         }
 
@@ -61,25 +62,25 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        public IntStream stream(Stream<E> keys) {
+        public IntStream stream(Stream<K> keys) {
             return keys.mapToInt(k -> func.applyAsInt(k, map.get(k)));
         }
 
     }
 
-    public static class Long<E extends Enum<E>, N extends Number>
-            extends Mapper<E, N, ToLongBiFunction<? super E, ? super N>, long[], LongStream> {
+    public static class Long<K, N extends Number>
+            extends Mapper<K, N, ToLongBiFunction<? super K, ? super N>, long[], LongStream> {
 
-        protected Long(PrimMap<E, ?, N> map, ToLongBiFunction<? super E, ? super N> func) {
+        protected Long(PrimMap<K, ?, N> map, ToLongBiFunction<? super K, ? super N> func) {
             super(map, func);
         }
 
         @Override
         public long[] array() {
-            E[] keys = map.keys();
-            long[] ret = new long[keys.length];
-            for (int i = 0; i < keys.length; i++)
-                ret[i] = func.applyAsLong(keys[i], map.get(i));
+            List<K> keys = map.keys();
+            long[] ret = new long[keys.size()];
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = func.applyAsLong(keys.get(i), map.get(i));
             return ret;
         }
 
@@ -89,25 +90,25 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        public LongStream stream(Stream<E> keys) {
+        public LongStream stream(Stream<K> keys) {
             return keys.mapToLong(k -> func.applyAsLong(k, map.get(k)));
         }
 
     }
 
-    public static class Double<E extends Enum<E>, N extends Number>
-            extends Mapper<E, N, ToDoubleBiFunction<? super E, ? super N>, double[], DoubleStream> {
+    public static class Double<K, N extends Number>
+            extends Mapper<K, N, ToDoubleBiFunction<? super K, ? super N>, double[], DoubleStream> {
 
-        protected Double(PrimMap<E, ?, N> map, ToDoubleBiFunction<? super E, ? super N> func) {
+        protected Double(PrimMap<K, ?, N> map, ToDoubleBiFunction<? super K, ? super N> func) {
             super(map, func);
         }
 
         @Override
         public double[] array() {
-            E[] keys = map.keys();
-            double[] ret = new double[keys.length];
-            for (int i = 0; i < keys.length; i++)
-                ret[i] = func.applyAsDouble(keys[i], map.get(i));
+            List<K> keys = map.keys();
+            double[] ret = new double[keys.size()];
+            for (int i = 0; i < ret.length; i++)
+                ret[i] = func.applyAsDouble(keys.get(i), map.get(i));
             return ret;
         }
 
@@ -117,16 +118,16 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
         }
 
         @Override
-        public DoubleStream stream(Stream<E> keys) {
+        public DoubleStream stream(Stream<K> keys) {
             return keys.mapToDouble(k -> func.applyAsDouble(k, map.get(k)));
         }
 
     }
 
-    public static class Generic<E extends Enum<E>, N extends Number, R>
-            extends Mapper<E, N, BiFunction<? super E, ? super N, R>, Object[], Stream<R>> {
+    public static class Generic<K, N extends Number, R>
+            extends Mapper<K, N, BiFunction<? super K, ? super N, R>, Object[], Stream<R>> {
 
-        protected Generic(PrimMap<E, ?, N> map, BiFunction<? super E, ? super N, R> func) {
+        protected Generic(PrimMap<K, ?, N> map, BiFunction<? super K, ? super N, R> func) {
             super(map, func);
         }
 
@@ -137,11 +138,11 @@ public abstract class Mapper<E extends Enum<E>, N extends Number, F, R, S> {
 
         @Override
         public Stream<R> all() {
-            return stream(Stream.of(map.keys()));
+            return stream(map.keys().stream());
         }
 
         @Override
-        public Stream<R> stream(Stream<E> keys) {
+        public Stream<R> stream(Stream<K> keys) {
             return keys.map(k -> func.apply(k, map.get(k)));
         }
 
