@@ -59,12 +59,4 @@ public enum Attribute implements GroupedEnum<Attribute.Type> {
 
     }
 
-    // public class Map extends GroupedEnumShortArr<Attribute, Type> {
-
-    //     public Map() {
-    //         super(arr.size(), defVal);
-    //     }
-
-    // }
-
 }
