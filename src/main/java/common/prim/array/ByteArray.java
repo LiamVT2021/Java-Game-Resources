@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 public class ByteArray extends PrimArray.ADT<Byte, byte[]> {
 
     public ByteArray(int size) {
-        super(new byte[size]);
+        this(new byte[size]);
     }
 
     public ByteArray(byte[] array) {
@@ -23,8 +23,8 @@ public class ByteArray extends PrimArray.ADT<Byte, byte[]> {
     }
 
     @Override
-    public void set(int index, Byte value) {
-        array[index] = value;
+    public void set(int index, Number value) {
+        array[index] = value.byteValue();
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 public class ShortArray extends PrimArray.ADT<Short, short[]> {
 
     public ShortArray(int size) {
-        super(new short[size]);
+        this(new short[size]);
     }
 
     public ShortArray(short[] array) {
@@ -23,8 +23,8 @@ public class ShortArray extends PrimArray.ADT<Short, short[]> {
     }
 
     @Override
-    public void set(int index, Short value) {
-        array[index] = value;
+    public void set(int index, Number value) {
+        array[index] = value.shortValue();
     }
 
     @Override

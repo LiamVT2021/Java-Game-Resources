@@ -10,9 +10,9 @@ public interface PrimArray<N extends Number> {
 
     N get(int index);
 
-    void set(int index, N value);
+    void set(int index, Number value);
 
-    default N swap(int index, N value) {
+    default N swap(int index, Number value) {
         N ret = get(index);
         set(index, value);
         return ret;

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 public class FloatArray extends PrimArray.ADT<Float, float[]> {
 
     public FloatArray(int size) {
-        super(new float[size]);
+        this(new float[size]);
     }
 
     public FloatArray(float[] array) {
@@ -23,8 +23,8 @@ public class FloatArray extends PrimArray.ADT<Float, float[]> {
     }
 
     @Override
-    public void set(int index, Float value) {
-        array[index] = value;
+    public void set(int index, Number value) {
+        array[index] = value.floatValue();
     }
 
     @Override

@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 public class IntArray extends PrimArray.ADT<Integer, int[]> {
 
     public IntArray(int size) {
-        super(new int[size]);
+        this(new int[size]);
     }
 
     public IntArray(int[] array) {
@@ -24,8 +24,8 @@ public class IntArray extends PrimArray.ADT<Integer, int[]> {
     }
 
     @Override
-    public void set(int index, Integer value) {
-        array[index] = value;
+    public void set(int index, Number value) {
+        array[index] = value.intValue();
     }
 
     @Override

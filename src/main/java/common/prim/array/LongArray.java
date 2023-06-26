@@ -6,7 +6,7 @@ import java.util.stream.LongStream;
 public class LongArray extends PrimArray.ADT<Long, long[]> {
 
     public LongArray(int size) {
-        super(new long[size]);
+        this(new long[size]);
     }
 
     public LongArray(long[] array) {
@@ -24,8 +24,8 @@ public class LongArray extends PrimArray.ADT<Long, long[]> {
     }
 
     @Override
-    public void set(int index, Long value) {
-        array[index] = value;
+    public void set(int index, Number value) {
+        array[index] = value.longValue();
     }
 
     @Override

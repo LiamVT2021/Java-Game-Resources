@@ -6,7 +6,7 @@ import java.util.stream.DoubleStream;
 public class DoubleArray extends PrimArray.ADT<Double, double[]> {
 
     public DoubleArray(int size) {
-        super(new double[size]);
+        this(new double[size]);
     }
 
     public DoubleArray(double[] array) {
@@ -24,8 +24,8 @@ public class DoubleArray extends PrimArray.ADT<Double, double[]> {
     }
 
     @Override
-    public void set(int index, Double value) {
-        array[index] = value;
+    public void set(int index, Number value) {
+        array[index] = value.doubleValue();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class DoubleArray extends PrimArray.ADT<Double, double[]> {
             consumer.accept(v);
     }
 
-    public DoubleStream longStream() {
+    public DoubleStream doubleStream() {
         return DoubleStream.of(array);
     }
 
