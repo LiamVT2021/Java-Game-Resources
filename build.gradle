@@ -21,3 +21,5 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+test.finalizedBy(jacocoTestReport)
