@@ -26,7 +26,7 @@ public class PrimArrayTest {
     private DoubleArray doubleArr;
 
     @BeforeEach
-    public void setUp() {
+    private void setUp() {
         byteArr = new ByteArray(arrSize);
         shortArr = new ShortArray(arrSize);
         intArr = new IntArray(arrSize);
