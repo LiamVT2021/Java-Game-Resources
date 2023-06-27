@@ -4,12 +4,14 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import common.pushPop.ArrayWrapper;
+
 /**
  * Wrapper interface around an array of primitive numbers.
  * 
  * @version 6/27/23
  */
-public interface PrimArray<N extends Number> extends ArrayWrapper<N, Number> {
+public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A> {
 
     /**
      * @return the capacity of this array
@@ -68,12 +70,16 @@ public interface PrimArray<N extends Number> extends ArrayWrapper<N, Number> {
     /**
      * Abstract class implementation of PrimArray, with array field.
      */
-    static abstract class ADT<N extends Number, A> implements PrimArray<N> {
+    static abstract class ADT<N extends Number, A> implements PrimArray<N, A> {
 
-        public final A array;
+        final A array;
 
         public ADT(A array) {
             this.array = array;
+        }
+
+        public final A array() {
+            return array;
         }
 
         @Override

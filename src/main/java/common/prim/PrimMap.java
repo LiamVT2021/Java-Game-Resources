@@ -7,7 +7,7 @@ import common.prim.array.*;
  * 
  * @version 6/27/23
  */
-public interface PrimMap<K, V extends Number> extends PrimArray<V> {
+public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
 
     /**
      * @return the index coresponding to this key
@@ -46,7 +46,7 @@ public interface PrimMap<K, V extends Number> extends PrimArray<V> {
         return ret;
     }
 
-    static abstract class Byte<K> extends ByteArray implements PrimMap<K, java.lang.Byte> {
+    static abstract class Byte<K> extends ByteArray implements PrimMap<K, java.lang.Byte, byte[]> {
 
         public Byte(int size) {
             super(size);
@@ -54,7 +54,7 @@ public interface PrimMap<K, V extends Number> extends PrimArray<V> {
 
     }
 
-    static abstract class Short<K> extends ShortArray implements PrimMap<K, java.lang.Short> {
+    static abstract class Short<K> extends ShortArray implements PrimMap<K, java.lang.Short, short[]> {
 
         public Short(int size) {
             super(size);
@@ -62,7 +62,7 @@ public interface PrimMap<K, V extends Number> extends PrimArray<V> {
 
     }
 
-    static abstract class Int<K> extends IntArray implements PrimMap<K, Integer> {
+    static abstract class Int<K> extends IntArray implements PrimMap<K, Integer, int[]> {
 
         public Int(int size) {
             super(size);
@@ -70,7 +70,7 @@ public interface PrimMap<K, V extends Number> extends PrimArray<V> {
 
     }
 
-    static abstract class Long<K> extends LongArray implements PrimMap<K, java.lang.Long> {
+    static abstract class Long<K> extends LongArray implements PrimMap<K, java.lang.Long, long[]> {
 
         public Long(int size) {
             super(size);
@@ -78,7 +78,7 @@ public interface PrimMap<K, V extends Number> extends PrimArray<V> {
 
     }
 
-    static abstract class Float<K> extends FloatArray implements PrimMap<K, java.lang.Float> {
+    static abstract class Float<K> extends FloatArray implements PrimMap<K, java.lang.Float, float[]> {
 
         public Float(int size) {
             super(size);
@@ -86,7 +86,7 @@ public interface PrimMap<K, V extends Number> extends PrimArray<V> {
 
     }
 
-    static abstract class Double<K> extends DoubleArray implements PrimMap<K, java.lang.Double> {
+    static abstract class Double<K> extends DoubleArray implements PrimMap<K, java.lang.Double, double[]> {
 
         public Double(int size) {
             super(size);

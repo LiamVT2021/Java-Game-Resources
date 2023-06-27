@@ -1,4 +1,4 @@
-package common.prim.array;
+package common.pushPop;
 
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -9,7 +9,12 @@ import java.util.stream.Stream;
  * 
  * @version 6/27/23
  */
-public interface ArrayWrapper<G, S> {
+public interface ArrayWrapper<G, S, A> {
+
+    /**
+     * @return the unwrapped array
+     */
+    A array();
 
     /**
      * @return the capacity of this array
