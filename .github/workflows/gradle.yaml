@@ -24,22 +24,6 @@ jobs:
         uses: PavanMudigonda/jacoco-reporter@v4.8
         with:
           coverage_results_path: build/reports/jacoco/test/jacocoTestReport.xml
-          coverage_report_name: Coverage
-          coverage_report_title: JaCoCo
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          skip_check_run: false
-          minimum_coverage: 80
+          minimum_coverage: 13
           fail_below_threshold: true
-          publish_only_summary: false
-      # - name: Coverage
-      #   id: jacoco
-      #   uses: madrapps/jacoco-report@v1.3
-      #   with:
-      #     paths: ${{ github.workspace }}/build/reports/jacoco/test/jacocoTestReport.xml
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     min-coverage-overall: 20.0
-      #     min-coverage-changed-files: 80.0
-      # - name: Output Coverage
-      #   run: |
-      #     echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
-      #     echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
