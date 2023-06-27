@@ -3,6 +3,7 @@ package common.prim.array;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,18 +30,18 @@ public class PrimArrayTest {
         doubleArr = new DoubleArray(arrSize);
     }
 
-    private Stream<PrimArray<?>> stream() {
-        return Stream.of(byteArr, shortArr, intArr, longArr, floatArr, doubleArr);
+    private void forEach(Consumer<PrimArray<?>> consumer) {
+        Stream.of(byteArr, shortArr, intArr, longArr, floatArr, doubleArr).forEach(consumer);;
     }
 
     @Test
     public void testCapacity() {
-        stream().forEach(arr -> assertEquals(arrSize, arr.capacity()));
+        forEach(arr -> assertEquals(arrSize, arr.capacity()));
     }
 
     @Test
     public void testGet() {
-        stream().forEach(arr -> {
+        forEach(arr -> {
             assertEquals(0, arr.get(0).intValue());
             assertThrows(IndexOutOfBoundsException.class, () -> arr.get(-1));
             assertThrows(IndexOutOfBoundsException.class, () -> arr.get(arrSize));
@@ -50,7 +51,7 @@ public class PrimArrayTest {
     @Test
     public void testSwap() {
         Number n = 2;
-        stream().forEach(arr -> {
+        forEach(arr -> {
             assertEquals(0, arr.swap(3, n).intValue());
             assertEquals(n, arr.get(3).intValue());
             assertThrows(IndexOutOfBoundsException.class, () -> arr.set(arrSize, n));
