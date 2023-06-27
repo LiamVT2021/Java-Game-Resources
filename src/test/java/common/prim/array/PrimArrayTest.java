@@ -9,6 +9,11 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Tests all methods in the common.prim.array package
+ * 
+ * @version 6/27/23
+ */
 public class PrimArrayTest {
 
     private static final int arrSize = 5;
@@ -31,7 +36,7 @@ public class PrimArrayTest {
     }
 
     private void forEach(Consumer<PrimArray<?>> consumer) {
-        Stream.of(byteArr, shortArr, intArr, longArr, floatArr, doubleArr).forEach(consumer);;
+        Stream.of(byteArr, shortArr, intArr, longArr, floatArr, doubleArr).forEach(consumer);
     }
 
     @Test
