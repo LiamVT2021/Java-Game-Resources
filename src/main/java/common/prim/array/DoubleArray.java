@@ -3,6 +3,11 @@ package common.prim.array;
 import java.util.function.Consumer;
 import java.util.stream.DoubleStream;
 
+/**
+ * A wrapper around an array of double values.
+ * 
+ * @version 6/27/23
+ */
 public class DoubleArray extends PrimArray.ADT<Double, double[]> {
 
     public DoubleArray(int size) {
@@ -34,6 +39,9 @@ public class DoubleArray extends PrimArray.ADT<Double, double[]> {
             consumer.accept(v);
     }
 
+    /**
+     * @return a DoubleStream of the values in the array
+     */
     public DoubleStream doubleStream() {
         return DoubleStream.of(array);
     }

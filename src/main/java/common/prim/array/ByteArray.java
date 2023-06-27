@@ -2,6 +2,11 @@ package common.prim.array;
 
 import java.util.function.Consumer;
 
+/**
+ * A wrapper around an array of byte values.
+ * 
+ * @version 6/27/23
+ */
 public class ByteArray extends PrimArray.ADT<Byte, byte[]> {
 
     public ByteArray(int size) {

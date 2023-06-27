@@ -2,6 +2,11 @@ package common.prim.array;
 
 import java.util.function.Consumer;
 
+/**
+ * A wrapper around an array of float values.
+ * 
+ * @version 6/27/23
+ */
 public class FloatArray extends PrimArray.ADT<Float, float[]> {
 
     public FloatArray(int size) {

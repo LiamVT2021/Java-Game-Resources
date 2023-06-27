@@ -3,6 +3,11 @@ package common.prim.array;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
+/**
+ * A wrapper around an array of int values.
+ * 
+ * @version 6/27/23
+ */
 public class IntArray extends PrimArray.ADT<Integer, int[]> {
 
     public IntArray(int size) {
@@ -34,6 +39,9 @@ public class IntArray extends PrimArray.ADT<Integer, int[]> {
             consumer.accept(v);
     }
 
+    /**
+     * @return a IntStream of the values in the array
+     */
     public IntStream intStream() {
         return IntStream.of(array);
     }

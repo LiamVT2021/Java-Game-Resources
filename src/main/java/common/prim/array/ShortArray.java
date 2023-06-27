@@ -2,6 +2,11 @@ package common.prim.array;
 
 import java.util.function.Consumer;
 
+/**
+ * A wrapper around an array of short values.
+ * 
+ * @version 6/27/23
+ */
 public class ShortArray extends PrimArray.ADT<Short, short[]> {
 
     public ShortArray(int size) {
