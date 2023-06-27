@@ -34,7 +34,7 @@ public class DoubleArray extends PrimArray.ADT<Double, double[]> {
     }
 
     @Override
-    public void forEach(Consumer<Double> consumer) {
+    public void forEach(Consumer<? super Double> consumer) {
         for (double v : array)
             consumer.accept(v);
     }

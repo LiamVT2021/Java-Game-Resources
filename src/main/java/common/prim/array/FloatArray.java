@@ -33,7 +33,7 @@ public class FloatArray extends PrimArray.ADT<Float, float[]> {
     }
 
     @Override
-    public void forEach(Consumer<Float> consumer) {
+    public void forEach(Consumer<? super Float> consumer) {
         for (float v : array)
             consumer.accept(v);
     }

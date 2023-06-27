@@ -34,7 +34,7 @@ public class LongArray extends PrimArray.ADT<Long, long[]> {
     }
 
     @Override
-    public void forEach(Consumer<Long> consumer) {
+    public void forEach(Consumer<? super Long> consumer) {
         for (long v : array)
             consumer.accept(v);
     }

@@ -34,7 +34,7 @@ public class IntArray extends PrimArray.ADT<Integer, int[]> {
     }
 
     @Override
-    public void forEach(Consumer<Integer> consumer) {
+    public void forEach(Consumer<? super Integer> consumer) {
         for (int v : array)
             consumer.accept(v);
     }

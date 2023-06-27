@@ -33,7 +33,7 @@ public class ByteArray extends PrimArray.ADT<Byte, byte[]> {
     }
 
     @Override
-    public void forEach(Consumer<Byte> consumer) {
+    public void forEach(Consumer<? super Byte> consumer) {
         for (byte v : array)
             consumer.accept(v);
     }

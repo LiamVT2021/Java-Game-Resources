@@ -33,7 +33,7 @@ public class ShortArray extends PrimArray.ADT<Short, short[]> {
     }
 
     @Override
-    public void forEach(Consumer<Short> consumer) {
+    public void forEach(Consumer<? super Short> consumer) {
         for (short v : array)
             consumer.accept(v);
     }
