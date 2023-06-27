@@ -1,7 +1,7 @@
 package common.prim;
 
-import common.heap.HeapADT;
 import common.prim.array.*;
+import common.pushPop.HeapADT;
 
 public abstract class PrimHeap<N extends Number> extends HeapADT<N> {
 

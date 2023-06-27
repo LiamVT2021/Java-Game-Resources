@@ -1,8 +1,6 @@
-package common.heap;
+package common.pushPop;
 
-import java.util.function.Supplier;
-
-public abstract class HeapADT<V> {
+public abstract class HeapADT<V> implements PushPop<V> {
 
     private int size;
 
@@ -12,18 +10,8 @@ public abstract class HeapADT<V> {
 
     protected abstract void set(int index, V value);
 
-    public abstract int capacity();
-
     public int size() {
         return size;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    public boolean isFull() {
-        return size == capacity();
     }
 
     private int up(int index) {
@@ -34,6 +22,7 @@ public abstract class HeapADT<V> {
         return index * 2 + 1;
     }
 
+    @Override
     public boolean push(V value) {
         if (value == null || isFull())
             return false;
@@ -54,10 +43,12 @@ public abstract class HeapADT<V> {
         return true;
     }
 
+    @Override
     public V peek() {
         return isEmpty() ? null : get(0);
     }
 
+    @Override
     public V pop() {
         if (isEmpty())
             return null;
@@ -66,6 +57,7 @@ public abstract class HeapADT<V> {
         return heapDown(value);
     }
 
+    @Override
     public V swap(V value) {
         if (isEmpty())
             return value;
@@ -102,12 +94,6 @@ public abstract class HeapADT<V> {
             set(t, value);
             return ret;
         }
-    }
-
-    public HeapADT<V> fill(Supplier<V> supplier) {
-        while (!isFull())
-            push(supplier.get());
-        return this;
     }
 
 }
