@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.awt.Font;
 
-import ui.SimpleAction;
-import ui.SimpleWindow;
+import old.ui.SimpleAction;
+import old.ui.SimpleWindow;
 
 /**
  * Launcher for creating new Grids

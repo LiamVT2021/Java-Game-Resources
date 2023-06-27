@@ -21,9 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import grid.Actor.Generic;
-import ui.SimpleAction;
-import ui.SimpleWindow;
-import util.GenericList;
+import old.ui.SimpleAction;
+import old.ui.SimpleWindow;
+import old.util.GenericList;
 
 import static java.awt.Color.*;
 
