@@ -54,6 +54,10 @@ public abstract class HeapADT<V> {
         return true;
     }
 
+    public V peek() {
+        return isEmpty() ? null : get(0);
+    }
+
     public V pop() {
         if (isEmpty())
             return null;
