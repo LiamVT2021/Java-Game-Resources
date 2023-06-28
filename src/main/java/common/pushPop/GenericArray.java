@@ -3,17 +3,16 @@ package common.pushPop;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class GenericArray<V> implements ArrayWrapper<V, V, V[]> {
-
-    private final V[] array;
+/**
+ * Class for wrapping a generic array
+ * 
+ * @param V the generic type stored in this array
+ * @version 6/28/23
+ */
+public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
 
     public GenericArray(V[] array) {
-        this.array = array;
-    }
-
-    @Override
-    public V[] array() {
-        return array;
+        super(array);
     }
 
     @Override

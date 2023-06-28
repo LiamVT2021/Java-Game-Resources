@@ -7,9 +7,12 @@ import java.util.stream.Stream;
 /**
  * Wrapper interface around an array.
  * 
- * @version 6/27/23
+ * @param G the type returned by get methods
+ * @param S the type consumed by set methods
+ * @param A the type of the wrapped array
+ * @version 6/28/23
  */
-public interface ArrayWrapper<G, S, A> {
+public interface ArrayWrapper<G extends S, S, A> {
 
     /**
      * @return the unwrapped array
@@ -67,6 +70,29 @@ public interface ArrayWrapper<G, S, A> {
      */
     default String toString(CharSequence prefix, CharSequence delim, CharSequence suffix) {
         return stream().map(G::toString).collect(Collectors.joining(delim, prefix, suffix));
+    }
+
+    public static abstract class ADT<G extends S, S, A> implements ArrayWrapper<G, S, A> {
+
+        protected final A array;
+
+        public ADT(A array) {
+            this.array = array;
+        }
+
+        @Override
+        public A array() {
+            return array;
+        }
+
+        @Override
+        /**
+         * @return string of elements of this array
+         *         with format "[ a, b, c, d, e ]"
+         */
+        public String toString() {
+            return toString("[ ", ", ", " ]");
+        }
     }
 
 }
