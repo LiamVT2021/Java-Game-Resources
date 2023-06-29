@@ -35,7 +35,7 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
 
     @Override
     public Integer cast(Number value) {
-        return (Integer) value;
+        return value.intValue();
     }
 
     @Override

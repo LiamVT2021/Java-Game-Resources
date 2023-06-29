@@ -35,7 +35,7 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
 
     @Override
     public Long cast(Number value) {
-        return (Long) value;
+        return value.longValue();
     }
 
     @Override

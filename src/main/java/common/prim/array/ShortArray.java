@@ -34,7 +34,7 @@ public class ShortArray extends PrimArray.Int<Short, short[]> {
 
     @Override
     public Short cast(Number value) {
-        return (Short) value;
+        return value.shortValue();
     }
 
     @Override

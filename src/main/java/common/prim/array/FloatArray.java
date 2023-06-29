@@ -34,7 +34,7 @@ public class FloatArray extends PrimArray.Flt<Float, float[]> {
 
     @Override
     public Float cast(Number value) {
-        return (Float) value;
+        return value.floatValue();
     }
 
     @Override

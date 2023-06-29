@@ -34,7 +34,7 @@ public class ByteArray extends PrimArray.Int<Byte, byte[]> {
 
     @Override
     public Byte cast(Number value) {
-        return (Byte) value;
+        return value.byteValue();
     }
 
     @Override

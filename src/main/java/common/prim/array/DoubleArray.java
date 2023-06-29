@@ -35,7 +35,7 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
 
     @Override
     public Double cast(Number value) {
-        return (Double) value;
+        return value.doubleValue();
     }
 
     @Override
