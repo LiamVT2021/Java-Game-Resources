@@ -35,7 +35,7 @@ public class PrimArrayTest {
         doubleArr = new DoubleArray(arrSize);
     }
 
-    private void forEach(Consumer<PrimArray<?>> consumer) {
+    private void forEach(Consumer<PrimArray<?, ?>> consumer) {
         Stream.of(byteArr, shortArr, intArr, longArr, floatArr, doubleArr).forEach(consumer);
     }
 

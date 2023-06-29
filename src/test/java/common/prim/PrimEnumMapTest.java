@@ -11,7 +11,7 @@ public class PrimEnumMapTest {
         A, B, C
     }
 
-    private PrimEnumMap<Type, Integer> map;
+    private PrimEnumMap<Type, Integer, int[]> map;
 
     @BeforeEach
     private void setUp() {
