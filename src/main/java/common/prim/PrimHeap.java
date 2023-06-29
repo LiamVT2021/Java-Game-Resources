@@ -11,7 +11,7 @@ public abstract class PrimHeap<N extends Number, A> extends Heap<N, Number, A> {
         super(array, belongsAbove);
     }
 
-    public static abstract class Int extends PrimHeap<Integer, int[]> {
+    public static class Int extends PrimHeap<Integer, int[]> {
 
         private static final BiPredicate<Number, Number> MAX = (a, b) -> a.intValue() > b.intValue();
         private static final BiPredicate<Number, Number> MIN = (a, b) -> a.intValue() < b.intValue();
