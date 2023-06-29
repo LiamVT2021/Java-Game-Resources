@@ -1,47 +1,70 @@
 package common.pushPop;
 
+import java.util.Collection;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public interface PushPop<V> {
+public interface PushPop<G, S> {
 
-    boolean push(V value);
+    boolean isEmpty();
 
-    V peek();
+    boolean isFull();
 
-    V pop();
+    boolean push(S value);
 
-    default V swap(V value) {
-        if (value == null || isEmpty())
-            return value;
-        V ret = pop();
-        push(value);
-        return ret;
-    }
+    G peek();
 
-    int size();
+    G pop();
 
-    int capacity();
+    G swap(S value);
 
-    default boolean isEmpty() {
-        return size() == 0;
-    }
-
-    default boolean isFull() {
-        return size() == capacity();
-    }
-
-    default PushPop<V> fill(Supplier<V> supplier) {
+    default PushPop<G, S> fill(Supplier<S> supplier) {
         while (!isFull())
             push(supplier.get());
         return this;
     }
 
-    default Stream<V> empty() {
-        Stream.Builder<V> builder = Stream.builder();
+    default Stream<G> empty() {
+        Stream.Builder<G> builder = Stream.builder();
         while (!isEmpty())
             builder.accept(pop());
         return builder.build();
+    }
+
+    static abstract class Array<G extends S, S, A> implements PushPop<G, S> {
+
+        protected final ArrayWrapper<G, S, A> array;
+        protected int size;
+
+        public Array(ArrayWrapper<G, S, A> array) {
+            this.array = array;
+        }
+
+        public int size() {
+            return size;
+        }
+
+        public int capacity() {
+            return array.capacity();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return size() == 0;
+        }
+
+        @Override
+        public boolean isFull() {
+            return size() == capacity();
+        }
+
+        public boolean pushAll(Collection<S> values) {
+            if (values.size() > capacity() - size() || values.stream().anyMatch(v -> v == null))
+                return false;
+            values.forEach(this::push);
+            return true;
+        }
+
     }
 
 }

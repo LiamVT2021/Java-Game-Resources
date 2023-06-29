@@ -1,37 +1,25 @@
 package common.prim;
 
+import java.util.function.BiPredicate;
+
 import common.prim.array.*;
-import common.pushPop.HeapADT;
+import common.pushPop.Heap;
 
-public abstract class PrimHeap<N extends Number> extends HeapADT<N> {
+public abstract class PrimHeap<N extends Number, A> extends Heap<N, Number, A> {
 
-    private final PrimArray<N> primArr;
-
-    public PrimHeap(PrimArray<N> primArray) {
-        primArr = primArray;
+    public PrimHeap(PrimArray<N, A> array, BiPredicate<Number, Number> belongsAbove) {
+        super(array, belongsAbove);
     }
 
-    @Override
-    public N get(int index) {
-        return primArr.get(index);
+    public static abstract class Int extends PrimHeap<Integer, int[]> {
+
+        private static final BiPredicate<Number, Number> MAX = (a, b) -> a.intValue() > b.intValue();
+        private static final BiPredicate<Number, Number> MIN = (a, b) -> a.intValue() < b.intValue();
+
+        public Int(int capacity, boolean max) {
+            super(new IntArray(capacity), max ? MAX : MIN);
+        }
+
     }
 
-    @Override
-    protected void set(int index, N value) {
-        primArr.set(index, value);
-    }
-
-    @Override
-    public int capacity() {
-        return primArr.capacity();
-    }
-
-    public static PrimHeap<Integer> IntMin(int capacity) {
-        return new PrimHeap<Integer>(new IntArray(capacity)) {
-            @Override
-            protected boolean belongsAbove(Integer a, Integer b) {
-                return a < b;
-            }
-        };
-    }
 }
