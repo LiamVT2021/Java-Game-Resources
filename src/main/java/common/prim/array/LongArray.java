@@ -6,9 +6,9 @@ import java.util.stream.LongStream;
 /**
  * A wrapper around an array of long values.
  * 
- * @version 6/27/23
+ * @version 6/29/23
  */
-public class LongArray extends PrimArray.ADT<Long, long[]> {
+public class LongArray extends PrimArray.Int<Long, long[]> {
 
     public LongArray(int size) {
         this(new long[size]);
@@ -31,6 +31,11 @@ public class LongArray extends PrimArray.ADT<Long, long[]> {
     @Override
     public void set(int index, Number value) {
         array[index] = value.longValue();
+    }
+
+    @Override
+    public Long cast(Number value) {
+        return (Long) value;
     }
 
     @Override

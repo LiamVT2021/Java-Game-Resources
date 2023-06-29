@@ -6,9 +6,9 @@ import java.util.stream.IntStream;
 /**
  * A wrapper around an array of int values.
  * 
- * @version 6/27/23
+ * @version 6/29/23
  */
-public class IntArray extends PrimArray.ADT<Integer, int[]> {
+public class IntArray extends PrimArray.Int<Integer, int[]> {
 
     public IntArray(int size) {
         this(new int[size]);
@@ -31,6 +31,11 @@ public class IntArray extends PrimArray.ADT<Integer, int[]> {
     @Override
     public void set(int index, Number value) {
         array[index] = value.intValue();
+    }
+
+    @Override
+    public Integer cast(Number value) {
+        return (Integer) value;
     }
 
     @Override

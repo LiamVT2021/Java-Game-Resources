@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 /**
  * A wrapper around an array of byte values.
  * 
- * @version 6/27/23
+ * @version 6/29/23
  */
-public class ByteArray extends PrimArray.ADT<Byte, byte[]> {
+public class ByteArray extends PrimArray.Int<Byte, byte[]> {
 
     public ByteArray(int size) {
         this(new byte[size]);
@@ -30,6 +30,11 @@ public class ByteArray extends PrimArray.ADT<Byte, byte[]> {
     @Override
     public void set(int index, Number value) {
         array[index] = value.byteValue();
+    }
+
+    @Override
+    public Byte cast(Number value) {
+        return (Byte) value;
     }
 
     @Override

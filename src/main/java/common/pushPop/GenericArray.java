@@ -7,7 +7,7 @@ import java.util.stream.Stream;
  * Class for wrapping a generic array
  * 
  * @param V the generic type stored in this array
- * @version 6/28/23
+ * @version 6/29/23
  */
 public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
 
@@ -26,8 +26,20 @@ public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
     }
 
     @Override
+    public V remove(int index) {
+        V ret = get(index);
+        set(index, null);
+        return ret;
+    }
+
+    @Override
     public void set(int index, V value) {
         array[index] = value;
+    }
+
+    @Override
+    public V cast(V value) {
+        return value;
     }
 
     @Override

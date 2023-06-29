@@ -6,9 +6,9 @@ import java.util.stream.DoubleStream;
 /**
  * A wrapper around an array of double values.
  * 
- * @version 6/27/23
+ * @version 6/29/23
  */
-public class DoubleArray extends PrimArray.ADT<Double, double[]> {
+public class DoubleArray extends PrimArray.Flt<Double, double[]> {
 
     public DoubleArray(int size) {
         this(new double[size]);
@@ -31,6 +31,11 @@ public class DoubleArray extends PrimArray.ADT<Double, double[]> {
     @Override
     public void set(int index, Number value) {
         array[index] = value.doubleValue();
+    }
+
+    @Override
+    public Double cast(Number value) {
+        return (Double) value;
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
  * @param A the type of the wrapped array
- * @version 6/28/23
+ * @version 6/29/23
  */
 public interface ArrayWrapper<G extends S, S, A> {
 
@@ -31,6 +31,14 @@ public interface ArrayWrapper<G extends S, S, A> {
     G get(int index);
 
     /**
+     * removes the value stored at this index if possible
+     * 
+     * @return the value stored at this index in the array
+     * @throws IndexOutOfBoundsException if index out of bounds
+     */
+    G remove(int index);
+
+    /**
      * stores value at index in the array
      * 
      * @throws IndexOutOfBoundsException if index out of bounds
@@ -49,6 +57,11 @@ public interface ArrayWrapper<G extends S, S, A> {
         set(index, value);
         return ret;
     }
+
+    /**
+     * @return value cast into G type
+     */
+    G cast(S value);
 
     /**
      * Iterates over each value in the array

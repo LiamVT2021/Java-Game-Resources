@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 /**
  * A wrapper around an array of float values.
  * 
- * @version 6/27/23
+ * @version 6/29/23
  */
-public class FloatArray extends PrimArray.ADT<Float, float[]> {
+public class FloatArray extends PrimArray.Flt<Float, float[]> {
 
     public FloatArray(int size) {
         this(new float[size]);
@@ -30,6 +30,11 @@ public class FloatArray extends PrimArray.ADT<Float, float[]> {
     @Override
     public void set(int index, Number value) {
         array[index] = value.floatValue();
+    }
+
+    @Override
+    public Float cast(Number value) {
+        return (Float) value;
     }
 
     @Override

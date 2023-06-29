@@ -9,7 +9,7 @@ import common.pushPop.ArrayWrapper;
  * 
  * @param N the type of numbers returned by get methods.
  * @param A the type of the wrapped array.
- * @version 6/28/23
+ * @version 6/29/23
  */
 public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A> {
 
@@ -20,10 +20,39 @@ public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, 
         return builder.build();
     }
 
-    static abstract class ADT<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
+    @Override
+    default N remove(int index) {
+        return get(index);
+    }
 
-        public ADT(A array) {
+    /**
+     * @return True if the array stores floating point numbers
+     *         False if the array stores whole numbers
+     */
+    boolean storesFloat();
+
+    static abstract class Int<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
+
+        public Int(A array) {
             super(array);
+        }
+
+        @Override
+        public boolean storesFloat() {
+            return false;
+        }
+
+    }
+
+    static abstract class Flt<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
+
+        public Flt(A array) {
+            super(array);
+        }
+
+        @Override
+        public boolean storesFloat() {
+            return true;
         }
 
     }

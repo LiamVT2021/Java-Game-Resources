@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 /**
  * A wrapper around an array of short values.
  * 
- * @version 6/27/23
+ * @version 6/29/23
  */
-public class ShortArray extends PrimArray.ADT<Short, short[]> {
+public class ShortArray extends PrimArray.Int<Short, short[]> {
 
     public ShortArray(int size) {
         this(new short[size]);
@@ -30,6 +30,11 @@ public class ShortArray extends PrimArray.ADT<Short, short[]> {
     @Override
     public void set(int index, Number value) {
         array[index] = value.shortValue();
+    }
+
+    @Override
+    public Short cast(Number value) {
+        return (Short) value;
     }
 
     @Override
