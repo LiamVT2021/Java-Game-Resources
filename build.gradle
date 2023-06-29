@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+    id 'jacoco'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	testImplementation(platform('org.junit:junit-bom:5.9.3'))
+	testImplementation('org.junit.jupiter:junit-jupiter')
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jacocoTestReport.reports {
+    xml.required = true
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+test.finalizedBy(jacocoTestReport)
