@@ -1,40 +1,40 @@
-package old.heap;
+// package old.heap;
 
-import java.util.Iterator;
+// import java.util.Iterator;
 
-class PopIt<E> implements Iterator<E> {
+// class PopIt<E> implements Iterator<E> {
 
-    private PushPop<E> pushPop;
+//     private PushPop<E> pushPop;
 
-    public PopIt(PushPop<E> pushPop) {
-        this.pushPop = pushPop;
-    }
+//     public PopIt(PushPop<E> pushPop) {
+//         this.pushPop = pushPop;
+//     }
 
-    @Override
-    public boolean hasNext() {
-        return !pushPop.isEmpty();
-    }
+//     @Override
+//     public boolean hasNext() {
+//         return !pushPop.isEmpty();
+//     }
 
-    @Override
-    public E next() {
-        return pushPop.pop();
-    }
+//     @Override
+//     public E next() {
+//         return pushPop.pop();
+//     }
 
-    public static class Prim implements Iterator<Integer> {
-        private PushPop.Prim pushPop;
+//     public static class Prim implements Iterator<Integer> {
+//         private PushPop.Prim pushPop;
 
-        public Prim(PushPop.Prim pushPop) {
-            this.pushPop = pushPop;
-        }
+//         public Prim(PushPop.Prim pushPop) {
+//             this.pushPop = pushPop;
+//         }
 
-        @Override
-        public boolean hasNext() {
-            return !pushPop.isEmpty();
-        }
+//         @Override
+//         public boolean hasNext() {
+//             return !pushPop.isEmpty();
+//         }
 
-        @Override
-        public Integer next() {
-            return pushPop.pop();
-        }
-    }
-}
+//         @Override
+//         public Integer next() {
+//             return pushPop.pop();
+//         }
+//     }
+// }
