@@ -25,17 +25,19 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
         if (value == null || isFull())
             return false;
         int b = size++;
-        int t = up(b);
-        G cur = array.get(t);
-        while (belongsAbove.test(value, cur)) {
-            array.set(b, cur);
-            if (t == 0) {
-                array.set(0, value);
-                return true;
+        if (b > 0) {
+            int t = up(b);
+            G cur = array.get(t);
+            while (belongsAbove.test(value, cur)) {
+                array.set(b, cur);
+                if (t == 0) {
+                    array.set(0, value);
+                    return true;
+                }
+                b = t;
+                t = up(b);
+                cur = array.get(t);
             }
-            b = t;
-            t = up(b);
-            cur = array.get(t);
         }
         array.set(b, value);
         return true;
@@ -50,14 +52,12 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
     public G pop() {
         if (isEmpty())
             return null;
-        return heapDown(array.remove(--size));
+        return size == 1 ? array.remove(--size) : heapDown(array.remove(--size));
     }
 
     @Override
     public G swap(S value) {
-        if (isEmpty())
-            return array.cast(value);
-        return heapDown(value);
+        return isEmpty() ? array.cast(value) : heapDown(value);
     }
 
     private G heapDown(S value) {
