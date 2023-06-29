@@ -57,7 +57,7 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
     public G swap(S value) {
         if (isEmpty())
             return array.cast(value);
-        return heapDown(array.get(size - 1));
+        return heapDown(value);
     }
 
     private G heapDown(S value) {
