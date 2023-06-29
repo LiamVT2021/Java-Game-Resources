@@ -65,6 +65,10 @@ public interface PushPop<G, S> {
             return true;
         }
 
+        public String arrayString() {
+            return array.toString();
+        }
+
     }
 
 }
