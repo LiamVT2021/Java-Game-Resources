@@ -14,7 +14,7 @@ import common.prim.array.*;
 /**
  * Tests all methods for Primitive and Generic ArrayWrappers except cast
  * 
- * @version 6/29/23
+ * @version 6/30/23
  */
 public class ArrayWrapperTest {
 
@@ -87,6 +87,8 @@ public class ArrayWrapperTest {
     public void testGen() {
         numArr.forEach(n -> assertEquals(0, n));
         assertEquals(numArr.array, numArr.array());
+        numArr.remove(2);
+        assertEquals("[ 0, 0, null, 0, 0 ]", numArr.toString());
     }
 
 }
