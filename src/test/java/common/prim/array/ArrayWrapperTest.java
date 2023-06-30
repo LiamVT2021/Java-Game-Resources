@@ -2,6 +2,7 @@ package common.prim.array;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests all methods for Primitive and Generic ArrayWrappers except cast
+ * Tests all methods for Primitive and Generic ArrayWrappers.
  * 
  * @version 6/30/23
  */
@@ -87,6 +88,17 @@ public class ArrayWrapperTest {
         assertEquals(numArr.array, numArr.array());
         numArr.remove(2);
         assertEquals("[ 0, 0, null, 0, 0 ]", numArr.toString());
+    }
+
+    @Test
+    public void testCast() {
+        assertTrue(numArr.cast(arrSize) instanceof Number);
+        assertTrue(byteArr.cast(arrSize) instanceof Byte);
+        assertTrue(shortArr.cast(arrSize) instanceof Short);
+        assertTrue(intArr.cast(arrSize) instanceof Integer);
+        assertTrue(longArr.cast(arrSize) instanceof Long);
+        assertTrue(floatArr.cast(arrSize) instanceof Float);
+        assertTrue(doubleArr.cast(arrSize) instanceof Double);
     }
 
 }
