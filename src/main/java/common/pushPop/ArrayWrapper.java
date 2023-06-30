@@ -1,8 +1,9 @@
 package common.pushPop;
 
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import common.util.StringUtils;
 
 /**
  * Wrapper interface around an array.
@@ -82,7 +83,7 @@ public interface ArrayWrapper<G extends S, S, A> {
      * @return a merged string of the elements of this array
      */
     default String toString(CharSequence prefix, CharSequence delim, CharSequence suffix) {
-        return stream().map(G::toString).collect(Collectors.joining(delim, prefix, suffix));
+        return StringUtils.join(prefix, delim, suffix, stream().map(G::toString));
     }
 
     public static abstract class ADT<G extends S, S, A> implements ArrayWrapper<G, S, A> {

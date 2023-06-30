@@ -1,8 +1,9 @@
 package common.pushPop;
 
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import common.util.StringUtils;
 
 /**
  * Class for wrapping a generic array
@@ -56,7 +57,7 @@ public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
 
     @Override
     public String toString(CharSequence prefix, CharSequence delim, CharSequence suffix) {
-        return stream().map(v -> v == null ? "null" : v.toString()).collect(Collectors.joining(delim, prefix, suffix));
+        return StringUtils.join(prefix, delim, suffix, stream().map(StringUtils::handleNull));
     }
 
 }
