@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import common.util.StringUtils;
+
 public interface PushPop<G, S> {
 
     boolean isEmpty();
@@ -29,6 +31,22 @@ public interface PushPop<G, S> {
         while (!isEmpty())
             builder.accept(pop());
         return builder.build();
+    }
+
+    /**
+     * @return a stream of the stored values, without removing them
+     */
+    Stream<G> stream();
+
+    default String preview() {
+        return "Peek: " + peek();
+    }
+
+    /**
+     * @return a visual representation of the datastruture
+     */
+    default String backString() {
+        return StringUtils.join("< ", ", ", " >", stream().map(G::toString));
     }
 
     static abstract class Array<G extends S, S, A> implements PushPop<G, S> {
@@ -65,8 +83,21 @@ public interface PushPop<G, S> {
             return true;
         }
 
+        @Override
+        public String preview() {
+            return PushPop.super.preview() + "\n " + size() + " / " + capacity();
+        }
+
+        /**
+         * @return a string of raw values stored in the array.
+         */
         public String arrayString() {
             return array.toString();
+        }
+
+        @Override
+        public String toString() {
+            return preview() + '\n' + arrayString() + '\n' + backString();
         }
 
     }

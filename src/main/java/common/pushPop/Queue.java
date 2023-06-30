@@ -1,5 +1,7 @@
 package common.pushPop;
 
+import java.util.stream.Stream;
+
 public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
     private int next;
@@ -56,6 +58,16 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
         G ret = next(true);
         insert(ret);
         return ret;
+    }
+
+    @Override
+    public Stream<G> stream() {
+        int start = next;
+        Stream.Builder<G> builder = Stream.builder();
+        for (int i = 0; i < size; i++)
+            builder.accept(next(false));
+        next = start;
+        return builder.build();
     }
 
     public static class Gen<V> extends Queue<V, V, V[]> {

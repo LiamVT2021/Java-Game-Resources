@@ -2,6 +2,7 @@ package common.pushPop;
 
 import java.util.Comparator;
 import java.util.function.BiPredicate;
+import java.util.stream.Stream;
 
 public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
@@ -90,6 +91,31 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
             array.set(t, value);
             return ret;
         }
+    }
+
+    @Override
+    public Stream<G> stream() {
+        Stream.Builder<G> builder = Stream.builder();
+        for (int i = size - 1; i >= 0; i--)
+            builder.accept(array.get(i));
+        return builder.build();
+    }
+
+    @Override
+    public String backString() {
+        if (isEmpty())
+            return "->";
+        StringBuilder str = new StringBuilder("-> " + array.get(0));
+        int row = 1;
+        for (int i = 1; i < size; i++) {
+            if (i == row) {
+                row = leftChild(row);
+                str.append('\n');
+            } else
+                str.append(", ");
+            str.append(array.get(i));
+        }
+        return str.toString();
     }
 
     public static class Gen<V> extends Heap<V, V, V[]> {
