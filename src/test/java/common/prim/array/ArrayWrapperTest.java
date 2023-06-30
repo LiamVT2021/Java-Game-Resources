@@ -1,4 +1,4 @@
-package common.pushPop;
+package common.prim.array;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,8 +8,6 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import common.prim.array.*;
 
 /**
  * Tests all methods for Primitive and Generic ArrayWrappers except cast
