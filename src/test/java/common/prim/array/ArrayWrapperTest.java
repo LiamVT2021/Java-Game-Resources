@@ -86,6 +86,8 @@ public class ArrayWrapperTest {
     public void testGen() {
         numArr.forEach(n -> assertEquals(0, n));
         assertEquals(numArr.array, numArr.array());
+        for (Number n : numArr)
+            assertEquals(0, n);
         numArr.remove(2);
         assertEquals("[ 0, 0, null, 0, 0 ]", numArr.toString());
     }

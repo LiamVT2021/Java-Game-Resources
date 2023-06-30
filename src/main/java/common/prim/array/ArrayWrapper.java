@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.Iterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -13,7 +14,7 @@ import common.util.StringUtils;
  * @param A the type of the wrapped array
  * @version 6/29/23
  */
-public interface ArrayWrapper<G extends S, S, A> {
+public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
     /**
      * @return the unwrapped array
@@ -65,7 +66,7 @@ public interface ArrayWrapper<G extends S, S, A> {
     G cast(S value);
 
     /**
-     * Iterates over each value in the array
+     * Iterates over each value in the array starting from index 0
      * 
      * @param consumer method inside for loop
      */
@@ -106,6 +107,25 @@ public interface ArrayWrapper<G extends S, S, A> {
          */
         public String toString() {
             return toString("[ ", ", ", " ]");
+        }
+
+        @Override
+        public Iterator<G> iterator() {
+            return new Iterator<G>() {
+
+                private int i;
+
+                @Override
+                public boolean hasNext() {
+                    return i < capacity();
+                }
+
+                @Override
+                public G next() {
+                    return get(i++);
+                }
+
+            };
         }
     }
 
