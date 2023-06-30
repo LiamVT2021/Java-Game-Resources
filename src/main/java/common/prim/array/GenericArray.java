@@ -29,9 +29,7 @@ public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
 
     @Override
     public V remove(int index) {
-        V ret = get(index);
-        set(index, null);
-        return ret;
+        return swap(index, null);
     }
 
     @Override
