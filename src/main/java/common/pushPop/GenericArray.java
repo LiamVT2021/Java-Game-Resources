@@ -1,6 +1,7 @@
 package common.pushPop;
 
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -51,6 +52,11 @@ public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
     @Override
     public Stream<V> stream() {
         return Stream.of(array);
+    }
+
+    @Override
+    public String toString(CharSequence prefix, CharSequence delim, CharSequence suffix) {
+        return stream().map(v -> v == null ? "null" : v.toString()).collect(Collectors.joining(delim, prefix, suffix));
     }
 
 }
