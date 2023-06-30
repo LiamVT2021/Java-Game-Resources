@@ -29,7 +29,7 @@ public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
         return isEmpty() ? array.cast(value) : array.swap(size - 1, value);
     }
 
-    public class Gen<V> extends Stack<V, V, V[]> {
+    public static class Gen<V> extends Stack<V, V, V[]> {
 
         public Gen(V[] array) {
             super(new GenericArray<>(array));
