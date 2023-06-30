@@ -1,6 +1,4 @@
 package common.prim.array;
-
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import common.util.StringUtils;
@@ -9,7 +7,7 @@ import common.util.StringUtils;
  * Class for wrapping a generic array
  * 
  * @param V the generic type stored in this array
- * @version 6/29/23
+ * @version 6/30/23
  */
 public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
 
@@ -40,12 +38,6 @@ public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
     @Override
     public V cast(V value) {
         return value;
-    }
-
-    @Override
-    public void forEach(Consumer<? super V> consumer) {
-        for (V value : array)
-            consumer.accept(value);
     }
 
     @Override

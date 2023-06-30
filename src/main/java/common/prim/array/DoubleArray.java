@@ -1,12 +1,11 @@
 package common.prim.array;
 
-import java.util.function.Consumer;
 import java.util.stream.DoubleStream;
 
 /**
  * A wrapper around an array of double values.
  * 
- * @version 6/29/23
+ * @version 6/30/23
  */
 public class DoubleArray extends PrimArray.Flt<Double, double[]> {
 
@@ -36,12 +35,6 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
     @Override
     public Double cast(Number value) {
         return value.doubleValue();
-    }
-
-    @Override
-    public void forEach(Consumer<? super Double> consumer) {
-        for (double v : array)
-            consumer.accept(v);
     }
 
     /**
