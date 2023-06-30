@@ -36,7 +36,7 @@ public interface PushPop<G, S> {
         protected final ArrayWrapper<G, S, A> array;
         protected int size;
 
-        public Array(ArrayWrapper<G, S, A> array) {
+        protected Array(ArrayWrapper<G, S, A> array) {
             this.array = array;
         }
 

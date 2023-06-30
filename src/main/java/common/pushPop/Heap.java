@@ -7,7 +7,7 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
     private final BiPredicate<S, S> belongsAbove;
 
-    public Heap(ArrayWrapper<G, S, A> array, BiPredicate<S, S> belongsAbove) {
+    protected Heap(ArrayWrapper<G, S, A> array, BiPredicate<S, S> belongsAbove) {
         super(array);
         this.belongsAbove = belongsAbove;
     }

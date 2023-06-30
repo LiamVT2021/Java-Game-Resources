@@ -4,12 +4,12 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
     private int next;
 
-    public Queue(ArrayWrapper<G, S, A> array) {
+    protected Queue(ArrayWrapper<G, S, A> array) {
         super(array);
     }
 
-    private G next() {
-        G ret = array.remove(next);
+    private G next(boolean remove) {
+        G ret = remove ? array.remove(next) : array.get(next);
         next = (next + 1) % array.capacity();
         return ret;
     }
@@ -37,7 +37,7 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
         if (isEmpty())
             return null;
         size--;
-        return next();
+        return next(true);
     }
 
     @Override
@@ -45,10 +45,20 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
         if (isEmpty())
             return array.cast(value);
         insert(value);
-        return next();
+        return next(true);
     }
 
-    public class Gen<V> extends Queue<V, V, V[]> {
+    public G loop() {
+        if (isEmpty())
+            return null;
+        if (isFull())
+            return next(false);
+        G ret = next(true);
+        insert(ret);
+        return ret;
+    }
+
+    public static class Gen<V> extends Queue<V, V, V[]> {
 
         public Gen(V[] array) {
             super(new GenericArray<>(array));

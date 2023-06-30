@@ -6,7 +6,7 @@ import common.pushPop.Stack;
 
 public abstract class PrimStack<N extends Number, A> extends Stack<N, Number, A> {
 
-    public PrimStack(ArrayWrapper<N, Number, A> array) {
+    private PrimStack(ArrayWrapper<N, Number, A> array) {
         super(array);
     }
 

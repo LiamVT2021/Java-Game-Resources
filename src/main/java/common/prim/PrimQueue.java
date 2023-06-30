@@ -6,7 +6,7 @@ import common.pushPop.Queue;
 
 public abstract class PrimQueue<N extends Number, A> extends Queue<N, Number, A> {
 
-    public PrimQueue(ArrayWrapper<N, Number, A> array) {
+    private PrimQueue(ArrayWrapper<N, Number, A> array) {
         super(array);
     }
 

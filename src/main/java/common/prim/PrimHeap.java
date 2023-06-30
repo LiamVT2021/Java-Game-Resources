@@ -7,7 +7,7 @@ import common.pushPop.Heap;
 
 public abstract class PrimHeap<N extends Number, A> extends Heap<N, Number, A> {
 
-    public PrimHeap(PrimArray<N, A> array, BiPredicate<Number, Number> belongsAbove) {
+    private PrimHeap(PrimArray<N, A> array, BiPredicate<Number, Number> belongsAbove) {
         super(array, belongsAbove);
     }
 

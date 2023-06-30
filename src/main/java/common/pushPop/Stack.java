@@ -2,7 +2,7 @@ package common.pushPop;
 
 public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
-    public Stack(ArrayWrapper<G, S, A> array) {
+    protected Stack(ArrayWrapper<G, S, A> array) {
         super(array);
     }
 

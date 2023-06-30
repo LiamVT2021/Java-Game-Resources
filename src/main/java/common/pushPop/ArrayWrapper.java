@@ -89,7 +89,7 @@ public interface ArrayWrapper<G extends S, S, A> {
 
         protected final A array;
 
-        public ADT(A array) {
+        protected ADT(A array) {
             this.array = array;
         }
 
