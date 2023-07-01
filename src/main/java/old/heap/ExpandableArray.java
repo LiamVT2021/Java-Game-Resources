@@ -118,37 +118,38 @@
 
 //     }
 
-//     protected static class Prim<P extends PrimArray<ArrType>, ArrType> extends ExpandableArray<P, ArrType> {
+    // protected static class Prim<P extends PrimArray<ArrType>, ArrType> extends ExpandableArray<P, ArrType> {
 
-//         protected Prim(P primArr) {
-//             super(primArr, primArr.length());
-//         }
+    //     protected Prim(P primArr) {
+    //         super(primArr, primArr.length());
+    //     }
 
-//         protected Prim(P primArr, int size) {
-//             super(primArr, size);
-//         }
+    //     protected Prim(P primArr, int size) {
+    //         super(primArr, size);
+    //     }
 
-//         @Override
-//         public int length() {
-//             return arr.length();
-//         }
+    //     @Override
+    //     public int length() {
+    //         return arr.length();
+    //     }
 
-//         @Override
-//         protected void setArr(ArrType array) {
-//             arr.setArr(array);
-//         }
+    //     @Override
+    //     protected void setArr(ArrType array) {
+    //         arr.setArr(array);
+    //     }
 
-//         @Override
-//         protected ArrType arrCopy(P array, int length) {
-//             return array.arrCopy(array.arr, length);
-//         }
+    //     @Override
+    //     protected ArrType arrCopy(P array, int length) {
+    //         return array.arrCopy(array.arr, length);
+    //     }
 
-//         protected boolean map(IntUnaryOperator mapper) {
-//             if (mapper == null)
-//                 return false;
-//             for (int i = 0; i < size; i++)
-//                 arr.map(i, mapper);
-//             return true;
-//         }
-//     }
-// }
+    //     protected boolean map(IntUnaryOperator mapper) {
+    //         if (mapper == null)
+    //             return false;
+    //         for (int i = 0; i < size; i++)
+    //             arr.map(i, mapper);
+    //         return true;
+    //     }
+    // }
+
+}

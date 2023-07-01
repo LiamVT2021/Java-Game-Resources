@@ -1,12 +1,11 @@
 package common.prim.array;
 
-import java.util.function.Consumer;
 import java.util.stream.LongStream;
 
 /**
  * A wrapper around an array of long values.
  * 
- * @version 6/29/23
+ * @version 6/30/23
  */
 public class LongArray extends PrimArray.Int<Long, long[]> {
 
@@ -36,12 +35,6 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
     @Override
     public Long cast(Number value) {
         return value.longValue();
-    }
-
-    @Override
-    public void forEach(Consumer<? super Long> consumer) {
-        for (long v : array)
-            consumer.accept(v);
     }
 
     /**

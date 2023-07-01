@@ -19,64 +19,67 @@ import java.util.function.IntFunction;
 @FunctionalInterface
 public interface IterableExt<E> extends Iterable<E> {
 
-	public default int count() {
-		int count = 0;
-		for (@SuppressWarnings("unused")
-		E e : this)
-			count++;
-		return count;
-	}
+    public default int count() {
+        int count = 0;
+        for (@SuppressWarnings("unused")
+        E e : this)
+            count++;
+        return count;
+    }
 
-	public default boolean has(E target) {
-		return get(target) != null;
-	}
+    public default boolean has(E target) {
+        return get(target) != null;
+    }
 
-	public default E get(E target) {
-		if (target == null)
-			return null;
-		for (E cur : this) {
-			if (target.equals(cur))
-				return cur;
-		}
-		return null;
-	}
+    public default E get(E target) {
+        if (target == null)
+            return null;
+        for (E cur : this) {
+            if (target.equals(cur))
+                return cur;
+        }
+        return null;
+    }
 
-	public default E getMax(Comparator<? super E> comp) {
-		return reduce((a, b) -> comp.compare(a, b) > 0 ? a : b);
-	}
+    public default E getMax(Comparator<? super E> comp) {
+        return reduce((a, b) -> comp.compare(a, b) > 0 ? a : b);
+    }
 
-	// public default E[] getMax(Comparator<? super E> comp, IntFunction<E[]> newArr, int size) {
-	// 	return reduce(Heap.min(comp), newArr, size).sorted(newArr, false, true);
-	// }
+    // public default E[] getMax(Comparator<? super E> comp, IntFunction<E[]>
+    // newArr, int size) {
+    // return reduce(Heap.min(comp), newArr, size).sorted(newArr, false, true);
+    // }
 
-	public default E getMin(Comparator<? super E> comp) {
-		return reduce((a, b) -> comp.compare(a, b) < 0 ? a : b);
-	}
+    public default E getMin(Comparator<? super E> comp) {
+        return reduce((a, b) -> comp.compare(a, b) < 0 ? a : b);
+    }
 
-	// public default E[] getMin(Comparator<? super E> comp, IntFunction<E[]> newArr, int size) {
-	// 	return reduce(Heap.max(comp), newArr, size).sorted(newArr, false, true);
-	// }
+    // public default E[] getMin(Comparator<? super E> comp, IntFunction<E[]>
+    // newArr, int size) {
+    // return reduce(Heap.max(comp), newArr, size).sorted(newArr, false, true);
+    // }
 
-	public default E reduce(BinaryOperator<E> operator) {
-		Iterator<E> it = iterator();
-		if (!it.hasNext())
-			return null;
-		E ret = it.next();
-		while (it.hasNext())
-			ret = operator.apply(ret, it.next());
-		return ret;
-	}
+    public default E reduce(BinaryOperator<E> operator) {
+        Iterator<E> it = iterator();
+        if (!it.hasNext())
+            return null;
+        E ret = it.next();
+        while (it.hasNext())
+            ret = operator.apply(ret, it.next());
+        return ret;
+    }
 
-	// public default Heap<E> reduce(BiPredicate<E, E> comp, IntFunction<E[]> newArr, int size) {
-	// 	Heap<E> heap = new Heap<E>(newArr, size, comp);
-	// 	Iterator<E> it = iterator();
-	// 	while (it.hasNext() && !heap.isFull())
-	// 		heap.push(it.next());
+    // public default Heap<E> reduce(BiPredicate<E, E> comp, IntFunction<E[]>
+    // newArr, int size) {
+    // Heap<E> heap = new Heap<E>(newArr, size, comp);
+    // Iterator<E> it = iterator();
+    // while (it.hasNext() && !heap.isFull())
+    // heap.push(it.next());
 
-	// 	while (it.hasNext()) {
-	// 		heap.swap(it.next());
-	// 	}
-	// 	return heap;
-	// }
+    // while (it.hasNext()) {
+    // heap.swap(it.next());
+    // }
+    // return heap;
+    // }
 
 }

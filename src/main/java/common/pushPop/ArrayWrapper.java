@@ -1,6 +1,6 @@
 package common.pushPop;
 
-import java.util.function.Consumer;
+import java.util.Iterator;
 import java.util.stream.Stream;
 
 import common.util.StringUtils;
@@ -11,9 +11,9 @@ import common.util.StringUtils;
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
  * @param A the type of the wrapped array
- * @version 6/29/23
+ * @version 6/30/23
  */
-public interface ArrayWrapper<G extends S, S, A> {
+public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
     /**
      * @return the unwrapped array
@@ -64,12 +64,24 @@ public interface ArrayWrapper<G extends S, S, A> {
      */
     G cast(S value);
 
-    /**
-     * Iterates over each value in the array
-     * 
-     * @param consumer method inside for loop
-     */
-    void forEach(Consumer<? super G> consumer);
+    @Override
+    default Iterator<G> iterator() {
+        return new Iterator<G>() {
+
+            private int i;
+
+            @Override
+            public boolean hasNext() {
+                return i < capacity();
+            }
+
+            @Override
+            public G next() {
+                return get(i++);
+            }
+
+        };
+    }
 
     /**
      * @return a Stream of the values in the array
@@ -107,6 +119,7 @@ public interface ArrayWrapper<G extends S, S, A> {
         public String toString() {
             return toString("[ ", ", ", " ]");
         }
+
     }
 
 }

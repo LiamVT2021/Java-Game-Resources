@@ -14,10 +14,10 @@ public class MultiIt<E> implements IterableExt<E> {
 
 	private Iterable<? extends Iterable<E>> col;
 
-	@SafeVarargs
-	public MultiIt(Iterable<E>... its){
-		this.col = new Array<Iterable<E>>(its);
-	}
+	// @SafeVarargs
+	// public MultiIt(Iterable<E>... its){
+	// 	this.col = new Array<Iterable<E>>(its);
+	// }
 
 	public MultiIt(Iterable<? extends Iterable<E>> col) {
 		this.col = col;

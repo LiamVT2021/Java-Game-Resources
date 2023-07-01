@@ -1,30 +1,30 @@
-package old.util;
+// package old.util;
 
-import java.util.Iterator;
+// import java.util.Iterator;
 
-public class RangeArray<E> implements IterableExt<E> {
+// public class RangeArray<E> implements IterableExt<E> {
 
-    private Array<E> arr;
-    private int start;
-    private int cut;
+//     private Array<E> arr;
+//     private int start;
+//     private int cut;
 
-    public RangeArray(Array<E> arr, int start, int cut) {
-        this.arr = arr;
-        this.start = start;
-        this.cut = cut;
-    }
+//     public RangeArray(Array<E> arr, int start, int cut) {
+//         this.arr = arr;
+//         this.start = start;
+//         this.cut = cut;
+//     }
 
-    @Override
-    public Iterator<E> iterator() {
-        return arr.iterator(start, cut);
-    }
+//     @Override
+//     public Iterator<E> iterator() {
+//         return arr.iterator(start, cut);
+//     }
 
-    public int start() {
-        return start;
-    }
+//     public int start() {
+//         return start;
+//     }
 
-    public int cut() {
-        return cut;
-    }
+//     public int cut() {
+//         return cut;
+//     }
 
-}
+// }

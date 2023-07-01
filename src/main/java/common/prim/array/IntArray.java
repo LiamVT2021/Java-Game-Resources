@@ -1,12 +1,11 @@
 package common.prim.array;
 
-import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 /**
  * A wrapper around an array of int values.
  * 
- * @version 6/29/23
+ * @version 6/30/23
  */
 public class IntArray extends PrimArray.Int<Integer, int[]> {
 
@@ -36,12 +35,6 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
     @Override
     public Integer cast(Number value) {
         return value.intValue();
-    }
-
-    @Override
-    public void forEach(Consumer<? super Integer> consumer) {
-        for (int v : array)
-            consumer.accept(v);
     }
 
     /**

@@ -1,11 +1,9 @@
 package common.prim.array;
 
-import java.util.function.Consumer;
-
 /**
  * A wrapper around an array of float values.
  * 
- * @version 6/29/23
+ * @version 6/30/23
  */
 public class FloatArray extends PrimArray.Flt<Float, float[]> {
 
@@ -35,12 +33,6 @@ public class FloatArray extends PrimArray.Flt<Float, float[]> {
     @Override
     public Float cast(Number value) {
         return value.floatValue();
-    }
-
-    @Override
-    public void forEach(Consumer<? super Float> consumer) {
-        for (float v : array)
-            consumer.accept(v);
     }
 
 }
