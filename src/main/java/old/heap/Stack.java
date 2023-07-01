@@ -2,16 +2,14 @@ package old.heap;
 
 import java.util.function.IntFunction;
 
-import old.util.Math;
+public abstract class Stack<E> extends ExpandableArray.Array<E> implements PushPop<E> {
 
-public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
-
-    public Bag(IntFunction<E[]> newArr, int length) {
+    public Stack(IntFunction<E[]> newArr, int length) {
         super(newArr, length);
     }
 
     @SafeVarargs
-    public Bag(E... arr) {
+    public Stack(E... arr) {
         super(arr);
     }
 
@@ -23,17 +21,11 @@ public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
         return true;
     }
 
-    private static int randInt(int size) {
-        return Math.random.nextInt(size);
-    }
-
     @Override
     public E pop() {
         if (isEmpty())
             return null;
-        int rand = randInt(size);
-        E ret = arr[rand];
-        arr[rand] = arr[--size];
+        E ret = arr[--size];
         arr[size] = null;
         return ret;
     }
@@ -42,7 +34,7 @@ public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
     public E peek() {
         if (isEmpty())
             return null;
-        return arr[randInt(size)];
+        return arr[size - 1];
     }
 
     // private static abstract class Prim<P extends PrimArray<ArrType>, ArrType> extends ExpandableArray.Prim<P, ArrType>
@@ -66,15 +58,12 @@ public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
 
     //     @Override
     //     public int primPop() {
-    //         int rand = randInt(size);
-    //         int ret = arr.get(rand);
-    //         arr.move(size--, rand);
-    //         return ret;
+    //         return arr.get(--size);
     //     }
 
     //     @Override
     //     public int primPeek() {
-    //         return arr.get(randInt(size));
+    //         return arr.get(size - 1);
     //     }
     // }
 
@@ -87,7 +76,6 @@ public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
     //     public Int(int... array) {
     //         super(new PrimArray.Int(array));
     //     }
-
     // }
 
     // public static class Short extends Prim<PrimArray.Short, short[]> {
@@ -99,7 +87,6 @@ public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
     //     public Short(short... array) {
     //         super(new PrimArray.Short(array));
     //     }
-
     // }
 
     // public static class Byte extends Prim<PrimArray.Byte, byte[]> {
@@ -111,6 +98,6 @@ public class Bag<E> extends ExpandableArray.Array<E> implements PushPop<E> {
     //     public Byte(byte... array) {
     //         super(new PrimArray.Byte(array));
     //     }
-
     // }
+
 }
