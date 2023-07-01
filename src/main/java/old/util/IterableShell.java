@@ -12,15 +12,15 @@ import java.util.Iterator;
  */
 public class IterableShell<E> implements IterableExt<E> {
 
-    private Iterable<E> iter;
+	private Iterable<E> iter;
 
-    public IterableShell(Iterable<E> iterable) {
-        iter = iterable;
-    }
+	public IterableShell(Iterable<E> iterable) {
+		iter = iterable;
+	}
 
-    @Override
-    public Iterator<E> iterator() {
-        return iter.iterator();
-    }
+	@Override
+	public Iterator<E> iterator() {
+		return iter.iterator();
+	}
 
 }
