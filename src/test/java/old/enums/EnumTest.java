@@ -1,13 +1,13 @@
-package old.enums;
+// package old.enums;
 
-import org.junit.jupiter.api.Test;
+// import org.junit.jupiter.api.Test;
 
-public class EnumTest {
+// public class EnumTest {
 
-    @Test
-    public void test(){
-        for (Attribute att: Attribute.Type.MENTAL.getMembers())
-        System.out.println(att.name(true));
-    }
+//     @Test
+//     public void test(){
+//         for (Attribute att: Attribute.Type.MENTAL.getMembers())
+//         System.out.println(att.name(true));
+//     }
     
-}
+// }

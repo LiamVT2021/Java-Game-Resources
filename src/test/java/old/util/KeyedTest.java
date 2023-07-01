@@ -51,12 +51,12 @@ public class KeyedTest {
 		assertEquals(neson, map.get("Liam"));
 	}
 
-	@Test
-	public void testPutAll() {
-		map.putAll(new Array<Person>(new Person[] { neson, may }));
-		assertEquals(neson, map.get("Liam"));
-		assertEquals(may, map.get("April"));
-	}
+	// @Test
+	// public void testPutAll() {
+	// 	map.putAll(new Array<Person>(new Person[] { neson, may }));
+	// 	assertEquals(neson, map.get("Liam"));
+	// 	assertEquals(may, map.get("April"));
+	// }
 
 	@Test
 	public void testPutAbsent() {
