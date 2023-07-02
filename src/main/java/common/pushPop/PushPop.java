@@ -13,6 +13,7 @@ import common.util.StringUtils;
  * 
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
+ * @version 7/2/23
  */
 public interface PushPop<G, S> extends Streamable<G> {
 
@@ -101,6 +102,14 @@ public interface PushPop<G, S> extends Streamable<G> {
         return StringUtils.join("< ", ", ", " >", stream().map(G::toString));
     }
 
+    /**
+     * A Pushpop backed by an ArrayWrapper
+     * 
+     * @param G the type returned by get methods
+     * @param S the type consumed by set methods
+     * @param A the type of the wrapped array
+     * @version 7/2/23
+     */
     static abstract class Array<G extends S, S, A> implements PushPop<G, S> {
 
         protected final ArrayWrapper<G, S, A> array;
