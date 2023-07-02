@@ -24,7 +24,7 @@ public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, 
 
     static abstract class Int<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
 
-        public Int(A array) {
+        Int(A array) {
             super(array);
         }
 
@@ -37,7 +37,7 @@ public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, 
 
     static abstract class Flt<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
 
-        public Flt(A array) {
+        Flt(A array) {
             super(array);
         }
 

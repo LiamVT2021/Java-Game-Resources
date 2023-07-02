@@ -100,7 +100,7 @@ public interface ArrayWrapper<G extends S, S, A> extends Streamable<G> {
         return StringUtils.join(prefix, delim, suffix, stream().map(G::toString));
     }
 
-    public static abstract class ADT<G extends S, S, A> implements ArrayWrapper<G, S, A> {
+    static abstract class ADT<G extends S, S, A> implements ArrayWrapper<G, S, A> {
 
         protected final A array;
 
