@@ -5,6 +5,15 @@ import java.util.Iterator;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
+/**
+ * A PushPop data structure that maintains a top element by bianary tree
+ * sorting.
+ * 
+ * @param G the type returned by get methods
+ * @param S the type consumed by set methods
+ * @param A the type of the wrapped array
+ * @version 7/2/23
+ */
 public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
     private final BiPredicate<S, S> belongsAbove;
@@ -45,11 +54,17 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
         return true;
     }
 
+    /**
+     * @return the top element in the Heap, null if empty.
+     */
     @Override
     public G peek() {
         return isEmpty() ? null : array.get(0);
     }
 
+    /**
+     * Removes the top element from the Heap.
+     */
     @Override
     public G pop() {
         if (isEmpty())
