@@ -1,8 +1,8 @@
 package common.pushPop;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import common.util.Streamable;
 import common.util.StringUtils;
@@ -27,11 +27,20 @@ public interface PushPop<G, S> extends Streamable<G> {
         return this;
     }
 
-    default Stream<G> empty() {
-        Stream.Builder<G> builder = Stream.builder();
-        while (!isEmpty())
-            builder.accept(pop());
-        return builder.build();
+    default Streamable<G> empty() {
+        return () -> new Iterator<G>() {
+
+            @Override
+            public boolean hasNext() {
+                return !isEmpty();
+            }
+
+            @Override
+            public G next() {
+                return pop();
+            }
+
+        };
     }
 
     default String preview() {
