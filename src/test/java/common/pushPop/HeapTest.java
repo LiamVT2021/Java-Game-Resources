@@ -82,6 +82,7 @@ public class HeapTest {
 
     @Test
     public void testEdge() {
+        assertEquals("->", numMin.display());
         forAll(heap -> {
             assertFalse(heap.push(null));
             assertNull(heap.peek());
@@ -89,6 +90,7 @@ public class HeapTest {
             assertEquals(5, heap.swap(5).intValue());
         });
         fill();
+        assertEquals("-> 2\n3, 9\n7, 11, 13", numMin.display());
         forAll(heap -> assertFalse(heap.push(5)));
     }
 

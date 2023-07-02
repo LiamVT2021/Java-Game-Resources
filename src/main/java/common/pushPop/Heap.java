@@ -3,7 +3,6 @@ package common.pushPop;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.BiPredicate;
-import java.util.stream.Stream;
 
 /**
  * A PushPop data structure that maintains a top element by bianary tree
@@ -107,14 +106,6 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
             array.set(t, value);
             return ret;
         }
-    }
-
-    @Override
-    public Stream<G> stream() {
-        Stream.Builder<G> builder = Stream.builder();
-        for (int i = size - 1; i >= 0; i--)
-            builder.accept(array.get(i));
-        return builder.build();
     }
 
     @Override
