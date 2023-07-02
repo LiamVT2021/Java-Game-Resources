@@ -4,9 +4,10 @@ import java.util.Collection;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import common.util.Streamable;
 import common.util.StringUtils;
 
-public interface PushPop<G, S> {
+public interface PushPop<G, S> extends Streamable<G> {
 
     boolean isEmpty();
 
@@ -32,11 +33,6 @@ public interface PushPop<G, S> {
             builder.accept(pop());
         return builder.build();
     }
-
-    /**
-     * @return a stream of the stored values, without removing them
-     */
-    Stream<G> stream();
 
     default String preview() {
         return "Peek: " + peek();

@@ -1,6 +1,6 @@
 package common.pushPop;
 
-import java.util.stream.Stream;
+import java.util.Iterator;
 
 public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
@@ -12,8 +12,12 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
     private G next(boolean remove) {
         G ret = remove ? array.remove(next) : array.get(next);
-        next = (next + 1) % array.capacity();
+        next = nextIndex(next);
         return ret;
+    }
+
+    private int nextIndex(int next) {
+        return (next + 1) % array.capacity();
     }
 
     private void insert(S value) {
@@ -61,13 +65,25 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     @Override
-    public Stream<G> stream() {
-        int start = next;
-        Stream.Builder<G> builder = Stream.builder();
-        for (int i = 0; i < size; i++)
-            builder.accept(next(false));
-        next = start;
-        return builder.build();
+    public Iterator<G> iterator() {
+        return new Iterator<G>() {
+
+            private int s = 0, i = next;
+
+            @Override
+            public boolean hasNext() {
+                return s < size;
+            }
+
+            @Override
+            public G next() {
+                G ret = array.get(i);
+                s++;
+                i = nextIndex(i);
+                return ret;
+            }
+
+        };
     }
 
     public static class Gen<V> extends Queue<V, V, V[]> {

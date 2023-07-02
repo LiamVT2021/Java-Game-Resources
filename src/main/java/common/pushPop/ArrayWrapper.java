@@ -1,8 +1,8 @@
 package common.pushPop;
 
 import java.util.Iterator;
-import java.util.stream.Stream;
 
+import common.util.Streamable;
 import common.util.StringUtils;
 
 /**
@@ -13,7 +13,7 @@ import common.util.StringUtils;
  * @param A the type of the wrapped array
  * @version 6/30/23
  */
-public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
+public interface ArrayWrapper<G extends S, S, A> extends Streamable<G> {
 
     /**
      * @return the unwrapped array
@@ -82,11 +82,6 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
         };
     }
-
-    /**
-     * @return a Stream of the values in the array
-     */
-    Stream<G> stream();
 
     /**
      * @param prefix characters at the begining of merged string

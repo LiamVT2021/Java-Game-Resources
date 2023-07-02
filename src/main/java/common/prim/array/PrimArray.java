@@ -1,7 +1,5 @@
 package common.prim.array;
 
-import java.util.stream.Stream;
-
 import common.pushPop.ArrayWrapper;
 
 /**
@@ -12,13 +10,6 @@ import common.pushPop.ArrayWrapper;
  * @version 6/29/23
  */
 public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A> {
-
-    @Override
-    default Stream<N> stream() {
-        Stream.Builder<N> builder = Stream.builder();
-        forEach(builder);
-        return builder.build();
-    }
 
     @Override
     default N remove(int index) {
