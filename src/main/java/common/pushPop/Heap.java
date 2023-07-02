@@ -121,21 +121,7 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
     @Override
     public Iterator<G> iterator() {
-        return new Iterator<G>() {
-
-            private int i = 0;
-
-            @Override
-            public boolean hasNext() {
-                return i < size;
-            }
-
-            @Override
-            public G next() {
-                return array.get(i++);
-            }
-
-        };
+        return array.iterator(size);
     }
 
     public static class Gen<V> extends Heap<V, V, V[]> {
