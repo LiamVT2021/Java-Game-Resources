@@ -91,6 +91,7 @@ public class HeapTest {
         });
         fill();
         assertEquals("-> 2\n3, 9\n7, 11, 13", numMin.display());
+        assertEquals(45, numMax.stream().mapToInt(Number::intValue).sum());
         forAll(heap -> assertFalse(heap.push(5)));
     }
 
