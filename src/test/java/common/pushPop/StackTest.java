@@ -49,7 +49,7 @@ public class StackTest {
         fill();
         assertEquals("[ 0, 1, 2, 3, 4 ]", numStack.arrayString());
         forAll(stack -> assertArrayEquals(new int[] { 4, 3, 2, 1, 0 },
-                stack.empty().stream().mapToInt(n -> n.intValue()).toArray()));
+                stack.empty().mapToInt(n -> n.intValue()).toArray()));
     }
 
     @Test

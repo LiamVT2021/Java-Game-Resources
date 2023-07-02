@@ -3,6 +3,7 @@ package common.pushPop;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import common.util.Streamable;
 import common.util.StringUtils;
@@ -27,7 +28,7 @@ public interface PushPop<G, S> extends Streamable<G> {
         return this;
     }
 
-    default Streamable<G> empty() {
+    default Streamable<G> popIt() {
         return () -> new Iterator<G>() {
 
             @Override
@@ -41,6 +42,10 @@ public interface PushPop<G, S> extends Streamable<G> {
             }
 
         };
+    }
+
+    default Stream<G> empty() {
+        return popIt().stream();
     }
 
     default String preview() {

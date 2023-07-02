@@ -75,9 +75,9 @@ public class HeapTest {
         fill();
         forAll(heap -> assertEquals(heap.peek(), heap.swap(5)));
         forMin(min -> assertArrayEquals(new int[] { 3, 5, 7, 9, 11, 13 },
-                min.empty().stream().mapToInt(n -> n.intValue()).toArray()));
+                min.empty().mapToInt(n -> n.intValue()).toArray()));
         forMax(max -> assertArrayEquals(new int[] { 11, 9, 7, 5, 3, 2 },
-                max.empty().stream().mapToInt(n -> n.intValue()).toArray()));
+                max.empty().mapToInt(n -> n.intValue()).toArray()));
     }
 
     @Test
