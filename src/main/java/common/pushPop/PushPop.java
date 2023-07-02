@@ -103,7 +103,7 @@ public interface PushPop<G, S> extends Streamable<G> {
     }
 
     /**
-     * A Pushpop backed by an ArrayWrapper.
+     * A PushPop backed by an ArrayWrapper.
      * 
      * @param G the type returned by get methods
      * @param S the type consumed by set methods
