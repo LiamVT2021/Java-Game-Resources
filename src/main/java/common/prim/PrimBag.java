@@ -2,9 +2,9 @@ package common.prim;
 
 import common.prim.array.*;
 import common.pushPop.ArrayWrapper;
-import common.pushPop.Queue;
+import common.pushPop.Bag;
 
-public abstract class PrimBag<N extends Number, A> extends Queue<N, Number, A> {
+public abstract class PrimBag<N extends Number, A> extends Bag<N, Number, A> {
 
     private PrimBag(ArrayWrapper<N, Number, A> array) {
         super(array);
