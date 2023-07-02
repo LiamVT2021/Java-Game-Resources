@@ -9,7 +9,7 @@ import common.util.Streamable;
 import common.util.StringUtils;
 
 /**
- * A data structure with push, pop, peek, and swap methods
+ * A data structure with push, pop, peek, and swap methods.
  * 
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
@@ -22,37 +22,37 @@ public interface PushPop<G, S> extends Streamable<G> {
     boolean isFull();
 
     /**
-     * Attempts to insert the value into the structure
+     * Attempts to insert the value into the structure.
      * 
      * @return False if value is null or the structure is full
      */
     boolean push(S value);
 
     /**
-     * @return the next element in the data structure, null if empty
+     * @return the next element in the data structure, null if empty.
      */
     G peek();
 
     /**
-     * Removes an element from the data structure
+     * Removes an element from the data structure.
      * 
-     * @return the removed element, null if empty
+     * @return the removed element, null if empty.
      */
     G pop();
 
     /**
-     * Inserts and removes elements at the same time
+     * Inserts and removes elements at the same time.
      * 
      * @param value the new element
-     * @return the removed element, value if empty, null if value is null
+     * @return the removed element, value if empty, null if value is null.
      */
     G swap(S value);
 
     /**
-     * Pushes elements until the data structure is full
+     * Pushes elements until the data structure is full.
      * 
      * @param supplier a method suppling new elements
-     * @return this data structure, for the purpose of chaining
+     * @return this data structure, for the purpose of chaining.
      */
     default PushPop<G, S> fill(Supplier<S> supplier) {
         while (!isFull())
@@ -80,7 +80,7 @@ public interface PushPop<G, S> extends Streamable<G> {
     }
 
     /**
-     * pops all the elements in the data structure
+     * pops all the elements in the data structure.
      * 
      * @return a Stream of the removed elements
      */
@@ -103,7 +103,7 @@ public interface PushPop<G, S> extends Streamable<G> {
     }
 
     /**
-     * A Pushpop backed by an ArrayWrapper
+     * A Pushpop backed by an ArrayWrapper.
      * 
      * @param G the type returned by get methods
      * @param S the type consumed by set methods
@@ -138,9 +138,9 @@ public interface PushPop<G, S> extends Streamable<G> {
         }
 
         /**
-         * Attempts to push a Collection of values
+         * Attempts to push a Collection of values.
          * 
-         * @return False if there is not enough room, or any of the values are null
+         * @return False if there is not enough room, or any of the values are null.
          */
         public boolean pushAll(Collection<S> values) {
             if (values.size() > capacity() - size() || values.stream().anyMatch(v -> v == null))
@@ -155,7 +155,7 @@ public interface PushPop<G, S> extends Streamable<G> {
         }
 
         /**
-         * @return a string of raw values stored in the array.
+         * @return a String of raw values stored in the array
          */
         public String arrayString() {
             return array.toString();

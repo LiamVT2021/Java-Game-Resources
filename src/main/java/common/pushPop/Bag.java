@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * A PushPop data structure that removes elements by random
+ * A PushPop data structure that removes elements by random.
  * 
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
@@ -32,7 +32,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     /**
-     * @return a random element from the bag, null if empty
+     * @return a random element from the Bag, null if empty.
      */
     @Override
     public G peek() {
@@ -40,7 +40,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     /**
-     * removes a random element from the bag
+     * Removes a random element from the Bag.
      */
     @Override
     public G pop() {
@@ -65,7 +65,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     /**
-     * A Bag containing Objects removed by random draw
+     * A Bag containing Objects removed by random draw.
      * 
      * @param V the type of the objects in the bag
      */
