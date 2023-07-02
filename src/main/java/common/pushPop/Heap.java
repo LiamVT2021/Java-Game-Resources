@@ -103,7 +103,7 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     @Override
-    public String backString() {
+    public String display() {
         if (isEmpty())
             return "->";
         StringBuilder str = new StringBuilder("-> " + array.get(0));

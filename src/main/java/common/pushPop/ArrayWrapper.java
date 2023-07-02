@@ -69,14 +69,17 @@ public interface ArrayWrapper<G extends S, S, A> extends Streamable<G> {
         return iterator(capacity());
     }
 
-    default Iterator<G> iterator(int cap) {
+    /**
+     * @param size how many elements will be returned by this iterator
+     */
+    default Iterator<G> iterator(int size) {
         return new Iterator<G>() {
 
             private int i;
 
             @Override
             public boolean hasNext() {
-                return i < cap;
+                return i < size;
             }
 
             @Override
