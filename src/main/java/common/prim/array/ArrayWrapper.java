@@ -9,10 +9,10 @@ import common.util.StringUtils;
 /**
  * Wrapper interface around an array.
  * 
- * @param G the type returned by get methods
- * @param S the type consumed by set methods
- * @param A the type of the wrapped array
- * @version 7/11/23
+ * @param <G> the type returned by get methods
+ * @param <S> the type consumed by set methods
+ * @param <A> the type of the wrapped array
+ * @version 7/12/23
  */
 public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
