@@ -2,8 +2,6 @@ package common.prim.array;
 
 import java.util.stream.Stream;
 
-import common.pushPop.ArrayWrapper;
-
 /**
  * Wrapper interface around an array of primitive numbers.
  * 
