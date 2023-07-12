@@ -1,6 +1,7 @@
 package common.prim.array;
 
 import java.util.Iterator;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import common.util.StringUtils;
@@ -11,7 +12,7 @@ import common.util.StringUtils;
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
  * @param A the type of the wrapped array
- * @version 6/30/23
+ * @version 7/11/23
  */
 public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
@@ -30,6 +31,22 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
      * @throws IndexOutOfBoundsException if index out of bounds
      */
     G get(int index);
+
+    /**
+     * @return A Stream of values retrieved from the corresponding indexes
+     * @throws IndexOutOfBoundsException if any index is out of bounds
+     */
+    default Stream<G> get(int... indexes) {
+        return get(IntStream.of(indexes));
+    }
+
+    /**
+     * @return A Stream of values retrieved from the corresponding indexes
+     * @throws IndexOutOfBoundsException if any index is out of bounds
+     */
+    default Stream<G> get(IntStream indexes) {
+        return indexes.mapToObj(this::get);
+    }
 
     /**
      * removes the value stored at this index if possible
