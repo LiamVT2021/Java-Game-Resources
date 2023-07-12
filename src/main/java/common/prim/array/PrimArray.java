@@ -5,8 +5,8 @@ import java.util.stream.Stream;
 /**
  * Wrapper interface around an array of primitive numbers.
  * 
- * @param N the type of numbers returned by get methods.
- * @param A the type of the wrapped array.
+ * @param <N> the type of numbers returned by get methods.
+ * @param <A> the type of the wrapped array.
  * @version 6/29/23
  */
 public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A> {
