@@ -64,11 +64,6 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
         return array.iterator(size);
     }
 
-    /**
-     * A Bag containing Objects removed by random draw.
-     * 
-     * @param V the type of the objects in the bag
-     */
     public static class Gen<V> extends Bag<V, V, V[]> {
 
         public Gen(V[] array) {

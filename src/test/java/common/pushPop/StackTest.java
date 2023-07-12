@@ -47,7 +47,9 @@ public class StackTest {
     @Test
     public void testRev() {
         fill();
-        assertEquals("[ 0, 1, 2, 3, 4 ]", numStack.arrayString());
+        assertEquals("Peek: 4\n 5 / 5\n" + //
+                "[ 0, 1, 2, 3, 4 ]\n" + //
+                "< 4, 3, 2, 1, 0 >", numStack.toString());
         forAll(stack -> assertArrayEquals(new int[] { 4, 3, 2, 1, 0 },
                 stack.empty().mapToInt(n -> n.intValue()).toArray()));
     }

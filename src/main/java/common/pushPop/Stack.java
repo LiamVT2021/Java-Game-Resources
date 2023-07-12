@@ -44,7 +44,7 @@ public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
             @Override
             public G next() {
-                return array.get(i);
+                return array.get(i--);
             }
 
         };
