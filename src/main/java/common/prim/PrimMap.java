@@ -48,7 +48,7 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
     }
 
     /**
-     * Stores value at key
+     * Stores value at key.
      * 
      * @throws IndexOutOfBoundsException if invalid key
      */
@@ -57,8 +57,8 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
     }
 
     /**
-     * performs a set and get at the same time
-     * Stores value at key
+     * Performs a set and get at the same time.
+     * Stores value at key.
      * 
      * @return the value that was stored at key
      * @throws IndexOutOfBoundsException if invalid key
