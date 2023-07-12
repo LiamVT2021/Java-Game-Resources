@@ -43,7 +43,7 @@ public class ArrayWrapperTest {
     @ParameterizedTest
     @MethodSource("full")
     public void testGet(ArrayWrapper<? extends Number, Number, ?> array) {
-        assertArrayEquals(new int[]{0,2,4}, array.get(0,2,4).mapToInt(Number::intValue).toArray());
+        assertArrayEquals(new int[] { 0, 2, 4 }, array.get(0, 2, 4).mapToInt(Number::intValue).toArray());
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(arrSize));
     }
@@ -60,9 +60,10 @@ public class ArrayWrapperTest {
     @ParameterizedTest
     @MethodSource("full")
     public void testToString(ArrayWrapper<? extends Number, Number, ?> array) {
-        assertEquals(array instanceof PrimArray && ((PrimArray<?, ?>) array).storesFloat()
-                ? "[ 0.0, 1.0, 2.0, 3.0, 4.0 ]"
-                : "[ 0, 1, 2, 3, 4 ]",
+        assertEquals(array.getClass().getSimpleName() + ": "
+                + (array instanceof PrimArray && ((PrimArray<?, ?>) array).storesFloat()
+                        ? "[ 0.0, 1.0, 2.0, 3.0, 4.0 ]"
+                        : "[ 0, 1, 2, 3, 4 ]"),
                 array.toString());
     }
 
@@ -81,7 +82,7 @@ public class ArrayWrapperTest {
         for (Number n : numArr)
             assertEquals(0, n);
         numArr.remove(2);
-        assertEquals("[ 0, 0, null, 0, 0 ]", numArr.toString());
+        assertEquals("[ 0, 0, null, 0, 0 ]", numArr.arrayString());
     }
 
     @ParameterizedTest

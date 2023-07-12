@@ -115,6 +115,14 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
         return StringUtils.join(prefix, delim, suffix, stream().map(G::toString));
     }
 
+    /**
+     * @return String of elements of this array
+     *         with format "[ a, b, c, d, e ]"
+     */
+    default String arrayString() {
+        return toString("[ ", ", ", " ]");
+    }
+
     public static abstract class ADT<G extends S, S, A> implements ArrayWrapper<G, S, A> {
 
         protected final A array;
@@ -128,13 +136,13 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
             return array;
         }
 
-        @Override
         /**
-         * @return string of elements of this array
-         *         with format "[ a, b, c, d, e ]"
+         * @return String representation of this array
+         *         with format "className: [ a, b, c, d, e ]"
          */
+        @Override
         public String toString() {
-            return toString("[ ", ", ", " ]");
+            return this.getClass().getSimpleName() + ": " + arrayString();
         }
 
     }
