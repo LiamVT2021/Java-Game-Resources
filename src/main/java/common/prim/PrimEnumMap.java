@@ -15,50 +15,49 @@ public interface PrimEnumMap<E extends Enum<E>, N extends Number, A> extends Pri
         return key.ordinal();
     }
 
-    static class Byte<E extends Enum<E>> extends PrimMap.Byte<E> implements PrimEnumMap<E, java.lang.Byte, byte[]> {
+    static class ByteEnumMap<E extends Enum<E>> extends ByteMap<E> implements PrimEnumMap<E, Byte, byte[]> {
 
-        public Byte(Class<E> clazz) {
+        public ByteEnumMap(Class<E> clazz) {
             super(clazz.getEnumConstants().length);
         }
 
     }
 
-    static class Short<E extends Enum<E>> extends PrimMap.Short<E> implements PrimEnumMap<E, java.lang.Short, short[]> {
+    static class ShortEnumMap<E extends Enum<E>> extends ShortMap<E> implements PrimEnumMap<E, Short, short[]> {
 
-        public Short(Class<E> clazz) {
+        public ShortEnumMap(Class<E> clazz) {
             super(clazz.getEnumConstants().length);
         }
 
     }
 
-    static class Int<E extends Enum<E>> extends PrimMap.Int<E> implements PrimEnumMap<E, Integer, int[]> {
+    static class IntEnumMap<E extends Enum<E>> extends IntMap<E> implements PrimEnumMap<E, Integer, int[]> {
 
-        public Int(Class<E> clazz) {
+        public IntEnumMap(Class<E> clazz) {
             super(clazz.getEnumConstants().length);
         }
 
     }
 
-    static class Long<E extends Enum<E>> extends PrimMap.Long<E> implements PrimEnumMap<E, java.lang.Long, long[]> {
+    static class LongEnumMap<E extends Enum<E>> extends LongMap<E> implements PrimEnumMap<E, Long, long[]> {
 
-        public Long(Class<E> clazz) {
+        public LongEnumMap(Class<E> clazz) {
             super(clazz.getEnumConstants().length);
         }
 
     }
 
-    static class Float<E extends Enum<E>> extends PrimMap.Float<E> implements PrimEnumMap<E, java.lang.Float, float[]> {
+    static class FloatEnumMap<E extends Enum<E>> extends FloatMap<E> implements PrimEnumMap<E, Float, float[]> {
 
-        public Float(Class<E> clazz) {
+        public FloatEnumMap(Class<E> clazz) {
             super(clazz.getEnumConstants().length);
         }
 
     }
 
-    static class Double<E extends Enum<E>> extends PrimMap.Double<E>
-            implements PrimEnumMap<E, java.lang.Double, double[]> {
+    static class DoubleEnumMap<E extends Enum<E>> extends DoubleMap<E> implements PrimEnumMap<E, Double, double[]> {
 
-        public Double(Class<E> clazz) {
+        public DoubleEnumMap(Class<E> clazz) {
             super(clazz.getEnumConstants().length);
         }
 

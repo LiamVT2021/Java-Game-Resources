@@ -110,49 +110,49 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
         return map(keys, (k, v) -> k + ": " + v).collect(Collectors.joining("\n"));
     }
 
-    static abstract class Byte<K> extends ByteArray implements PrimMap<K, java.lang.Byte, byte[]> {
+    static abstract class ByteMap<K> extends ByteArray implements PrimMap<K, Byte, byte[]> {
 
-        public Byte(int size) {
+        public ByteMap(int size) {
             super(size);
         }
 
     }
 
-    static abstract class Short<K> extends ShortArray implements PrimMap<K, java.lang.Short, short[]> {
+    static abstract class ShortMap<K> extends ShortArray implements PrimMap<K, Short, short[]> {
 
-        public Short(int size) {
+        public ShortMap(int size) {
             super(size);
         }
 
     }
 
-    static abstract class Int<K> extends IntArray implements PrimMap<K, Integer, int[]> {
+    static abstract class IntMap<K> extends IntArray implements PrimMap<K, Integer, int[]> {
 
-        public Int(int size) {
+        public IntMap(int size) {
             super(size);
         }
 
     }
 
-    static abstract class Long<K> extends LongArray implements PrimMap<K, java.lang.Long, long[]> {
+    static abstract class LongMap<K> extends LongArray implements PrimMap<K, Long, long[]> {
 
-        public Long(int size) {
+        public LongMap(int size) {
             super(size);
         }
 
     }
 
-    static abstract class Float<K> extends FloatArray implements PrimMap<K, java.lang.Float, float[]> {
+    static abstract class FloatMap<K> extends FloatArray implements PrimMap<K, Float, float[]> {
 
-        public Float(int size) {
+        public FloatMap(int size) {
             super(size);
         }
 
     }
 
-    static abstract class Double<K> extends DoubleArray implements PrimMap<K, java.lang.Double, double[]> {
+    static abstract class DoubleMap<K> extends DoubleArray implements PrimMap<K, Double, double[]> {
 
-        public Double(int size) {
+        public DoubleMap(int size) {
             super(size);
         }
 

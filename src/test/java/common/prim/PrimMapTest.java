@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static common.prim.PrimEnumMap.*;
+
 /**
  * Tests all the methods in the PrimMap interface using PrimEnumMap.
  * 
@@ -20,9 +22,9 @@ public class PrimMapTest {
     }
 
     private static Stream<PrimMap<Type, ? extends Number, ?>> allMaps() {
-        return Stream.of(new PrimEnumMap.Byte<>(Type.class), new PrimEnumMap.Short<>(Type.class),
-                new PrimEnumMap.Int<>(Type.class), new PrimEnumMap.Long<>(Type.class),
-                new PrimEnumMap.Float<>(Type.class), new PrimEnumMap.Double<>(Type.class));
+        return Stream.of(new ByteEnumMap<>(Type.class), new ShortEnumMap<>(Type.class),
+                new IntEnumMap<>(Type.class), new LongEnumMap<>(Type.class),
+                new FloatEnumMap<>(Type.class), new DoubleEnumMap<>(Type.class));
     }
 
     @ParameterizedTest
