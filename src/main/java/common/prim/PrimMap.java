@@ -1,5 +1,9 @@
 package common.prim;
 
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import common.prim.array.*;
 
 /**
@@ -23,6 +27,15 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
         return get(indexOf(key));
     }
 
+    @SuppressWarnings("unchecked")
+    default Stream<V> get(K... keys) {
+        return get(Stream.of(keys));
+    }
+
+    default Stream<V> get(Stream<K> keys) {
+        return keys.map(this::get);
+    }
+
     /**
      * Stores value at key
      * 
@@ -44,6 +57,24 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
         V ret = get(index);
         set(index, value);
         return ret;
+    }
+
+    @SuppressWarnings("unchecked")
+    default <R> Stream<R> map(BiFunction<K, V, R> func, K... keys) {
+        return map(Stream.of(keys), func);
+    }
+
+    default <R> Stream<R> map(Stream<K> keys, BiFunction<K, V, R> func) {
+        return keys.map(key -> func.apply(key, get(key)));
+    }
+
+    @SuppressWarnings("unchecked")
+    default String mapString(K... keys) {
+        return mapString(Stream.of(keys));
+    }
+
+    default String mapString(Stream<K> keys) {
+        return map(keys, (k, v) -> k + ": " + v).collect(Collectors.joining("\n"));
     }
 
     static abstract class Byte<K> extends ByteArray implements PrimMap<K, java.lang.Byte, byte[]> {
