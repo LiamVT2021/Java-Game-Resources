@@ -2,32 +2,35 @@ package common.prim;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class PrimEnumMapTest {
 
-    private enum Type {
+    private static enum Type {
         A, B, C
     }
 
-    private PrimEnumMap<Type, Integer, int[]> map;
-
-    @BeforeEach
-    private void setUp() {
-        map = new PrimEnumMap.Int<>(Type.class);
+    private static Stream<PrimMap<Type, ? extends Number, ?>> allMaps() {
+        return Stream.of(new PrimEnumMap.Byte<>(Type.class), new PrimEnumMap.Short<>(Type.class),
+                new PrimEnumMap.Int<>(Type.class), new PrimEnumMap.Long<>(Type.class),
+                new PrimEnumMap.Float<>(Type.class), new PrimEnumMap.Double<>(Type.class));
     }
 
-    @Test
-    public void testSet() {
+    @ParameterizedTest
+    @MethodSource("allMaps")
+    public void testSet(PrimEnumMap<Type, Number, ?> map) {
         map.set(Type.B, 4);
-        assertEquals(4, map.get(Type.B));
+        assertEquals(4, map.get(Type.B).intValue());
     }
 
-    @Test
-    public void testSwap() {
-        assertEquals(0, map.swap(Type.A, 3));
-        assertEquals(3, map.get(Type.A));
+    @ParameterizedTest
+    @MethodSource("allMaps")
+    public void testSwap(PrimEnumMap<Type, Number, ?> map) {
+        assertEquals(0, map.swap(Type.A, 3).intValue());
+        assertEquals(3, map.get(Type.A).intValue());
     }
 
 }
