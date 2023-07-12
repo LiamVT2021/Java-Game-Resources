@@ -9,7 +9,7 @@ import common.prim.array.*;
 /**
  * Using an indexOf method, allows use of PrimArray as a map.
  * 
- * @version 6/27/23
+ * @version 7/12/23
  */
 public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
 
@@ -20,18 +20,26 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
     int indexOf(K key);
 
     /**
-     * @return the values stored at key
+     * @return the value stored at key
      * @throws IndexOutOfBoundsException if invalid key
      */
     default V get(K key) {
         return get(indexOf(key));
     }
 
+    /**
+     * @return the values stored at keys
+     * @throws IndexOutOfBoundsException if any invalid keys
+     */
     @SuppressWarnings("unchecked")
     default Stream<V> get(K... keys) {
         return get(Stream.of(keys));
     }
 
+    /**
+     * @return the values stored at keys
+     * @throws IndexOutOfBoundsException if any invalid keys
+     */
     default Stream<V> get(Stream<K> keys) {
         return keys.map(this::get);
     }
