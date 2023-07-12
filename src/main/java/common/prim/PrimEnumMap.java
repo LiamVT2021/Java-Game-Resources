@@ -1,5 +1,13 @@
 package common.prim;
 
+/**
+ * Implements PrimMap using the Enum's ordinal method as the index.
+ * 
+ * @param <E> the type of the keys
+ * @param <V> the type of the values
+ * @param <A> the type of the wrapped array
+ * @version 7/12/23
+ */
 public interface PrimEnumMap<E extends Enum<E>, N extends Number, A> extends PrimMap<E, N, A> {
 
     @Override

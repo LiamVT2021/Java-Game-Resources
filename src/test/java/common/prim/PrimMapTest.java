@@ -8,6 +8,11 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+/**
+ * Tests all the methods in the PrimMap interface using PrimEnumMap.
+ * 
+ * @version 7/12/23
+ */
 public class PrimMapTest {
 
     private static enum Type {
