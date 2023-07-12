@@ -3,6 +3,7 @@ package old.heap;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.IntFunction;
+import java.util.function.IntUnaryOperator;
 
 import old.util.Math;
 
