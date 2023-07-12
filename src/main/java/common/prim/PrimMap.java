@@ -67,20 +67,42 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
         return ret;
     }
 
+    /**
+     * @param <R>  the type of returned objects
+     * @param func a BiFunction for mapping key value pairs into returned objects
+     * @return A Stream of returned objects
+     * @throws IndexOutOfBoundsException if any invalid keys
+     */
     @SuppressWarnings("unchecked")
     default <R> Stream<R> map(BiFunction<K, V, R> func, K... keys) {
         return map(Stream.of(keys), func);
     }
 
+    /**
+     * @param <R>  the type of returned objects
+     * @param func a BiFunction for mapping key value pairs into returned objects
+     * @return A Stream of returned objects
+     * @throws IndexOutOfBoundsException if any invalid keys
+     */
     default <R> Stream<R> map(Stream<K> keys, BiFunction<K, V, R> func) {
         return keys.map(key -> func.apply(key, get(key)));
     }
 
+    /**
+     * @return A String representation of specified key value pairs
+     *         with format "Key: Value"
+     * @throws IndexOutOfBoundsException if any invalid keys
+     */
     @SuppressWarnings("unchecked")
     default String mapString(K... keys) {
         return mapString(Stream.of(keys));
     }
 
+    /**
+     * @return A String representation of specified key value pairs
+     *         with format "Key: Value"
+     * @throws IndexOutOfBoundsException if any invalid keys
+     */
     default String mapString(Stream<K> keys) {
         return map(keys, (k, v) -> k + ": " + v).collect(Collectors.joining("\n"));
     }
