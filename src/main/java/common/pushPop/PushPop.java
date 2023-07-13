@@ -158,7 +158,7 @@ public interface PushPop<G, S> extends Streamable<G> {
          * @return a String of raw values stored in the array
          */
         public String arrayString() {
-            return array.toString();
+            return array.arrayString();
         }
 
         @Override
