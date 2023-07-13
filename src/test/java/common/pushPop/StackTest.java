@@ -5,69 +5,50 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import common.prim.PrimStack;
 
 public class StackTest {
 
-    private Stack.Gen<Number> numStack;
-    private PrimStack.Byte byteStack;
-    private PrimStack.Short shortStack;
-    private PrimStack.Int intStack;
-    private PrimStack.Long longStack;
-    private PrimStack.Float floatStack;
-    private PrimStack.Double doubleStack;
-
     private static final int arrSize = 5;
 
-    @BeforeEach
-    private void setUp() {
-        numStack = new Stack.Gen<>(new Number[arrSize]);
-        byteStack = new PrimStack.Byte(arrSize);
-        shortStack = new PrimStack.Short(arrSize);
-        intStack = new PrimStack.Int(arrSize);
-        longStack = new PrimStack.Long(arrSize);
-        floatStack = new PrimStack.Float(arrSize);
-        doubleStack = new PrimStack.Double(arrSize);
+    private static Stream<Stack<? extends Number, Number, ?>> allStacks() {
+        return Stream.of(new Stack.Gen<>(new Number[arrSize]),
+                new PrimStack.Byte(arrSize), new PrimStack.Short(arrSize), new PrimStack.Int(arrSize),
+                new PrimStack.Long(arrSize), new PrimStack.Float(arrSize), new PrimStack.Double(arrSize));
     }
 
-    private void forAll(Consumer<Stack<? extends Number, Number, ?>> consumer) {
-        Stream.of(numStack, byteStack, shortStack, intStack, longStack, floatStack, doubleStack).forEach(consumer);
+    @ParameterizedTest
+    @MethodSource("allStacks")
+    public void testRev(Stack<? extends Number, Number, ?> stack) {
+        assertArrayEquals(new int[] { 4, 3, 2, 1, 0 },
+                stack.fill(stack::size).empty().mapToInt(n -> n.intValue()).toArray());
     }
 
-    private void fill() {
-        forAll(stack -> stack.fill(stack::size));
+    @ParameterizedTest
+    @MethodSource("allStacks")
+    public void testEdge(Stack<? extends Number, Number, ?> stack) {
+        assertFalse(stack.push(null));
+        assertNull(stack.peek());
+        assertNull(stack.pop());
+        assertEquals(5, stack.swap(5).intValue());
+        stack.fill(stack::size);
+        assertFalse(stack.push(5));
+        assertEquals(4, stack.swap(5).intValue());
+        assertEquals(5, stack.peek().intValue());
     }
 
     @Test
-    public void testRev() {
-        fill();
+    public void testToString() {
+        Stack.Gen<Number> stack = new Stack.Gen<>(new Number[arrSize]);
         assertEquals("Peek: 4\n 5 / 5\n" + //
                 "[ 0, 1, 2, 3, 4 ]\n" + //
-                "< 4, 3, 2, 1, 0 >", numStack.toString());
-        forAll(stack -> assertArrayEquals(new int[] { 4, 3, 2, 1, 0 },
-                stack.empty().mapToInt(n -> n.intValue()).toArray()));
-    }
-
-    @Test
-    public void testEdge() {
-        forAll(stack -> {
-            assertFalse(stack.push(null));
-            assertNull(stack.peek());
-            assertNull(stack.pop());
-            assertEquals(5, stack.swap(5).intValue());
-        });
-        fill();
-        forAll(stack -> {
-            assertFalse(stack.push(5));
-            assertEquals(4, stack.swap(5).intValue());
-            assertEquals(5, stack.peek().intValue());
-        });
+                "< 4, 3, 2, 1, 0 >", stack.fill(stack::size).toString());
     }
 
 }
