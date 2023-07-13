@@ -28,6 +28,6 @@ jobs:
           coverage_report_title: JaCoCo
           github_token: ${{ secrets.GITHUB_TOKEN }}
           skip_check_run: false
-          minimum_coverage: 18
+          minimum_coverage: 21
           fail_below_threshold: true
           publish_only_summary: false

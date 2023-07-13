@@ -1,6 +1,7 @@
 package common.prim.array;
 
 import java.util.Iterator;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import common.util.StringUtils;
@@ -8,10 +9,10 @@ import common.util.StringUtils;
 /**
  * Wrapper interface around an array.
  * 
- * @param G the type returned by get methods
- * @param S the type consumed by set methods
- * @param A the type of the wrapped array
- * @version 6/30/23
+ * @param <G> the type returned by get methods
+ * @param <S> the type consumed by set methods
+ * @param <A> the type of the wrapped array
+ * @version 7/12/23
  */
 public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
@@ -30,6 +31,22 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
      * @throws IndexOutOfBoundsException if index out of bounds
      */
     G get(int index);
+
+    /**
+     * @return A Stream of values retrieved from the corresponding indexes
+     * @throws IndexOutOfBoundsException if any index is out of bounds
+     */
+    default Stream<G> get(int... indexes) {
+        return get(IntStream.of(indexes));
+    }
+
+    /**
+     * @return A Stream of values retrieved from the corresponding indexes
+     * @throws IndexOutOfBoundsException if any index is out of bounds
+     */
+    default Stream<G> get(IntStream indexes) {
+        return indexes.mapToObj(this::get);
+    }
 
     /**
      * removes the value stored at this index if possible
@@ -98,6 +115,14 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
         return StringUtils.join(prefix, delim, suffix, stream().map(G::toString));
     }
 
+    /**
+     * @return String of elements of this array
+     *         with format "[ a, b, c, d, e ]"
+     */
+    default String arrayString() {
+        return toString("[ ", ", ", " ]");
+    }
+
     public static abstract class ADT<G extends S, S, A> implements ArrayWrapper<G, S, A> {
 
         protected final A array;
@@ -111,13 +136,13 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
             return array;
         }
 
-        @Override
         /**
-         * @return string of elements of this array
-         *         with format "[ a, b, c, d, e ]"
+         * @return String representation of this array
+         *         with format "className: [ a, b, c, d, e ]"
          */
+        @Override
         public String toString() {
-            return toString("[ ", ", ", " ]");
+            return this.getClass().getSimpleName() + ": " + arrayString();
         }
 
     }

@@ -6,7 +6,7 @@ import common.util.StringUtils;
 /**
  * Class for wrapping a generic array
  * 
- * @param V the generic type stored in this array
+ * @param <V> the generic type stored in this array
  * @version 6/30/23
  */
 public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
