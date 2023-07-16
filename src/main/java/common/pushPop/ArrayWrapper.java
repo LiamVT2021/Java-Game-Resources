@@ -91,8 +91,7 @@ public interface ArrayWrapper<G extends S, S, A> extends Streamable<G> {
      * @param size how many elements will be returned by this iterator
      */
     default Iterator<G> iterator(int size) {
-        return new Iterator<G>() {
-
+        return new Iterator<>() {
             private int i;
 
             @Override
@@ -104,7 +103,6 @@ public interface ArrayWrapper<G extends S, S, A> extends Streamable<G> {
             public G next() {
                 return get(i++);
             }
-
         };
     }
 
