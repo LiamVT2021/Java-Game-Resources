@@ -44,6 +44,7 @@ public class HeapTest {
     public void testSortMin(Heap<? extends Number, Number, ?> min) {
         fill(min);
         assertEquals(2, min.swap(5).intValue());
+        assertEquals(3, min.peek());
         assertArrayEquals(new int[] { 3, 5, 7, 9, 11, 13 },
                 min.empty().mapToInt(n -> n.intValue()).toArray());
     }
@@ -53,6 +54,7 @@ public class HeapTest {
     public void testSortMax(Heap<? extends Number, Number, ?> max) {
         fill(max);
         assertEquals(13, max.swap(5).intValue());
+        assertEquals(11, max.peek());
         assertArrayEquals(new int[] { 11, 9, 7, 5, 3, 2 },
                 max.empty().mapToInt(n -> n.intValue()).toArray());
     }
