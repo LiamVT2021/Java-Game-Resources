@@ -42,13 +42,15 @@ public class BagTest {
         IntBag bag = new IntBag(arrSize) {
             @Override
             protected int draw() {
-                return 2;
+                return size == 1 ? super.draw() : 2;
             }
         };
         assertNull(bag.peek());
         assertNull(bag.pop());
         assertNull(bag.swap(null));
         assertNull(bag.swap(arrSize));
+        bag.push(8);
+        assertEquals(8, bag.peek());
         fill(bag);
         assertEquals(2, bag.swap(6));
         assertEquals(6, bag.pop());
