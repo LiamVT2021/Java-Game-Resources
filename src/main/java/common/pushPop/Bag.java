@@ -28,10 +28,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
      */
     @Override
     public G remove() {
-        int i = peekIndex();
-        G ret = array.get(i);
-        array.set(i, array.remove(--size));
-        return ret;
+        return array.swap(peekIndex(), array.remove(--size));
     }
 
     @Override
