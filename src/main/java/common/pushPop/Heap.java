@@ -72,6 +72,8 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
     @Override
     public G swap(S value) {
+        if (value == null)
+            return pop();
         return isEmpty() ? array.cast(value) : heapDown(value);
     }
 

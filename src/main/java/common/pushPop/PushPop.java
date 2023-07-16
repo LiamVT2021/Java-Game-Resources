@@ -43,8 +43,8 @@ public interface PushPop<G, S> extends Streamable<G> {
     /**
      * Inserts and removes elements at the same time.
      * 
-     * @param value the new element
-     * @return the removed element, value if empty, null if value is null.
+     * @param value the new element, will perform pop if the value is null.
+     * @return the removed element, value if empty.
      */
     G swap(S value);
 

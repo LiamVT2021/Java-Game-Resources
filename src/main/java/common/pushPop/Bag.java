@@ -54,8 +54,8 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
     @Override
     public G swap(S value) {
         if (value == null)
-            return null;
-        return isEmpty() ? null : array.swap(draw(), value);
+            return pop();
+        return isEmpty() ? array.cast(value) : array.swap(draw(), value);
     }
 
     public static class GenBag<V> extends Bag<V, V, V[]> {

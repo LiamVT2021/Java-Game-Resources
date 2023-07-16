@@ -2,8 +2,6 @@ package common.pushPop;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static common.pushPop.Bag.GenBag;
 import static common.prim.PrimBag.*;
@@ -18,7 +16,7 @@ public class BagTest {
 
     private static final int arrSize = 5;
 
-    private static Stream<Bag<? extends Number, Number, ?>> allBags() {
+    static Stream<Bag<? extends Number, Number, ?>> allBags() {
         return Stream.of(new GenBag<>(new Number[arrSize]),
                 new ByteBag(arrSize), new ShortBag(arrSize), new IntBag(arrSize),
                 new LongBag(arrSize), new FloatBag(arrSize), new DoubleBag(arrSize));
@@ -30,10 +28,8 @@ public class BagTest {
 
     @ParameterizedTest
     @MethodSource("allBags")
-    public void testPush(Bag<? extends Number, Number, ?> bag) {
-        assertFalse(bag.push(null));
+    public void testFill(Bag<? extends Number, Number, ?> bag) {
         fill(bag);
-        assertFalse(bag.push(arrSize));
         assertArrayEquals(new int[] { 0, 1, 2, 3, 4 }, bag.stream().mapToInt(Number::intValue).toArray());
     }
 
@@ -45,10 +41,6 @@ public class BagTest {
                 return size == 1 ? super.draw() : 2;
             }
         };
-        assertNull(bag.peek());
-        assertNull(bag.pop());
-        assertNull(bag.swap(null));
-        assertNull(bag.swap(arrSize));
         bag.push(8);
         assertEquals(8, bag.peek());
         fill(bag);

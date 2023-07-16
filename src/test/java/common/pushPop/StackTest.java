@@ -2,8 +2,6 @@ package common.pushPop;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static common.pushPop.Stack.GenStack;
 import static common.prim.PrimStack.*;
@@ -18,7 +16,7 @@ public class StackTest {
 
     private static final int arrSize = 5;
 
-    private static Stream<Stack<? extends Number, Number, ?>> allStacks() {
+    static Stream<Stack<? extends Number, Number, ?>> allStacks() {
         return Stream.of(new GenStack<>(new Number[arrSize]),
                 new ByteStack(arrSize), new ShortStack(arrSize), new IntStack(arrSize),
                 new LongStack(arrSize), new FloatStack(arrSize), new DoubleStack(arrSize));
@@ -34,12 +32,7 @@ public class StackTest {
     @ParameterizedTest
     @MethodSource("allStacks")
     public void testEdge(Stack<? extends Number, Number, ?> stack) {
-        assertFalse(stack.push(null));
-        assertNull(stack.peek());
-        assertNull(stack.pop());
-        assertEquals(5, stack.swap(5).intValue());
         stack.fill(stack::size);
-        assertFalse(stack.push(5));
         assertEquals(4, stack.swap(5).intValue());
         assertEquals(5, stack.peek().intValue());
     }

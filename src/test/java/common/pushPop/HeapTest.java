@@ -2,8 +2,6 @@ package common.pushPop;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static common.pushPop.Heap.GenHeap;
 import static common.prim.PrimHeap.*;
@@ -27,11 +25,11 @@ public class HeapTest {
                 new LongHeap(arrSize, max), new FloatHeap(arrSize, max), new DoubleHeap(arrSize, max));
     }
 
-    private static Stream<Heap<? extends Number, Number, ?>> minHeaps() {
+    static Stream<Heap<? extends Number, Number, ?>> minHeaps() {
         return heaps(false);
     }
 
-    private static Stream<Heap<? extends Number, Number, ?>> maxHeaps() {
+    static Stream<Heap<? extends Number, Number, ?>> maxHeaps() {
         return heaps(true);
     }
 
@@ -44,7 +42,7 @@ public class HeapTest {
     public void testSortMin(Heap<? extends Number, Number, ?> min) {
         fill(min);
         assertEquals(2, min.swap(5).intValue());
-        assertEquals(3, min.peek());
+        assertEquals(3, min.peek().intValue());
         assertArrayEquals(new int[] { 3, 5, 7, 9, 11, 13 },
                 min.empty().mapToInt(n -> n.intValue()).toArray());
     }
@@ -54,20 +52,9 @@ public class HeapTest {
     public void testSortMax(Heap<? extends Number, Number, ?> max) {
         fill(max);
         assertEquals(13, max.swap(5).intValue());
-        assertEquals(11, max.peek());
+        assertEquals(11, max.peek().intValue());
         assertArrayEquals(new int[] { 11, 9, 7, 5, 3, 2 },
                 max.empty().mapToInt(n -> n.intValue()).toArray());
-    }
-
-    @ParameterizedTest
-    @MethodSource("minHeaps")
-    public void testEdge(Heap<? extends Number, Number, ?> heap) {
-        assertFalse(heap.push(null));
-        assertNull(heap.peek());
-        assertNull(heap.pop());
-        assertEquals(5, heap.swap(5).intValue());
-        fill(heap);
-        assertFalse(heap.push(5));
     }
 
     @Test
