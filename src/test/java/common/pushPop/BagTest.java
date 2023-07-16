@@ -37,8 +37,8 @@ public class BagTest {
     public void testDraw() {
         IntBag bag = new IntBag(arrSize) {
             @Override
-            protected int draw() {
-                return size == 1 ? super.draw() : 2;
+            protected int peekIndex() {
+                return size == 1 ? super.peekIndex() : 2;
             }
         };
         bag.push(8);

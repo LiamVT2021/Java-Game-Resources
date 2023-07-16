@@ -18,16 +18,9 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
         super(array);
     }
 
-    protected int draw() {
-        return rand.nextInt(size);
-    }
-
-    /**
-     * @return a random element from the Bag, null if empty.
-     */
     @Override
-    public G peek() {
-        return isEmpty() ? null : array.get(draw());
+    protected int peekIndex() {
+        return rand.nextInt(size);
     }
 
     /**
@@ -37,7 +30,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
     public G pop() {
         if (isEmpty())
             return null;
-        int i = draw();
+        int i = peekIndex();
         G ret = array.get(i);
         array.set(i, array.remove(--size));
         return ret;
@@ -47,7 +40,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
     public G swap(S value) {
         if (value == null)
             return pop();
-        return isEmpty() ? array.cast(value) : array.swap(draw(), value);
+        return isEmpty() ? array.cast(value) : array.swap(peekIndex(), value);
     }
 
     public static class GenBag<V> extends Bag<V, V, V[]> {

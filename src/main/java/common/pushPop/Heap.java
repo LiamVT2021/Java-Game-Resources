@@ -49,12 +49,9 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
         array.set(b, value);
     }
 
-    /**
-     * @return the top element in the Heap, null if empty.
-     */
     @Override
-    public G peek() {
-        return isEmpty() ? null : array.get(0);
+    public int peekIndex() {
+        return 0;
     }
 
     /**

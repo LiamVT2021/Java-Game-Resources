@@ -155,6 +155,13 @@ public interface PushPop<G, S> extends Streamable<G> {
         }
 
         @Override
+        public G peek() {
+            return isEmpty() ? null : array.get(peekIndex());
+        }
+
+        protected abstract int peekIndex();
+
+        @Override
         public Iterator<G> iterator() {
             return array.iterator(size);
         }

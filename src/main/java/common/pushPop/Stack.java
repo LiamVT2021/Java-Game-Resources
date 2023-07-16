@@ -9,8 +9,8 @@ public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     @Override
-    public G peek() {
-        return isEmpty() ? null : array.get(size - 1);
+    public int peekIndex() {
+        return size - 1;
     }
 
     @Override
