@@ -14,8 +14,8 @@ public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     @Override
-    public G pop() {
-        return isEmpty() ? null : array.remove(--size);
+    public G remove() {
+        return array.remove(--size);
     }
 
     @Override

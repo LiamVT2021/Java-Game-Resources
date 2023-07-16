@@ -58,9 +58,7 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
      * Removes the top element from the Heap.
      */
     @Override
-    public G pop() {
-        if (isEmpty())
-            return null;
+    public G remove() {
         return size == 1 ? array.remove(--size) : heapDown(array.remove(--size));
     }
 

@@ -27,9 +27,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
      * Removes a random element from the Bag.
      */
     @Override
-    public G pop() {
-        if (isEmpty())
-            return null;
+    public G remove() {
         int i = peekIndex();
         G ret = array.get(i);
         array.set(i, array.remove(--size));
