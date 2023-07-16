@@ -18,14 +18,6 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
         super(array);
     }
 
-    @Override
-    public boolean push(S value) {
-        if (value == null || isFull())
-            return false;
-        array.set(size++, value);
-        return true;
-    }
-
     protected int draw() {
         return rand.nextInt(size);
     }

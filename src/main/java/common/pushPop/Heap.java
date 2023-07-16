@@ -30,9 +30,7 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     @Override
-    public boolean push(S value) {
-        if (value == null || isFull())
-            return false;
+    public void insert(S value) {
         int b = size++;
         if (b > 0) {
             int t = up(b);
@@ -41,7 +39,7 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
                 array.set(b, cur);
                 if (t == 0) {
                     array.set(0, value);
-                    return true;
+                    return;
                 }
                 b = t;
                 t = up(b);
@@ -49,7 +47,6 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
             }
         }
         array.set(b, value);
-        return true;
     }
 
     /**

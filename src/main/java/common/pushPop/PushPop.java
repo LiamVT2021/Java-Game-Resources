@@ -130,6 +130,18 @@ public interface PushPop<G, S> extends Streamable<G> {
             return size() == capacity();
         }
 
+        @Override
+        public boolean push(S value) {
+            if (value == null || isFull())
+                return false;
+            insert(value);
+            return true;
+        }
+
+        protected void insert(S value) {
+            array.set(size++, value);
+        }
+
         /**
          * Attempts to push a Collection of values.
          * 

@@ -9,14 +9,6 @@ public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
     }
 
     @Override
-    public boolean push(S value) {
-        if (value == null || isFull())
-            return false;
-        array.set(size++, value);
-        return true;
-    }
-
-    @Override
     public G peek() {
         return isEmpty() ? null : array.get(size - 1);
     }
