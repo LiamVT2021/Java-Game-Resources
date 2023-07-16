@@ -1,6 +1,5 @@
 package common.pushPop;
 
-import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -57,11 +56,6 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
         if (value == null)
             return null;
         return isEmpty() ? null : array.swap(draw(), value);
-    }
-
-    @Override
-    public Iterator<G> iterator() {
-        return array.iterator(size);
     }
 
     public static class GenBag<V> extends Bag<V, V, V[]> {

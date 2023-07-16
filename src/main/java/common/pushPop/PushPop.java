@@ -142,6 +142,11 @@ public interface PushPop<G, S> extends Streamable<G> {
             return true;
         }
 
+        @Override
+        public Iterator<G> iterator() {
+            return array.iterator(size);
+        }
+
         /**
          * @return A String representation of data not stored in the array
          */

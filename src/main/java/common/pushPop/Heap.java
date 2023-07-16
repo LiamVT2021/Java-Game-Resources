@@ -1,7 +1,6 @@
 package common.pushPop;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.function.BiPredicate;
 
 /**
@@ -126,11 +125,6 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
             str.append(array.get(i));
         }
         return str.toString();
-    }
-
-    @Override
-    public Iterator<G> iterator() {
-        return array.iterator(size);
     }
 
     public static class GenHeap<V> extends Heap<V, V, V[]> {
