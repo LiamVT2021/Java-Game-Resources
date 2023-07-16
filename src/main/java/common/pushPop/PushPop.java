@@ -13,7 +13,7 @@ import common.util.StringUtils;
  * 
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
- * @version 7/2/23
+ * @version 7/15/23
  */
 public interface PushPop<G, S> extends Streamable<G> {
 
@@ -89,16 +89,9 @@ public interface PushPop<G, S> extends Streamable<G> {
     }
 
     /**
-     * @return a brief description of the data stucture
+     * @return a String representation of values stored in the datastruture
      */
-    default String preview() {
-        return "Peek: " + peek();
-    }
-
-    /**
-     * @return a visual representation of the datastruture
-     */
-    default String display() {
+    default String values() {
         return StringUtils.join("< ", ", ", " >", stream().map(G::toString));
     }
 
@@ -149,9 +142,11 @@ public interface PushPop<G, S> extends Streamable<G> {
             return true;
         }
 
-        @Override
-        public String preview() {
-            return PushPop.super.preview() + "\n " + size() + " / " + capacity();
+        /**
+         * @return A String representation of data not stored in the array
+         */
+        public String header() {
+            return getClass().getSimpleName() + ": " + size() + " / " + capacity();
         }
 
         /**
@@ -163,7 +158,7 @@ public interface PushPop<G, S> extends Streamable<G> {
 
         @Override
         public String toString() {
-            return preview() + '\n' + arrayString() + '\n' + display();
+            return header() + "\n" + values();
         }
 
     }

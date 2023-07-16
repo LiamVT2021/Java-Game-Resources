@@ -10,49 +10,49 @@ public abstract class PrimStack<N extends Number, A> extends Stack<N, Number, A>
         super(array);
     }
 
-    public static class Byte extends PrimStack<java.lang.Byte, byte[]> {
+    public static class ByteStack extends PrimStack<Byte, byte[]> {
 
-        public Byte(int capacity) {
+        public ByteStack(int capacity) {
             super(new ByteArray(capacity));
         }
 
     }
 
-    public static class Short extends PrimStack<java.lang.Short, short[]> {
+    public static class ShortStack extends PrimStack<Short, short[]> {
 
-        public Short(int capacity) {
+        public ShortStack(int capacity) {
             super(new ShortArray(capacity));
         }
 
     }
 
-    public static class Int extends PrimStack<Integer, int[]> {
+    public static class IntStack extends PrimStack<Integer, int[]> {
 
-        public Int(int capacity) {
+        public IntStack(int capacity) {
             super(new IntArray(capacity));
         }
 
     }
 
-    public static class Long extends PrimStack<java.lang.Long, long[]> {
+    public static class LongStack extends PrimStack<Long, long[]> {
 
-        public Long(int capacity) {
+        public LongStack(int capacity) {
             super(new LongArray(capacity));
         }
 
     }
 
-    public static class Float extends PrimStack<java.lang.Float, float[]> {
+    public static class FloatStack extends PrimStack<Float, float[]> {
 
-        public Float(int capacity) {
+        public FloatStack(int capacity) {
             super(new FloatArray(capacity));
         }
 
     }
 
-    public static class Double extends PrimStack<java.lang.Double, double[]> {
+    public static class DoubleStack extends PrimStack<Double, double[]> {
 
-        public Double(int capacity) {
+        public DoubleStack(int capacity) {
             super(new DoubleArray(capacity));
         }
 

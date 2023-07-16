@@ -1,9 +1,9 @@
 package common.pushPop;
 
+import static common.prim.PrimHeap.*;
+
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import common.prim.PrimHeap;
 
 public class HeapList<V> {
 
@@ -64,6 +64,6 @@ public class HeapList<V> {
     ////////////
 
     public static HeapList<Integer> middleInt(int dis, int adv) {
-        return new HeapList<Integer>(new PrimHeap.Int(dis, true), new PrimHeap.Int(adv, false));
+        return new HeapList<Integer>(new IntHeap(dis, true), new IntHeap(adv, false));
     }
 }

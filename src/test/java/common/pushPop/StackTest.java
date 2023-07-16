@@ -5,22 +5,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import static common.pushPop.Stack.GenStack;
+import static common.prim.PrimStack.*;
+
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import common.prim.PrimStack;
-
 public class StackTest {
 
     private static final int arrSize = 5;
 
     private static Stream<Stack<? extends Number, Number, ?>> allStacks() {
-        return Stream.of(new Stack.Gen<>(new Number[arrSize]),
-                new PrimStack.Byte(arrSize), new PrimStack.Short(arrSize), new PrimStack.Int(arrSize),
-                new PrimStack.Long(arrSize), new PrimStack.Float(arrSize), new PrimStack.Double(arrSize));
+        return Stream.of(new GenStack<>(new Number[arrSize]),
+                new ByteStack(arrSize), new ShortStack(arrSize), new IntStack(arrSize),
+                new LongStack(arrSize), new FloatStack(arrSize), new DoubleStack(arrSize));
     }
 
     @ParameterizedTest
@@ -45,10 +46,9 @@ public class StackTest {
 
     @Test
     public void testToString() {
-        Stack.Gen<Number> stack = new Stack.Gen<>(new Number[arrSize]);
-        assertEquals("Peek: 4\n 5 / 5\n" + //
-                "[ 0, 1, 2, 3, 4 ]\n" + //
-                "< 4, 3, 2, 1, 0 >", stack.fill(stack::size).toString());
+        IntStack stack = new IntStack(arrSize);
+        assertEquals("IntStack: 5 / 5\n< 4, 3, 2, 1, 0 >", stack.fill(stack::size).toString());
+        assertEquals("[ 0, 1, 2, 3, 4 ]", stack.arrayString());
     }
 
 }

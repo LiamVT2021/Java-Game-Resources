@@ -50,9 +50,9 @@ public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
         };
     }
 
-    public static class Gen<V> extends Stack<V, V, V[]> {
+    public static class GenStack<V> extends Stack<V, V, V[]> {
 
-        public Gen(V[] array) {
+        public GenStack(V[] array) {
             super(new GenericArray<>(array));
         }
 

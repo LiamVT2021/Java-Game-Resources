@@ -11,7 +11,7 @@ import java.util.function.BiPredicate;
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
  * @param A the type of the wrapped array
- * @version 7/2/23
+ * @version 7/15/23
  */
 public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
@@ -108,18 +108,21 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
         }
     }
 
-    @Override
-    public String display() {
+    public String heapString() {
+        return heapString(", ", "\n");
+    }
+
+    public String heapString(CharSequence delim, CharSequence rowDelim) {
         if (isEmpty())
-            return "->";
-        StringBuilder str = new StringBuilder("-> " + array.get(0));
+            return "";
+        StringBuilder str = new StringBuilder(array.get(0).toString());
         int row = 1;
         for (int i = 1; i < size; i++) {
             if (i == row) {
                 row = leftChild(row);
-                str.append('\n');
+                str.append(rowDelim);
             } else
-                str.append(", ");
+                str.append(delim);
             str.append(array.get(i));
         }
         return str.toString();
@@ -130,13 +133,13 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
         return array.iterator(size);
     }
 
-    public static class Gen<V> extends Heap<V, V, V[]> {
+    public static class GenHeap<V> extends Heap<V, V, V[]> {
 
-        public Gen(V[] array, BiPredicate<V, V> belongsAbove) {
+        public GenHeap(V[] array, BiPredicate<V, V> belongsAbove) {
             super(new GenericArray<>(array), belongsAbove);
         }
 
-        public Gen(V[] array, boolean max, Comparator<V> comp) {
+        public GenHeap(V[] array, boolean max, Comparator<V> comp) {
             this(array, max ? (a, b) -> comp.compare(a, b) > 0 : (a, b) -> comp.compare(a, b) < 0);
         }
 
