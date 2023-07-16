@@ -169,6 +169,15 @@ public interface PushPop<G, S> extends Streamable<G> {
         protected abstract G remove();
 
         @Override
+        public G swap(S value) {
+            if (value == null)
+                return pop();
+            return isEmpty() ? array.cast(value) : swapHelp(value);
+        }
+
+        protected abstract G swapHelp(S value);
+
+        @Override
         public Iterator<G> iterator() {
             return array.iterator(size);
         }

@@ -59,17 +59,11 @@ public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
      */
     @Override
     public G remove() {
-        return size == 1 ? array.remove(--size) : heapDown(array.remove(--size));
+        return size == 1 ? array.remove(--size) : swapHelp(array.remove(--size));
     }
 
     @Override
-    public G swap(S value) {
-        if (value == null)
-            return pop();
-        return isEmpty() ? array.cast(value) : heapDown(value);
-    }
-
-    private G heapDown(S value) {
+    protected G swapHelp(S value) {
         G ret = array.get(0);
         int t = 0;
         while (true) {
