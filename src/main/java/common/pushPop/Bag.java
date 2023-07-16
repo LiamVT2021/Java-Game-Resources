@@ -27,7 +27,7 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
         return true;
     }
 
-    private int draw() {
+    protected int draw() {
         return rand.nextInt(size);
     }
 
