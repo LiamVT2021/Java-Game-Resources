@@ -9,7 +9,7 @@ import java.util.Random;
  * @param G the type returned by get methods
  * @param S the type consumed by set methods
  * @param A the type of the wrapped array
- * @version 7/2/23
+ * @version 7/15/23
  */
 public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
 
@@ -64,9 +64,9 @@ public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
         return array.iterator(size);
     }
 
-    public static class Gen<V> extends Bag<V, V, V[]> {
+    public static class GenBag<V> extends Bag<V, V, V[]> {
 
-        public Gen(V[] array) {
+        public GenBag(V[] array) {
             super(new GenericArray<>(array));
         }
 

@@ -10,49 +10,49 @@ public abstract class PrimBag<N extends Number, A> extends Bag<N, Number, A> {
         super(array);
     }
 
-    public static class Byte extends PrimBag<java.lang.Byte, byte[]> {
+    public static class ByteBag extends PrimBag<Byte, byte[]> {
 
-        public Byte(int capacity) {
+        public ByteBag(int capacity) {
             super(new ByteArray(capacity));
         }
 
     }
 
-    public static class Short extends PrimBag<java.lang.Short, short[]> {
+    public static class ShortBag extends PrimBag<Short, short[]> {
 
-        public Short(int capacity) {
+        public ShortBag(int capacity) {
             super(new ShortArray(capacity));
         }
 
     }
 
-    public static class Int extends PrimBag<Integer, int[]> {
+    public static class IntBag extends PrimBag<Integer, int[]> {
 
-        public Int(int capacity) {
+        public IntBag(int capacity) {
             super(new IntArray(capacity));
         }
 
     }
 
-    public static class Long extends PrimBag<java.lang.Long, long[]> {
+    public static class LongBag extends PrimBag<Long, long[]> {
 
-        public Long(int capacity) {
+        public LongBag(int capacity) {
             super(new LongArray(capacity));
         }
 
     }
 
-    public static class Float extends PrimBag<java.lang.Float, float[]> {
+    public static class FloatBag extends PrimBag<Float, float[]> {
 
-        public Float(int capacity) {
+        public FloatBag(int capacity) {
             super(new FloatArray(capacity));
         }
 
     }
 
-    public static class Double extends PrimBag<java.lang.Double, double[]> {
+    public static class DoubleBag extends PrimBag<Double, double[]> {
 
-        public Double(int capacity) {
+        public DoubleBag(int capacity) {
             super(new DoubleArray(capacity));
         }
 
