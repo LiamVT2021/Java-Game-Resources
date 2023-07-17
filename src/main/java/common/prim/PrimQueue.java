@@ -10,49 +10,49 @@ public abstract class PrimQueue<N extends Number, A> extends Queue<N, Number, A>
         super(array);
     }
 
-    public static class Byte extends PrimQueue<java.lang.Byte, byte[]> {
+    public static class ByteQueue extends PrimQueue<Byte, byte[]> {
 
-        public Byte(int capacity) {
+        public ByteQueue(int capacity) {
             super(new ByteArray(capacity));
         }
 
     }
 
-    public static class Short extends PrimQueue<java.lang.Short, short[]> {
+    public static class ShortQueue extends PrimQueue<Short, short[]> {
 
-        public Short(int capacity) {
+        public ShortQueue(int capacity) {
             super(new ShortArray(capacity));
         }
 
     }
 
-    public static class Int extends PrimQueue<Integer, int[]> {
+    public static class IntQueue extends PrimQueue<Integer, int[]> {
 
-        public Int(int capacity) {
+        public IntQueue(int capacity) {
             super(new IntArray(capacity));
         }
 
     }
 
-    public static class Long extends PrimQueue<java.lang.Long, long[]> {
+    public static class LongQueue extends PrimQueue<Long, long[]> {
 
-        public Long(int capacity) {
+        public LongQueue(int capacity) {
             super(new LongArray(capacity));
         }
 
     }
 
-    public static class Float extends PrimQueue<java.lang.Float, float[]> {
+    public static class FloatQueue extends PrimQueue<Float, float[]> {
 
-        public Float(int capacity) {
+        public FloatQueue(int capacity) {
             super(new FloatArray(capacity));
         }
 
     }
 
-    public static class Double extends PrimQueue<java.lang.Double, double[]> {
+    public static class DoubleQueue extends PrimQueue<Double, double[]> {
 
-        public Double(int capacity) {
+        public DoubleQueue(int capacity) {
             super(new DoubleArray(capacity));
         }
 

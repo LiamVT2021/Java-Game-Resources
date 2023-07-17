@@ -2,7 +2,7 @@ package common.pushPop;
 
 import java.util.Iterator;
 
-public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
+public abstract class Queue<G extends S, S, A> extends PushPopArray<G, S, A> {
 
     private int next;
 
@@ -10,57 +10,32 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
         super(array);
     }
 
-    private G next(boolean remove) {
-        G ret = remove ? array.remove(next) : array.get(next);
+    private int nextIndex(int next) {
+        return (next + 1) % capacity();
+    }
+
+    @Override
+    protected void insert(S value) {
+        array.set((next + size++) % capacity(), value);
+    }
+
+    @Override
+    protected int peekIndex() {
+        return next;
+    }
+
+    @Override
+    protected G remove() {
+        G ret = array.remove(next);
         next = nextIndex(next);
+        size--;
         return ret;
     }
 
-    private int nextIndex(int next) {
-        return (next + 1) % array.capacity();
-    }
-
-    private void insert(S value) {
-        array.set((next + size) % array.capacity(), value);
-    }
-
     @Override
-    public boolean push(S value) {
-        if (isFull())
-            return false;
+    protected G swapHelp(S value) {
+        G ret = remove();
         insert(value);
-        size++;
-        return true;
-    }
-
-    @Override
-    public G peek() {
-        return array.get(next);
-    }
-
-    @Override
-    public G pop() {
-        if (isEmpty())
-            return null;
-        size--;
-        return next(true);
-    }
-
-    @Override
-    public G swap(S value) {
-        if (isEmpty())
-            return array.cast(value);
-        insert(value);
-        return next(true);
-    }
-
-    public G loop() {
-        if (isEmpty())
-            return null;
-        if (isFull())
-            return next(false);
-        G ret = next(true);
-        insert(ret);
         return ret;
     }
 
@@ -86,9 +61,9 @@ public abstract class Queue<G extends S, S, A> extends PushPop.Array<G, S, A> {
         };
     }
 
-    public static class Gen<V> extends Queue<V, V, V[]> {
+    public static class GenQueue<V> extends Queue<V, V, V[]> {
 
-        public Gen(V[] array) {
+        public GenQueue(V[] array) {
             super(new GenericArray<>(array));
         }
 

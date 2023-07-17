@@ -15,7 +15,7 @@ public class PushPopTest {
     private static Stream<PushPopArray<? extends Number, Number, ?>> allPushPops() {
         ArrayList<PushPopArray<? extends Number, Number, ?>> pushPops = new ArrayList<>();
         StackTest.allStacks().forEach(pushPops::add);
-        // QueueTest.allQueues().forEach(pushPops::add);
+        QueueTest.allQueues().forEach(pushPops::add);
         BagTest.allBags().forEach(pushPops::add);
         HeapTest.minHeaps().forEach(pushPops::add);
         HeapTest.maxHeaps().forEach(pushPops::add);
