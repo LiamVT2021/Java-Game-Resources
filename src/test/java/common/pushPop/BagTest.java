@@ -34,7 +34,7 @@ public class BagTest {
     }
 
     @Test
-    public void testDraw() {
+    public void testIndex() {
         IntBag bag = new IntBag(arrSize) {
             @Override
             protected int peekIndex() {

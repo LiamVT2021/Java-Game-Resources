@@ -31,7 +31,7 @@ public class StackTest {
 
     @ParameterizedTest
     @MethodSource("allStacks")
-    public void testEdge(Stack<? extends Number, Number, ?> stack) {
+    public void testSwap(Stack<? extends Number, Number, ?> stack) {
         stack.fill(stack::size);
         assertEquals(4, stack.swap(5).intValue());
         assertEquals(5, stack.peek().intValue());
