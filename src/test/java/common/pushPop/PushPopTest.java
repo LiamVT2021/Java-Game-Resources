@@ -12,9 +12,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class PushPopTest {
 
-    private static Stream<PushPop.Array<? extends Number, Number, ?>> allPushPops() {
-        ArrayList<PushPop.Array<? extends Number, Number, ?>> pushPops = new ArrayList<>();
+    private static Stream<PushPopArray<? extends Number, Number, ?>> allPushPops() {
+        ArrayList<PushPopArray<? extends Number, Number, ?>> pushPops = new ArrayList<>();
         StackTest.allStacks().forEach(pushPops::add);
+        // QueueTest.allQueues().forEach(pushPops::add);
         BagTest.allBags().forEach(pushPops::add);
         HeapTest.minHeaps().forEach(pushPops::add);
         HeapTest.maxHeaps().forEach(pushPops::add);
@@ -23,7 +24,7 @@ public class PushPopTest {
 
     @ParameterizedTest
     @MethodSource("allPushPops")
-    public void testEdge(PushPop.Array<? extends Number, Number, ?> pushPop) {
+    public void testEdge(PushPopArray<? extends Number, Number, ?> pushPop) {
         // assertFalse(pushPop.pushAll(null, 4));
         assertFalse(pushPop.push(null));
         assertNull(pushPop.peek());

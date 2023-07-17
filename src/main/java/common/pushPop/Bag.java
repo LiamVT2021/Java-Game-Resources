@@ -10,7 +10,7 @@ import java.util.Random;
  * @param A the type of the wrapped array
  * @version 7/15/23
  */
-public abstract class Bag<G extends S, S, A> extends PushPop.Array<G, S, A> {
+public abstract class Bag<G extends S, S, A> extends PushPopArray<G, S, A> {
 
     private static final Random rand = new Random();
 

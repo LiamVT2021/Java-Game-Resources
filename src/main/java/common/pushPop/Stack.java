@@ -2,7 +2,7 @@ package common.pushPop;
 
 import java.util.Iterator;
 
-public abstract class Stack<G extends S, S, A> extends PushPop.Array<G, S, A> {
+public abstract class Stack<G extends S, S, A> extends PushPopArray<G, S, A> {
 
     protected Stack(ArrayWrapper<G, S, A> array) {
         super(array);

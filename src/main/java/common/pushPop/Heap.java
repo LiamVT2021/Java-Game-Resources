@@ -12,7 +12,7 @@ import java.util.function.BiPredicate;
  * @param A the type of the wrapped array
  * @version 7/15/23
  */
-public abstract class Heap<G extends S, S, A> extends PushPop.Array<G, S, A> {
+public abstract class Heap<G extends S, S, A> extends PushPopArray<G, S, A> {
 
     private final BiPredicate<S, S> belongsAbove;
 
