@@ -1,7 +1,7 @@
 package common.pushPop;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import static common.pushPop.Queue.GenQueue;
 import static common.prim.PrimQueue.*;
@@ -21,18 +21,13 @@ public class QueueTest {
                 new LongQueue(arrSize), new FloatQueue(arrSize), new DoubleQueue(arrSize));
     }
 
-    // @ParameterizedTest
-    // @MethodSource("allQueues")
-    // public void testQueue(Queue<? extends Number, Number, ?> queue) {
-    //     assertNull(queue.peek());
-    //     assertNull(queue.pop());
-    //     assertNull(queue.swap(null));
-    //     assertNull(queue.swap(arrSize));
-    //     // bag.push(8);
-    //     // assertEquals(8, bag.peek());
-    //     // fill(bag);
-    //     // assertEquals(2, bag.swap(6));
-    //     // assertEquals(6, bag.pop());
-    //     // assertEquals(4, bag.peek());
-    // }
+    @ParameterizedTest
+    @MethodSource("allQueues")
+    public void testSwap(Queue<? extends Number, Number, ?> queue) {
+        queue.fill(queue::size);
+        assertEquals(0, queue.swap(5).intValue());
+        assertEquals(1, queue.peek().intValue());
+        assertArrayEquals(new int[] { 1, 2, 3, 4, 5 }, queue.stream().mapToInt(Number::intValue).toArray());
+        assertArrayEquals(new int[] { 5, 1, 2, 3, 4, }, queue.array.stream().mapToInt(Number::intValue).toArray());
+    }
 }
