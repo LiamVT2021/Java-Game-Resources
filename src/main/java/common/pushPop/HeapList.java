@@ -2,8 +2,11 @@ package common.pushPop;
 
 import static common.prim.PrimHeap.*;
 
+import java.util.Comparator;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import common.util.StringUtils;
 
 public class HeapList<V> {
 
@@ -61,9 +64,38 @@ public class HeapList<V> {
         return value;
     }
 
+    public String toString() {
+        return StringUtils.join("\n\n", Stream.of(heaps).map(Heap::toString));
+    }
+
     ////////////
+
+    public static <V> HeapList<V> middleGen(V[] dis, V[] adv, Comparator<V> comp) {
+        return new HeapList<>(new GenHeap<>(dis, true, comp), new GenHeap<>(adv, false, comp));
+    }
+
+    public static HeapList<Byte> middleByte(int dis, int adv) {
+        return new HeapList<Byte>(new ByteHeap(dis, true), new ByteHeap(adv, false));
+    }
+
+    public static HeapList<Short> middleShort(int dis, int adv) {
+        return new HeapList<Short>(new ShortHeap(dis, true), new ShortHeap(adv, false));
+    }
 
     public static HeapList<Integer> middleInt(int dis, int adv) {
         return new HeapList<Integer>(new IntHeap(dis, true), new IntHeap(adv, false));
     }
+
+    public static HeapList<Long> middleLong(int dis, int adv) {
+        return new HeapList<Long>(new LongHeap(dis, true), new LongHeap(adv, false));
+    }
+
+    public static HeapList<Float> middleFloat(int dis, int adv) {
+        return new HeapList<Float>(new FloatHeap(dis, true), new FloatHeap(adv, false));
+    }
+
+    public static HeapList<Double> middleDouble(int dis, int adv) {
+        return new HeapList<Double>(new DoubleHeap(dis, true), new DoubleHeap(adv, false));
+    }
+
 }
