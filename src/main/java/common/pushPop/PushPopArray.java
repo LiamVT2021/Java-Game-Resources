@@ -1,7 +1,7 @@
 package common.pushPop;
 
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * A PushPop backed by an ArrayWrapper.
@@ -51,14 +51,15 @@ public abstract class PushPopArray<G extends S, S, A> implements PushPop<G, S> {
     }
 
     /**
-     * Attempts to push a Collection of values.
+     * Attempts to push multiple values.
      * 
      * @return False if there is not enough room, or any of the values are null.
      */
-    public boolean pushAll(Collection<S> values) {
-        if (values.size() > capacity() - size() || values.stream().anyMatch(v -> v == null))
+    @SafeVarargs
+    public final boolean pushAll(S... values) {
+        if (values.length > capacity() - size() || Stream.of(values).anyMatch(v -> v == null))
             return false;
-        values.forEach(this::push);
+        Stream.of(values).forEach(this::push);
         return true;
     }
 

@@ -8,7 +8,6 @@ import static common.prim.PrimHeap.*;
 
 import java.util.stream.Stream;
 import java.util.Comparator;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +33,7 @@ public class HeapTest {
     }
 
     private void fill(Heap<? extends Number, Number, ?> heap) {
-        heap.pushAll(List.of(3, 7, 9, 2, 11, 13));
+        heap.pushAll(3, 7, 9, 2, 11, 13);
     }
 
     @ParameterizedTest
