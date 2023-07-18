@@ -25,14 +25,14 @@ public class PushPopTest {
     @ParameterizedTest
     @MethodSource("allPushPops")
     public void testEdge(PushPopArray<? extends Number, Number, ?> pushPop) {
-        // assertFalse(pushPop.pushAll(null, 4));
+        assertFalse(pushPop.pushAll(null, 4));
         assertFalse(pushPop.push(null));
         assertNull(pushPop.peek());
         assertNull(pushPop.pop());
         assertEquals(5, pushPop.swap(5).intValue());
         pushPop.fill(() -> 5);
         assertFalse(pushPop.push(3));
-        // assertFalse(pushPop.pushAll(4, 5));
+        assertFalse(pushPop.pushAll(4, 5));
         int s = pushPop.size();
         assertEquals(5, pushPop.swap(null).intValue());
         assertEquals(s - 1, pushPop.size());
