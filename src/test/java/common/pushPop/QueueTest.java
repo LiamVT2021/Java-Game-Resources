@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import common.prim.NumStream;
+
 public class QueueTest {
 
     private static final int arrSize = 5;
@@ -27,7 +29,7 @@ public class QueueTest {
         queue.fill(queue::size);
         assertEquals(0, queue.swap(5).intValue());
         assertEquals(1, queue.peek().intValue());
-        assertArrayEquals(new int[] { 1, 2, 3, 4, 5 }, queue.stream().mapToInt(Number::intValue).toArray());
-        assertArrayEquals(new int[] { 5, 1, 2, 3, 4, }, queue.array.stream().mapToInt(Number::intValue).toArray());
+        assertArrayEquals(new int[] { 1, 2, 3, 4, 5 }, ((NumStream) queue::stream).intArr());
+        assertArrayEquals(new int[] { 5, 1, 2, 3, 4, }, ((NumStream) queue.array::stream).intArr());
     }
 }

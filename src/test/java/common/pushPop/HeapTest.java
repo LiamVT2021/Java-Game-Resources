@@ -13,10 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import common.prim.NumStream;
+
 public class HeapTest {
 
     private static final int arrSize = 6;
-    private static final Comparator<Number> numComp = (a, b) -> a.intValue() - b.intValue();
+    static final Comparator<Number> numComp = (a, b) -> a.intValue() - b.intValue();
 
     private static Stream<Heap<? extends Number, Number, ?>> heaps(boolean max) {
         return Stream.of(new GenHeap<>(new Number[arrSize], max, numComp),
@@ -42,8 +44,7 @@ public class HeapTest {
         fill(min);
         assertEquals(2, min.swap(5).intValue());
         assertEquals(3, min.peek().intValue());
-        assertArrayEquals(new int[] { 3, 5, 7, 9, 11, 13 },
-                min.empty().mapToInt(n -> n.intValue()).toArray());
+        assertArrayEquals(new int[] { 3, 5, 7, 9, 11, 13 }, ((NumStream) min::empty).intArr());
     }
 
     @ParameterizedTest
@@ -52,8 +53,7 @@ public class HeapTest {
         fill(max);
         assertEquals(13, max.swap(5).intValue());
         assertEquals(11, max.peek().intValue());
-        assertArrayEquals(new int[] { 11, 9, 7, 5, 3, 2 },
-                max.empty().mapToInt(n -> n.intValue()).toArray());
+        assertArrayEquals(new int[] { 11, 9, 7, 5, 3, 2 }, ((NumStream) max::empty).intArr());
     }
 
     @Test

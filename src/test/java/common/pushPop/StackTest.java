@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import common.prim.NumStream;
+
 public class StackTest {
 
     private static final int arrSize = 5;
@@ -25,8 +27,7 @@ public class StackTest {
     @ParameterizedTest
     @MethodSource("allStacks")
     public void testRev(Stack<? extends Number, Number, ?> stack) {
-        assertArrayEquals(new int[] { 4, 3, 2, 1, 0 },
-                stack.fill(stack::size).empty().mapToInt(n -> n.intValue()).toArray());
+        assertArrayEquals(new int[] { 4, 3, 2, 1, 0 }, ((NumStream) stack.fill(stack::size)::empty).intArr());
     }
 
     @ParameterizedTest

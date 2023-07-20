@@ -1,5 +1,8 @@
 package common.prim.array;
 
+import java.util.stream.Stream;
+
+import common.prim.NumStream;
 import common.pushPop.ArrayWrapper;
 
 /**
@@ -9,11 +12,16 @@ import common.pushPop.ArrayWrapper;
  * @param <A> the type of the wrapped array.
  * @version 6/29/23
  */
-public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A> {
+public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A>, NumStream {
 
     @Override
     default N remove(int index) {
         return get(index);
+    }
+
+    @Override
+    default Stream<? extends Number> numStream() {
+        return stream();
     }
 
     /**

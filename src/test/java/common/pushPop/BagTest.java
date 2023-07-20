@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import common.prim.NumStream;
+
 public class BagTest {
 
     private static final int arrSize = 5;
@@ -30,7 +32,7 @@ public class BagTest {
     @MethodSource("allBags")
     public void testFill(Bag<? extends Number, Number, ?> bag) {
         fill(bag);
-        assertArrayEquals(new int[] { 0, 1, 2, 3, 4 }, bag.stream().mapToInt(Number::intValue).toArray());
+        assertArrayEquals(new int[] { 0, 1, 2, 3, 4 }, ((NumStream) bag::stream).intArr());
     }
 
     @Test
