@@ -3,18 +3,21 @@ package common.pushPop;
 import static common.prim.PrimHeap.*;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import common.util.StringUtils;
 
-public class HeapList<V> {
+public abstract class HeapList<G extends S, S> {
 
-    private final Heap<V, ? super V, ?>[] heaps;
+    private final Heap<G, S, ?>[] heaps;
 
     @SafeVarargs
-    public HeapList(Heap<V, ? super V, ?>... heaps) {
+    protected HeapList(Heap<G, S, ?>... heaps) {
         this.heaps = heaps;
+        if (isFull())
+            throw new IllegalArgumentException("Must have some capacity");
     }
 
     public int size() {
@@ -33,21 +36,22 @@ public class HeapList<V> {
         return Stream.of(heaps).allMatch(Heap::isFull);
     }
 
-    public boolean push(V value) {
-        for (Heap<V, ? super V, ?> heap : heaps) {
-            if (heap.isFull())
-                continue;
-            heap.push(value);
-            return true;
+    public boolean push(S value) {
+        for (Heap<G, S, ?> heap : heaps) {
+            if (!heap.isFull()) {
+                heap.push(value);
+                return true;
+            }
+            value = heap.swap(value);
         }
         return false;
     }
 
-    public HeapList<V> fill(Supplier<V> supplier) {
-        for (Heap<V, ? super V, ?> cur : heaps) {
+    public HeapList<G, S> fill(Supplier<S> supplier) {
+        for (Heap<G, S, ?> cur : heaps) {
             while (!cur.isFull()) {
-                V value = supplier.get();
-                for (Heap<V, ? super V, ?> swap : heaps) {
+                S value = supplier.get();
+                for (Heap<G, S, ?> swap : heaps) {
                     if (cur == swap)
                         break;
                     value = swap.swap(value);
@@ -58,10 +62,12 @@ public class HeapList<V> {
         return this;
     }
 
-    public V swap(V value) {
-        for (Heap<V, ? super V, ?> heap : heaps)
-            value = heap.swap(value);
-        return value;
+    public G swap(S value) {
+        Iterator<Heap<G, S, ?>> it = new GenericArray<>(heaps).iterator();
+        G ret = it.next().swap(value);
+        while (it.hasNext())
+            ret = it.next().swap(ret);
+        return ret;
     }
 
     public String toString() {
@@ -70,32 +76,15 @@ public class HeapList<V> {
 
     ////////////
 
-    public static <V> HeapList<V> middleGen(V[] dis, V[] adv, Comparator<V> comp) {
-        return new HeapList<>(new GenHeap<>(dis, true, comp), new GenHeap<>(adv, false, comp));
+    public static class GenHeapList<V> extends HeapList<V, V> {
+        @SafeVarargs
+        public GenHeapList(Heap<V, V, ?>... heaps) {
+            super(heaps);
+        }
     }
 
-    public static HeapList<Byte> middleByte(int dis, int adv) {
-        return new HeapList<Byte>(new ByteHeap(dis, true), new ByteHeap(adv, false));
-    }
-
-    public static HeapList<Short> middleShort(int dis, int adv) {
-        return new HeapList<Short>(new ShortHeap(dis, true), new ShortHeap(adv, false));
-    }
-
-    public static HeapList<Integer> middleInt(int dis, int adv) {
-        return new HeapList<Integer>(new IntHeap(dis, true), new IntHeap(adv, false));
-    }
-
-    public static HeapList<Long> middleLong(int dis, int adv) {
-        return new HeapList<Long>(new LongHeap(dis, true), new LongHeap(adv, false));
-    }
-
-    public static HeapList<Float> middleFloat(int dis, int adv) {
-        return new HeapList<Float>(new FloatHeap(dis, true), new FloatHeap(adv, false));
-    }
-
-    public static HeapList<Double> middleDouble(int dis, int adv) {
-        return new HeapList<Double>(new DoubleHeap(dis, true), new DoubleHeap(adv, false));
+    public static <V> GenHeapList<V> middleGen(V[] dis, V[] adv, Comparator<V> comp) {
+        return new GenHeapList<>(new GenHeap<>(dis, true, comp), new GenHeap<>(adv, false, comp));
     }
 
 }
