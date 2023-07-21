@@ -37,9 +37,7 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
         return value.intValue();
     }
 
-    /**
-     * @return a IntStream of the values in the array
-     */
+    @Override
     public IntStream intStream() {
         return IntStream.of(array);
     }

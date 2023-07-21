@@ -37,9 +37,7 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
         return value.doubleValue();
     }
 
-    /**
-     * @return a DoubleStream of the values in the array
-     */
+    @Override
     public DoubleStream doubleStream() {
         return DoubleStream.of(array);
     }
