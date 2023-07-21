@@ -1,25 +1,25 @@
-package common.util;
+package common.dataStruct;
 
 import java.util.Iterator;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 @FunctionalInterface
-public interface Streamable<V> extends Iterable<V> {
+public interface IterableExt<E> extends Iterable<E>, Streamable<E> {
 
-    default Stream<V> stream() {
-        Stream.Builder<V> builder = Stream.builder();
+    default Stream<E> stream() {
+        Stream.Builder<E> builder = Stream.builder();
         forEach(builder);
         return builder.build();
     }
 
-    default Supplier<V> loop() {
+    default Supplier<E> loop() {
         return new Supplier<>() {
             private boolean isEmpty;
-            private Iterator<V> it;
+            private Iterator<E> it;
 
             @Override
-            public V get() {
+            public E get() {
                 if (isEmpty)
                     return null;
                 if (it.hasNext())

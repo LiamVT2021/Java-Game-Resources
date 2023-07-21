@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import common.util.Streamable;
+import common.dataStruct.IterableExt;
 import common.util.StringUtils;
 
 /**
@@ -14,7 +14,7 @@ import common.util.StringUtils;
  * @param S the type consumed by set methods
  * @version 7/15/23
  */
-public interface PushPop<G, S> extends Streamable<G> {
+public interface PushPop<G, S> extends IterableExt<G> {
 
     boolean isEmpty();
 
@@ -62,7 +62,7 @@ public interface PushPop<G, S> extends Streamable<G> {
     /**
      * @return an Iterable object which will pop elements until empty
      */
-    default Streamable<G> popIt() {
+    default IterableExt<G> popIt() {
         return () -> new Iterator<G>() {
 
             @Override

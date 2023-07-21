@@ -7,8 +7,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import common.dataStruct.Streamable;
 import common.prim.array.*;
-import common.util.Streamable;
 
 public class NumStreamTest {
 
@@ -29,7 +29,7 @@ public class NumStreamTest {
         assertArrayEquals(new double[] { 3, 0, 5, 0 }, array.doubleArr());
     }
 
-    public static void assertNumEquals(NumStream numStream, int... values) {
+    public static <N extends Number> void assertNumEquals(NumStream<N> numStream, int... values) {
         assertArrayEquals(values, numStream.intArr());
     }
 
@@ -39,7 +39,7 @@ public class NumStreamTest {
 
     public static void assertNumEquals(Streamable<? extends Number> streamable, int... values) {
         if (streamable instanceof NumStream)
-            assertNumEquals((NumStream) streamable, values);
+            assertNumEquals((NumStream<?>) streamable, values);
         else
             assertNumEquals(streamable.stream(), values);
     }

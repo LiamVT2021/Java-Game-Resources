@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import common.util.Streamable;
+import common.dataStruct.IterableExt;
 import common.util.StringUtils;
 
 /**
@@ -15,7 +15,7 @@ import common.util.StringUtils;
  * @param <A> the type of the wrapped array
  * @version 7/12/23
  */
-public interface ArrayWrapper<G extends S, S, A> extends Streamable<G> {
+public interface ArrayWrapper<G extends S, S, A> extends IterableExt<G> {
 
     /**
      * @return the unwrapped array

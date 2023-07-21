@@ -3,15 +3,11 @@ package common.prim;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-import java.util.stream.Stream;
+
+import common.dataStruct.Streamable;
 
 @FunctionalInterface
-public interface NumStream {
-
-    /**
-     * @return a Stream of Numbers
-     */
-    Stream<? extends Number> stream();
+public interface NumStream<N extends Number> extends Streamable<N> {
 
     /**
      * @return steam mapped to IntStream

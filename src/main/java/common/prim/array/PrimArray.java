@@ -12,7 +12,7 @@ import common.pushPop.ArrayWrapper;
  * @param <A> the type of the wrapped array.
  * @version 6/29/23
  */
-public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A>, NumStream {
+public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A>, NumStream<N> {
 
     @Override
     default Stream<N> stream() {
