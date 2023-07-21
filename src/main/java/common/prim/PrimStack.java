@@ -4,7 +4,7 @@ import common.prim.array.*;
 import common.pushPop.ArrayWrapper;
 import common.pushPop.Stack;
 
-public abstract class PrimStack<N extends Number, A> extends Stack<N, Number, A> {
+public abstract class PrimStack<N extends Number, A> extends Stack<N, Number, A> implements PrimPushPop<N> {
 
     private PrimStack(ArrayWrapper<N, Number, A> array) {
         super(array);

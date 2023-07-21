@@ -8,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import common.prim.array.*;
+import common.util.Streamable;
 
 public class NumStreamTest {
 
@@ -34,6 +35,13 @@ public class NumStreamTest {
 
     public static void assertNumEquals(Stream<? extends Number> stream, int... values) {
         assertNumEquals(() -> stream, values);
+    }
+
+    public static void assertNumEquals(Streamable<? extends Number> streamable, int... values) {
+        if (streamable instanceof NumStream)
+            assertNumEquals(streamable, values);
+        else
+            assertNumEquals(streamable.stream(), values);
     }
 
 }

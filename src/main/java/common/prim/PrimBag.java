@@ -4,7 +4,7 @@ import common.prim.array.*;
 import common.pushPop.ArrayWrapper;
 import common.pushPop.Bag;
 
-public abstract class PrimBag<N extends Number, A> extends Bag<N, Number, A> {
+public abstract class PrimBag<N extends Number, A> extends Bag<N, Number, A> implements PrimPushPop<N> {
 
     private PrimBag(ArrayWrapper<N, Number, A> array) {
         super(array);

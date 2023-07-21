@@ -30,7 +30,7 @@ public class BagTest {
     @MethodSource("allBags")
     public void testFill(Bag<? extends Number, Number, ?> bag) {
         fill(bag);
-        assertNumEquals(bag::stream, 0, 1, 2, 3, 4);
+        assertNumEquals(bag, 0, 1, 2, 3, 4);
     }
 
     @Test

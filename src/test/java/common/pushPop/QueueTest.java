@@ -27,7 +27,7 @@ public class QueueTest {
         queue.fill(queue::size);
         assertEquals(0, queue.swap(5).intValue());
         assertEquals(1, queue.peek().intValue());
-        assertNumEquals(queue::stream, 1, 2, 3, 4, 5);
-        assertNumEquals(queue.array::stream, 5, 1, 2, 3, 4);
+        assertNumEquals(queue, 1, 2, 3, 4, 5);
+        assertNumEquals(queue.array, 5, 1, 2, 3, 4);
     }
 }

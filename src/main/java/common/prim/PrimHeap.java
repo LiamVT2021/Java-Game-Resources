@@ -5,7 +5,7 @@ import java.util.function.BiPredicate;
 import common.prim.array.*;
 import common.pushPop.Heap;
 
-public abstract class PrimHeap<N extends Number, A> extends Heap<N, Number, A> {
+public abstract class PrimHeap<N extends Number, A> extends Heap<N, Number, A> implements PrimPushPop<N> {
 
     private PrimHeap(PrimArray<N, A> array, BiPredicate<Number, Number> belongsAbove) {
         super(array, belongsAbove);

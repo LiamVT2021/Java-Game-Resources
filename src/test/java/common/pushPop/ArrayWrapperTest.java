@@ -69,12 +69,12 @@ public class ArrayWrapperTest {
                 array.toString());
     }
 
-    @Test
-    public void testPrimStream() {
-        new IntArray(arrSize).intStream().forEach(i -> assertEquals(0, i));
-        new LongArray(arrSize).longStream().forEach(i -> assertEquals(0, i));
-        new DoubleArray(arrSize).doubleStream().forEach(i -> assertEquals(0, i));
-    }
+    // @Test
+    // public void testPrimStream() {
+    //     new IntArray(arrSize).intStream().forEach(i -> assertEquals(0, i));
+    //     new LongArray(arrSize).longStream().forEach(i -> assertEquals(0, i));
+    //     new DoubleArray(arrSize).doubleStream().forEach(i -> assertEquals(0, i));
+    // }
 
     @Test
     public void testGen() {

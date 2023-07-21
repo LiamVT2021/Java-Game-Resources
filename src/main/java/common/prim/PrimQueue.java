@@ -4,7 +4,7 @@ import common.prim.array.*;
 import common.pushPop.ArrayWrapper;
 import common.pushPop.Queue;
 
-public abstract class PrimQueue<N extends Number, A> extends Queue<N, Number, A> {
+public abstract class PrimQueue<N extends Number, A> extends Queue<N, Number, A> implements PrimPushPop<N> {
 
     private PrimQueue(ArrayWrapper<N, Number, A> array) {
         super(array);
