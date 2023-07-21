@@ -39,7 +39,7 @@ public class NumStreamTest {
 
     public static void assertNumEquals(Streamable<? extends Number> streamable, int... values) {
         if (streamable instanceof NumStream)
-            assertNumEquals(streamable, values);
+            assertNumEquals((NumStream) streamable, values);
         else
             assertNumEquals(streamable.stream(), values);
     }
