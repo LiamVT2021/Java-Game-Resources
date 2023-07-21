@@ -1,17 +1,15 @@
 package common.pushPop;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static common.pushPop.Queue.GenQueue;
 import static common.prim.PrimQueue.*;
+import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import common.prim.NumStream;
 
 public class QueueTest {
 
@@ -29,7 +27,7 @@ public class QueueTest {
         queue.fill(queue::size);
         assertEquals(0, queue.swap(5).intValue());
         assertEquals(1, queue.peek().intValue());
-        assertArrayEquals(new int[] { 1, 2, 3, 4, 5 }, ((NumStream) queue::stream).intArr());
-        assertArrayEquals(new int[] { 5, 1, 2, 3, 4, }, ((NumStream) queue.array::stream).intArr());
+        assertNumEquals(queue::stream, 1, 2, 3, 4, 5);
+        assertNumEquals(queue.array::stream, 5, 1, 2, 3, 4);
     }
 }

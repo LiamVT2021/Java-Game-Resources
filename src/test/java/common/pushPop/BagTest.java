@@ -1,18 +1,16 @@
 package common.pushPop;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static common.pushPop.Bag.GenBag;
 import static common.prim.PrimBag.*;
+import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import common.prim.NumStream;
 
 public class BagTest {
 
@@ -32,7 +30,7 @@ public class BagTest {
     @MethodSource("allBags")
     public void testFill(Bag<? extends Number, Number, ?> bag) {
         fill(bag);
-        assertArrayEquals(new int[] { 0, 1, 2, 3, 4 }, ((NumStream) bag::stream).intArr());
+        assertNumEquals(bag::stream, 0, 1, 2, 3, 4);
     }
 
     @Test

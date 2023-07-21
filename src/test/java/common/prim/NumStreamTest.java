@@ -28,4 +28,12 @@ public class NumStreamTest {
         assertArrayEquals(new double[] { 3, 0, 5, 0 }, array.doubleArr());
     }
 
+    public static void assertNumEquals(NumStream numStream, int... values) {
+        assertArrayEquals(values, numStream.intArr());
+    }
+
+    public static void assertNumEquals(Stream<? extends Number> stream, int... values) {
+        assertNumEquals(() -> stream, values);
+    }
+
 }

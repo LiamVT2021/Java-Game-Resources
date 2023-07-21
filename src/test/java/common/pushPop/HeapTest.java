@@ -1,10 +1,10 @@
 package common.pushPop;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static common.pushPop.Heap.GenHeap;
 import static common.prim.PrimHeap.*;
+import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
 import java.util.Comparator;
@@ -12,8 +12,6 @@ import java.util.Comparator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import common.prim.NumStream;
 
 public class HeapTest {
 
@@ -44,7 +42,7 @@ public class HeapTest {
         fill(min);
         assertEquals(2, min.swap(5).intValue());
         assertEquals(3, min.peek().intValue());
-        assertArrayEquals(new int[] { 3, 5, 7, 9, 11, 13 }, ((NumStream) min::empty).intArr());
+        assertNumEquals(min::empty, 3, 5, 7, 9, 11, 13);
     }
 
     @ParameterizedTest
@@ -53,7 +51,7 @@ public class HeapTest {
         fill(max);
         assertEquals(13, max.swap(5).intValue());
         assertEquals(11, max.peek().intValue());
-        assertArrayEquals(new int[] { 11, 9, 7, 5, 3, 2 }, ((NumStream) max::empty).intArr());
+        assertNumEquals(max::empty, 11, 9, 7, 5, 3, 2);
     }
 
     @Test

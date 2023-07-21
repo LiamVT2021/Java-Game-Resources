@@ -1,18 +1,16 @@
 package common.pushPop;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import static common.pushPop.Stack.GenStack;
 import static common.prim.PrimStack.*;
+import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import common.prim.NumStream;
 
 public class StackTest {
 
@@ -27,7 +25,7 @@ public class StackTest {
     @ParameterizedTest
     @MethodSource("allStacks")
     public void testRev(Stack<? extends Number, Number, ?> stack) {
-        assertArrayEquals(new int[] { 4, 3, 2, 1, 0 }, ((NumStream) stack.fill(stack::size)::empty).intArr());
+        assertNumEquals(stack.fill(stack::size)::empty, 4, 3, 2, 1, 0);
     }
 
     @ParameterizedTest
