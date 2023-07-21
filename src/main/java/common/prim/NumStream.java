@@ -8,28 +8,49 @@ import java.util.stream.Stream;
 @FunctionalInterface
 public interface NumStream {
 
-    Stream<? extends Number> numStream();
+    /**
+     * @return a Stream of Numbers
+     */
+    Stream<? extends Number> stream();
 
+    /**
+     * @return steam mapped to IntStream
+     */
     default IntStream intStream() {
-        return numStream().mapToInt(Number::intValue);
+        return stream().mapToInt(Number::intValue);
     }
 
+    /**
+     * @return steam mapped to an int array
+     */
     default int[] intArr() {
         return intStream().toArray();
     }
 
+    /**
+     * @return steam mapped to LongStream
+     */
     default LongStream longStream() {
-        return numStream().mapToLong(Number::longValue);
+        return stream().mapToLong(Number::longValue);
     }
 
+    /**
+     * @return steam mapped to an long array
+     */
     default long[] longArr() {
         return longStream().toArray();
     }
 
+    /**
+     * @return steam mapped to DoubleStream
+     */
     default DoubleStream doubleStream() {
-        return numStream().mapToDouble(Number::doubleValue);
+        return stream().mapToDouble(Number::doubleValue);
     }
 
+    /**
+     * @return steam mapped to an double array
+     */
     default double[] doubleArr() {
         return doubleStream().toArray();
     }

@@ -15,13 +15,13 @@ import common.pushPop.ArrayWrapper;
 public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A>, NumStream {
 
     @Override
-    default N remove(int index) {
-        return get(index);
+    default Stream<N> stream() {
+        return ArrayWrapper.super.stream();
     }
 
     @Override
-    default Stream<? extends Number> numStream() {
-        return stream();
+    default N remove(int index) {
+        return get(index);
     }
 
     /**
