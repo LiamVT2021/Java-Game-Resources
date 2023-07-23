@@ -1,9 +1,9 @@
 package common.pushPop;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
 
@@ -16,7 +16,7 @@ import common.prim.array.*;
 /**
  * Tests all methods for Primitive and Generic ArrayWrappers.
  * 
- * @version 7/12/23
+ * @version 7/23/23
  */
 public class ArrayWrapperTest {
 
@@ -45,7 +45,7 @@ public class ArrayWrapperTest {
     @ParameterizedTest
     @MethodSource("full")
     public void testGet(ArrayWrapper<? extends Number, Number, ?> array) {
-        assertArrayEquals(new int[] { 0, 2, 4 }, array.get(0, 2, 4).mapToInt(Number::intValue).toArray());
+        assertNumEquals(array.get(0, 2, 4), 0, 2, 4);
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(arrSize));
     }
@@ -68,13 +68,6 @@ public class ArrayWrapperTest {
                         : "[ 0, 1, 2, 3, 4 ]"),
                 array.toString());
     }
-
-    // @Test
-    // public void testPrimStream() {
-    //     new IntArray(arrSize).intStream().forEach(i -> assertEquals(0, i));
-    //     new LongArray(arrSize).longStream().forEach(i -> assertEquals(0, i));
-    //     new DoubleArray(arrSize).doubleStream().forEach(i -> assertEquals(0, i));
-    // }
 
     @Test
     public void testGen() {
