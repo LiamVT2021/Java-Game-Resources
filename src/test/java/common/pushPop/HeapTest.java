@@ -1,9 +1,6 @@
 package common.pushPop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static common.pushPop.Heap.GenHeap;
-import static common.prim.PrimHeap.*;
 import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
@@ -13,7 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class HeapTest {
+import common.pushPop.Heap.GenHeap;
+import common.prim.PrimHeap.*;
+
+public class HeapTest extends PushPopTest {
 
     private static final int arrSize = 6;
     static final Comparator<Number> numComp = (a, b) -> a.intValue() - b.intValue();
@@ -32,8 +32,18 @@ public class HeapTest {
         return heaps(true);
     }
 
+    static Stream<Heap<? extends Number, Number, ?>> allHeaps() {
+        return Stream.concat(minHeaps(), maxHeaps());
+    }
+
     private void fill(Heap<? extends Number, Number, ?> heap) {
         heap.pushAll(3, 7, 9, 2, 11, 13);
+    }
+
+    @ParameterizedTest
+    @MethodSource("allHeaps")
+    public void testPushPop(PushPopArray<? extends Number, Number, ?> pushPop) {
+        super.testPushPop(pushPop);
     }
 
     @ParameterizedTest

@@ -1,9 +1,6 @@
 package common.pushPop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static common.pushPop.Bag.GenBag;
-import static common.prim.PrimBag.*;
 import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
@@ -12,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class BagTest {
+import common.pushPop.Bag.GenBag;
+import common.prim.PrimBag.*;
+
+public class BagTest extends PushPopTest {
 
     private static final int arrSize = 5;
 
@@ -24,6 +24,12 @@ public class BagTest {
 
     private void fill(Bag<? extends Number, Number, ?> bag) {
         bag.fill(bag::size);
+    }
+
+    @ParameterizedTest
+    @MethodSource("allBags")
+    public void testPushPop(PushPopArray<? extends Number, Number, ?> pushPop) {
+        super.testPushPop(pushPop);
     }
 
     @ParameterizedTest

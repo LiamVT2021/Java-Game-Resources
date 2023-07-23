@@ -1,9 +1,6 @@
 package common.pushPop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static common.pushPop.Queue.GenQueue;
-import static common.prim.PrimQueue.*;
 import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
@@ -11,7 +8,10 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class QueueTest {
+import common.pushPop.Queue.GenQueue;
+import common.prim.PrimQueue.*;
+
+public class QueueTest extends PushPopTest {
 
     private static final int arrSize = 5;
 
@@ -19,6 +19,12 @@ public class QueueTest {
         return Stream.of(new GenQueue<>(new Number[arrSize]),
                 new ByteQueue(arrSize), new ShortQueue(arrSize), new IntQueue(arrSize),
                 new LongQueue(arrSize), new FloatQueue(arrSize), new DoubleQueue(arrSize));
+    }
+
+    @ParameterizedTest
+    @MethodSource("allQueues")
+    public void testPushPop(PushPopArray<? extends Number, Number, ?> pushPop) {
+        super.testPushPop(pushPop);
     }
 
     @ParameterizedTest

@@ -1,9 +1,6 @@
 package common.pushPop;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static common.pushPop.Stack.GenStack;
-import static common.prim.PrimStack.*;
 import static common.prim.NumStreamTest.assertNumEquals;
 
 import java.util.stream.Stream;
@@ -12,7 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class StackTest {
+import common.pushPop.Stack.GenStack;
+import common.prim.PrimStack.*;
+
+public class StackTest extends PushPopTest {
 
     private static final int arrSize = 5;
 
@@ -20,6 +20,12 @@ public class StackTest {
         return Stream.of(new GenStack<>(new Number[arrSize]),
                 new ByteStack(arrSize), new ShortStack(arrSize), new IntStack(arrSize),
                 new LongStack(arrSize), new FloatStack(arrSize), new DoubleStack(arrSize));
+    }
+
+    @ParameterizedTest
+    @MethodSource("allStacks")
+    public void testPushPop(PushPopArray<? extends Number, Number, ?> pushPop) {
+        super.testPushPop(pushPop);
     }
 
     @ParameterizedTest
