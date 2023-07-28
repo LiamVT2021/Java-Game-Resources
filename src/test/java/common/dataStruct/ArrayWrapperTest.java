@@ -3,7 +3,7 @@ package common.dataStruct;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static common.prim.NumStreamTest.assertNumEquals;
+import static common.prim.NumStreamTest.assertIntEquals;
 
 import java.util.stream.Stream;
 
@@ -45,7 +45,7 @@ public class ArrayWrapperTest {
     @ParameterizedTest
     @MethodSource("full")
     public void testGet(ArrayWrapper<? extends Number, Number, ?> array) {
-        assertNumEquals(array.get(0, 2, 4), 0, 2, 4);
+        assertIntEquals(array.get(0, 2, 4), 0, 2, 4);
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(arrSize));
     }

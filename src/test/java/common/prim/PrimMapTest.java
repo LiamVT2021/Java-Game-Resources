@@ -2,7 +2,7 @@ package common.prim;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static common.prim.NumStreamTest.assertNumEquals;
+import static common.prim.NumStreamTest.assertIntEquals;
 import static common.prim.PrimEnumMap.*;
 
 import java.util.stream.Stream;
@@ -30,7 +30,7 @@ public class PrimMapTest {
     @ParameterizedTest
     @MethodSource("allMaps")
     public void testGet(PrimEnumMap<Type, Number, ?> map) {
-        assertNumEquals(map.get(Type.A, Type.B), 0, 0);
+        assertIntEquals(map.get(Type.A, Type.B), 0, 0);
     }
 
     @ParameterizedTest

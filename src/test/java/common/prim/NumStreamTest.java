@@ -29,19 +29,19 @@ public class NumStreamTest {
         assertArrayEquals(new double[] { 3, 0, 5, 0 }, array.doubleArr());
     }
 
-    public static <N extends Number> void assertNumEquals(NumStream<N> numStream, int... values) {
+    public static <N extends Number> void assertIntEquals(NumStream<N> numStream, int... values) {
         assertArrayEquals(values, numStream.intArr());
     }
 
-    public static void assertNumEquals(Stream<? extends Number> stream, int... values) {
-        assertNumEquals(() -> stream, values);
+    public static void assertIntEquals(Stream<? extends Number> stream, int... values) {
+        assertIntEquals(() -> stream, values);
     }
 
-    public static void assertNumEquals(Streamable<? extends Number> streamable, int... values) {
+    public static void assertIntEquals(Streamable<? extends Number> streamable, int... values) {
         if (streamable instanceof NumStream)
-            assertNumEquals((NumStream<?>) streamable, values);
+            assertIntEquals((NumStream<?>) streamable, values);
         else
-            assertNumEquals(streamable.stream(), values);
+            assertIntEquals(streamable.stream(), values);
     }
 
 }
