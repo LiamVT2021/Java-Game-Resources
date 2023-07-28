@@ -22,9 +22,10 @@ public interface ArrayWrapper<G extends S, S, A> extends IterableExt<G> {
     A array();
 
     /**
-     * @return the capacity of this array
+     * @return the length of this array
      */
-    int capacity();
+    @Override
+    long size();
 
     /**
      * @return the value stored at this index in the array
@@ -83,13 +84,13 @@ public interface ArrayWrapper<G extends S, S, A> extends IterableExt<G> {
 
     @Override
     default Iterator<G> iterator() {
-        return iterator(capacity());
+        return iterator(size());
     }
 
     /**
      * @param size how many elements will be returned by this iterator
      */
-    default Iterator<G> iterator(int size) {
+    default Iterator<G> iterator(long size) {
         return new Iterator<>() {
             private int i;
 

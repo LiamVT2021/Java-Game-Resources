@@ -15,15 +15,6 @@ public interface IterableExt<E> extends Iterable<E>, Streamable<E> {
     }
 
     @Override
-    default long count() {
-        int count = 0;
-        for (@SuppressWarnings("unused")
-        E e : this)
-            count++;
-        return count;
-    }
-
-    @Override
     default E getFirst(Predicate<E> pred) {
         if (pred == null)
             return null;

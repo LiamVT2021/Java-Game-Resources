@@ -16,7 +16,7 @@ public class FloatArray extends PrimArray.Flt<Float, float[]> {
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 

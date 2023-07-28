@@ -18,7 +18,7 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 

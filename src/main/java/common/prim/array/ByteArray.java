@@ -16,7 +16,7 @@ public class ByteArray extends PrimArray.Int<Byte, byte[]> {
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 

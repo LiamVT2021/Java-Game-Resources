@@ -38,8 +38,8 @@ public class ArrayWrapperTest {
 
     @ParameterizedTest
     @MethodSource("empty")
-    public void testCapacity(ArrayWrapper<? extends Number, Number, ?> array) {
-        assertEquals(arrSize, array.capacity());
+    public void testSize(ArrayWrapper<? extends Number, Number, ?> array) {
+        assertEquals(arrSize, array.size());
     }
 
     @ParameterizedTest

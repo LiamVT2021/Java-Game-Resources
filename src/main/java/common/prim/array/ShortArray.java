@@ -16,7 +16,7 @@ public class ShortArray extends PrimArray.Int<Short, short[]> {
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 

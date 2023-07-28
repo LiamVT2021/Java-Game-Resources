@@ -16,7 +16,7 @@ public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 

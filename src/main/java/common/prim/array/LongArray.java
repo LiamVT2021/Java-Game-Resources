@@ -18,7 +18,7 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 

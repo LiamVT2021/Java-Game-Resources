@@ -9,10 +9,6 @@ public interface Streamable<E> {
     Stream<E> stream();
 
     default long size() {
-        return count();
-    }
-
-    default long count() {
         return stream().count();
     }
 
