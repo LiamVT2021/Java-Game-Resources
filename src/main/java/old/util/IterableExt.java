@@ -19,28 +19,6 @@ import java.util.function.IntFunction;
 @FunctionalInterface
 public interface IterableExt<E> extends Iterable<E> {
 
-    public default int count() {
-        int count = 0;
-        for (@SuppressWarnings("unused")
-        E e : this)
-            count++;
-        return count;
-    }
-
-    public default boolean has(E target) {
-        return get(target) != null;
-    }
-
-    public default E get(E target) {
-        if (target == null)
-            return null;
-        for (E cur : this) {
-            if (target.equals(cur))
-                return cur;
-        }
-        return null;
-    }
-
     public default E getMax(Comparator<? super E> comp) {
         return reduce((a, b) -> comp.compare(a, b) > 0 ? a : b);
     }

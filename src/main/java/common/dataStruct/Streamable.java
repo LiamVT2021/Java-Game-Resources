@@ -8,6 +8,14 @@ public interface Streamable<E> {
 
     Stream<E> stream();
 
+    default long size() {
+        return count();
+    }
+
+    default long count() {
+        return stream().count();
+    }
+
     /**
      * @return The first element that satisfies the Predicate,
      *         null if none found or pred is null
