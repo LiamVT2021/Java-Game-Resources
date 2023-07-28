@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @param <E> type of Object in Iterable
  */
-public class MultiIt<E> implements IterableExt<E> {
+public class MultiIt<E> implements Iterable<E> {
 
 	private Iterable<? extends Iterable<E>> col;
 
