@@ -1,10 +1,9 @@
-package common.pushPop;
+package common.dataStruct;
 
 import java.util.Iterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import common.dataStruct.IterableExt;
 import common.util.StringUtils;
 
 /**
