@@ -15,20 +15,14 @@ public interface IterableExt<E> extends Iterable<E>, Streamable<E> {
 
     default Supplier<E> loop() {
         return new Supplier<>() {
-            private boolean isEmpty;
             private Iterator<E> it;
 
             @Override
             public E get() {
-                if (isEmpty)
-                    return null;
                 if (it.hasNext())
                     return it.next();
                 it = iterator();
-                if (it.hasNext())
-                    return it.next();
-                isEmpty = true;
-                return null;
+                return it.hasNext() ? it.next() : null;
             }
         };
     }
