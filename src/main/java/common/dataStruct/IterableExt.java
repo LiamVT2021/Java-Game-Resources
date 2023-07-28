@@ -1,6 +1,7 @@
 package common.dataStruct;
 
 import java.util.Iterator;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -11,6 +12,21 @@ public interface IterableExt<E> extends Iterable<E>, Streamable<E> {
         Stream.Builder<E> builder = Stream.builder();
         forEach(builder);
         return builder.build();
+    }
+
+    @Override
+    default E getFirst(Predicate<E> pred) {
+        if (pred == null)
+            return null;
+        for (E e : this)
+            if (pred.test(e))
+                return e;
+        return null;
+    }
+
+    @Override
+    default boolean has(Predicate<E> pred) {
+        return getFirst(pred) != null;
     }
 
     default Supplier<E> loop() {
