@@ -31,7 +31,7 @@ public interface IterableExt<E> extends Iterable<E>, Streamable<E> {
 
     default Supplier<E> loop() {
         return new Supplier<>() {
-            private Iterator<E> it;
+            private Iterator<E> it = iterator();
 
             @Override
             public E get() {
