@@ -17,7 +17,7 @@ public interface Streamable<E> {
      *         null if none found or pred is null
      */
     default E getFirst(Predicate<E> pred) {
-        return pred == null ? null : stream().filter(pred).findFirst().orElse(null);
+        return ((IterableExt<E>) stream()::iterator).getFirst(pred);
     }
 
     /**
