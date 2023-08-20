@@ -14,7 +14,7 @@ import common.util.StringUtils;
  * @param <A> the type of the wrapped array
  * @version 7/12/23
  */
-public interface ArrayWrapper<G extends S, S, A> extends IterableExt<G> {
+public interface ArrayWrapper<G extends S, S, A> extends DataStruct<G> {
 
     /**
      * @return the unwrapped array

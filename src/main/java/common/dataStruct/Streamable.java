@@ -8,16 +8,12 @@ public interface Streamable<E> {
 
     Stream<E> stream();
 
-    default long size() {
-        return stream().count();
-    }
-
     /**
      * @return The first element that satisfies the Predicate,
      *         null if none found or pred is null
      */
     default E getFirst(Predicate<E> pred) {
-        return ((IterableExt<E>) stream()::iterator).getFirst(pred);
+        return pred == null ? null : stream().filter(pred).findFirst().orElse(null);
     }
 
     /**

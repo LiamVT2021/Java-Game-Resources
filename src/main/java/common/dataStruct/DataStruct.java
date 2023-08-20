@@ -4,18 +4,27 @@ import java.util.Iterator;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-@FunctionalInterface
-public interface IterableExt<E> extends Iterable<E>, Streamable<E> {
+public interface DataStruct<E> extends Iterable<E>, Streamable<E> {
 
+    long size();
+
+    default boolean useParrallel() {
+        return size() >= 128;
+    }
+
+    @Override
     default Stream<E> stream() {
-        Stream.Builder<E> builder = Stream.builder();
-        forEach(builder);
-        return builder.build();
+        return StreamSupport.stream(this.spliterator(), useParrallel());
     }
 
     @Override
     default E getFirst(Predicate<E> pred) {
+        return useParrallel() ? Streamable.super.getFirst(pred) : getFirstIterator(pred);
+    }
+
+    default E getFirstIterator(Predicate<E> pred) {
         if (pred == null)
             return null;
         for (E e : this)
@@ -26,7 +35,7 @@ public interface IterableExt<E> extends Iterable<E>, Streamable<E> {
 
     @Override
     default boolean has(Predicate<E> pred) {
-        return getFirst(pred) != null;
+        return useParrallel() ? Streamable.super.has(pred) : getFirstIterator(pred) != null;
     }
 
     default Supplier<E> loop() {
