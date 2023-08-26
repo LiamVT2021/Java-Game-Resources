@@ -1,6 +1,7 @@
 package common.dataStruct;
 
 import java.util.Iterator;
+import java.util.Spliterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -84,26 +85,12 @@ public interface ArrayWrapper<G extends S, S, A> extends DataStruct<G> {
 
     @Override
     default Iterator<G> iterator() {
-        return iterator(size());
+        return new ArrayIterator<>(this, (int) size());
     }
 
-    /**
-     * @param size how many elements will be returned by this iterator
-     */
-    default Iterator<G> iterator(long size) {
-        return new Iterator<>() {
-            private int i;
-
-            @Override
-            public boolean hasNext() {
-                return i < size;
-            }
-
-            @Override
-            public G next() {
-                return get(i++);
-            }
-        };
+    @Override
+    default Spliterator<G> spliterator() {
+        return new ArraySpliterator<>(this, 0, (int) size());
     }
 
     /**

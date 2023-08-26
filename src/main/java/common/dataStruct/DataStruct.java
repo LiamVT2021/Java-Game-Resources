@@ -16,7 +16,7 @@ public interface DataStruct<E> extends Iterable<E>, Streamable<E> {
 
     @Override
     default Stream<E> stream() {
-        return StreamSupport.stream(this.spliterator(), useParrallel());
+        return StreamSupport.stream(spliterator(), useParrallel());
     }
 
     @Override
