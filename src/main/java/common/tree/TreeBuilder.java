@@ -50,18 +50,20 @@ public class TreeBuilder<E> implements Tree<E> {
         return node;
     }
 
-    ///
-
     public Tree<E> finalise(IntFunction<Final<E>[]> arrFunc) {
         HashMap<E, Builder<E>> builderMap = new HashMap<>(map);
         HashMap<E, Final<E>> finalMap = new HashMap<>();
         Function<ArrayList<Builder<E>>, Final<E>[]> arrayFunc = //
                 next -> next.stream().map(finalMap::get).toArray(arrFunc);
-        while (!builderMap.isEmpty())
+        int remaining;
+        while ((remaining = builderMap.size()) != 0) {
             builderMap.forEach((item, next) -> {
                 if (finalMap.keySet().containsAll(List.of(next)))
                     finalMap.put(item, new Final<E>(item, arrayFunc.apply(getNode(item).next)));
             });
+            if (remaining == builderMap.size())
+                throw new IllegalArgumentException("Cannot finalize Cyclical Trees");
+        }
         Final<E>[] arr = arrayFunc.apply(root.next);
         return () -> Stream.of(arr);
     }
