@@ -19,6 +19,11 @@ public class TreeBuilder<E> implements Tree<E> {
         return root.next();
     }
 
+    @Override
+    public Stream<? extends TreeNode<E>> getNext(E item) {
+        return map.get(item).next();
+    }
+
     @SafeVarargs
     public final void withRoots(E... roots) {
         withBranches(root, roots);
@@ -50,6 +55,8 @@ public class TreeBuilder<E> implements Tree<E> {
         return node;
     }
 
+    //
+
     public Tree<E> finalise(IntFunction<Final<E>[]> arrFunc) {
         HashMap<E, Builder<E>> builderMap = new HashMap<>(map);
         HashMap<E, Final<E>> finalMap = new HashMap<>();
@@ -64,8 +71,29 @@ public class TreeBuilder<E> implements Tree<E> {
             if (remaining == builderMap.size())
                 throw new IllegalArgumentException("Cannot finalize Cyclical Trees");
         }
-        Final<E>[] arr = arrayFunc.apply(root.next);
-        return () -> Stream.of(arr);
+        return new FinalTree<E>(arrayFunc.apply(root.next), finalMap);
+    }
+
+    private static class FinalTree<E> implements Tree<E> {
+
+        private Final<E>[] arr;
+        private HashMap<E, Final<E>> map;
+
+        public FinalTree(Final<E>[] array, HashMap<E, Final<E>> nodeMap) {
+            arr = array;
+            map = nodeMap;
+        }
+
+        @Override
+        public Stream<? extends TreeNode<E>> roots() {
+            return Stream.of(arr);
+        }
+
+        @Override
+        public Stream<? extends TreeNode<E>> getNext(E item) {
+            return map.get(item).next();
+        }
+
     }
 
 }
