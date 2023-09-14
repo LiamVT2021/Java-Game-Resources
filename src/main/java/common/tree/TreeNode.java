@@ -1,6 +1,7 @@
 package common.tree;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public abstract class TreeNode<E> {
@@ -8,6 +9,13 @@ public abstract class TreeNode<E> {
     public final E item;
 
     public abstract Stream<? extends TreeNode<E>> next();
+
+    public Stream<E> traverse(Predicate<E> include, Predicate<E> next) {
+        if (!next.test(item))
+            return include.test(item) ? Stream.of(item) : Stream.of();
+        Stream<E> ret = next().flatMap(node -> node.traverse(include, next));
+        return include.test(item) ? Stream.concat(Stream.of(item), ret) : ret;
+    }
 
     TreeNode(E item) {
         this.item = item;
