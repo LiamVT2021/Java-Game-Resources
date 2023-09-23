@@ -5,10 +5,10 @@ import java.util.function.Consumer;
 
 public class ArraySpliterator<V> implements Spliterator<V> {
 
-    private final ArrayWrapper<V, ?, ?> array;
+    private final ArrayWrapper<V, ? super V, ?> array;
     private int cur, end;
 
-    public ArraySpliterator(ArrayWrapper<V, ?, ?> array, int cur, int end) {
+    public ArraySpliterator(ArrayWrapper<V, ? super V, ?> array, int cur, int end) {
         this.array = array;
         this.cur = cur;
         this.end = end;

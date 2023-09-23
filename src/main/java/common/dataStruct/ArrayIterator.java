@@ -3,10 +3,10 @@ package common.dataStruct;
 import java.util.Iterator;
 
 public class ArrayIterator<G> implements Iterator<G> {
-    private ArrayWrapper<G, ?, ?> array;
+    private ArrayWrapper<G, ? super G, ?> array;
     private int i, size;
 
-    public ArrayIterator(ArrayWrapper<G, ?, ?> array, int size) {
+    public ArrayIterator(ArrayWrapper<G, ? super G, ?> array, int size) {
         this.array = array;
         this.size = size;
     }
