@@ -6,6 +6,13 @@ import java.util.stream.LongStream;
 
 import common.dataStruct.Streamable;
 
+/**
+ * Interface for converting a stream of Number objects
+ * into primitive streams or arrays.
+ * 
+ * @param <N> The type of Number object in the stream
+ * @version 7/23/23
+ */
 @FunctionalInterface
 public interface NumStream<N extends Number> extends Streamable<N> {
 
