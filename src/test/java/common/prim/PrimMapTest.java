@@ -1,14 +1,14 @@
 package common.prim;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static common.prim.NumStreamTest.assertNumEquals;
+import static common.prim.PrimEnumMap.*;
 
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import static common.prim.PrimEnumMap.*;
 
 /**
  * Tests all the methods in the PrimMap interface using PrimEnumMap.
@@ -30,7 +30,7 @@ public class PrimMapTest {
     @ParameterizedTest
     @MethodSource("allMaps")
     public void testGet(PrimEnumMap<Type, Number, ?> map) {
-        assertArrayEquals(new int[] { 0, 0 }, map.get(Type.A, Type.B).mapToInt(Number::intValue).toArray());
+        assertNumEquals(map.get(Type.A, Type.B), 0, 0);
     }
 
     @ParameterizedTest

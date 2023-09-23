@@ -2,6 +2,9 @@ package common.prim.array;
 
 import java.util.stream.Stream;
 
+import common.prim.NumStream;
+import common.pushPop.ArrayWrapper;
+
 /**
  * Wrapper interface around an array of primitive numbers.
  * 
@@ -9,13 +12,11 @@ import java.util.stream.Stream;
  * @param <A> the type of the wrapped array.
  * @version 6/29/23
  */
-public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A> {
+public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, A>, NumStream<N> {
 
     @Override
     default Stream<N> stream() {
-        Stream.Builder<N> builder = Stream.builder();
-        forEach(builder);
-        return builder.build();
+        return ArrayWrapper.super.stream();
     }
 
     @Override
@@ -31,7 +32,7 @@ public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, 
 
     static abstract class Int<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
 
-        public Int(A array) {
+        Int(A array) {
             super(array);
         }
 
@@ -44,7 +45,7 @@ public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, 
 
     static abstract class Flt<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
 
-        public Flt(A array) {
+        Flt(A array) {
             super(array);
         }
 

@@ -1,9 +1,10 @@
-package common.prim.array;
+package common.pushPop;
 
 import java.util.Iterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import common.dataStruct.IterableExt;
 import common.util.StringUtils;
 
 /**
@@ -14,7 +15,7 @@ import common.util.StringUtils;
  * @param <A> the type of the wrapped array
  * @version 7/12/23
  */
-public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
+public interface ArrayWrapper<G extends S, S, A> extends IterableExt<G> {
 
     /**
      * @return the unwrapped array
@@ -83,27 +84,27 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
     @Override
     default Iterator<G> iterator() {
-        return new Iterator<G>() {
+        return iterator(capacity());
+    }
 
+    /**
+     * @param size how many elements will be returned by this iterator
+     */
+    default Iterator<G> iterator(int size) {
+        return new Iterator<>() {
             private int i;
 
             @Override
             public boolean hasNext() {
-                return i < capacity();
+                return i < size;
             }
 
             @Override
             public G next() {
                 return get(i++);
             }
-
         };
     }
-
-    /**
-     * @return a Stream of the values in the array
-     */
-    Stream<G> stream();
 
     /**
      * @param prefix characters at the begining of merged string

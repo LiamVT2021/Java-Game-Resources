@@ -37,9 +37,7 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
         return value.longValue();
     }
 
-    /**
-     * @return a LongStream of the values in the array
-     */
+    @Override
     public LongStream longStream() {
         return LongStream.of(array);
     }

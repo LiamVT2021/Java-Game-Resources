@@ -1,4 +1,4 @@
-package common.prim.array;
+package common.pushPop;
 import java.util.stream.Stream;
 
 import common.util.StringUtils;
