@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
 import java.util.stream.DoubleStream;
 
 /**
@@ -35,6 +36,12 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
     @Override
     public Double cast(Number value) {
         return value.doubleValue();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Double> func) {
+        for (double d : array)
+            func.accept(d);
     }
 
     @Override

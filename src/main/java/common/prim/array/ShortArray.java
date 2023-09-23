@@ -1,5 +1,7 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
+
 /**
  * A wrapper around an array of short values.
  * 
@@ -33,6 +35,12 @@ public class ShortArray extends PrimArray.Int<Short, short[]> {
     @Override
     public Short cast(Number value) {
         return value.shortValue();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Short> func) {
+        for (short s : array)
+            func.accept(s);
     }
 
 }

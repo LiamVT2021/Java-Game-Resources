@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
 import java.util.stream.LongStream;
 
 /**
@@ -35,6 +36,12 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
     @Override
     public Long cast(Number value) {
         return value.longValue();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Long> func) {
+        for (long l : array)
+            func.accept(l);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 /**
@@ -35,6 +36,12 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
     @Override
     public Integer cast(Number value) {
         return value.intValue();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Integer> func) {
+        for (int i : array)
+            func.accept(i);
     }
 
     @Override
