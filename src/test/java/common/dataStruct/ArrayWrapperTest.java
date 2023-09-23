@@ -86,4 +86,10 @@ public class ArrayWrapperTest {
         assertTrue(array.cast(arrSize) instanceof N);
     }
 
+    @ParameterizedTest
+    @MethodSource("empty")
+    public <N extends Number> void testForEach(ArrayWrapper<N, Number, ?> array) {
+        array.forEach(n -> assertEquals(0, n.intValue()));
+    }
+
 }
