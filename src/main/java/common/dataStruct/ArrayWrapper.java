@@ -85,12 +85,12 @@ public interface ArrayWrapper<G extends S, S, A> extends DataStruct<G> {
 
     @Override
     default Iterator<G> iterator() {
-        return new ArrayIterator<>(this, (int) size());
+        return new ArrayIterator<>(this, 0, (int) size());
     }
 
     @Override
     default Spliterator<G> spliterator() {
-        return new ArraySpliterator<>(this, 0, (int) size());
+        return new ArrayIterator<>(this, 0, (int) size());
     }
 
     /**
