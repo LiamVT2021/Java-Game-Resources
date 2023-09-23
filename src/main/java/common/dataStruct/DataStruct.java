@@ -14,6 +14,10 @@ public interface DataStruct<E> extends Iterable<E>, Streamable<E> {
         return size() >= 128;
     }
 
+    default boolean useStream() {
+        return useParrallel();
+    }
+
     @Override
     default Stream<E> stream() {
         return StreamSupport.stream(spliterator(), useParrallel());
@@ -21,7 +25,7 @@ public interface DataStruct<E> extends Iterable<E>, Streamable<E> {
 
     @Override
     default E getFirst(Predicate<E> pred) {
-        return useParrallel() ? Streamable.super.getFirst(pred) : getFirstIterator(pred);
+        return useStream() ? Streamable.super.getFirst(pred) : getFirstIterator(pred);
     }
 
     default E getFirstIterator(Predicate<E> pred) {
@@ -35,7 +39,7 @@ public interface DataStruct<E> extends Iterable<E>, Streamable<E> {
 
     @Override
     default boolean has(Predicate<E> pred) {
-        return useParrallel() ? Streamable.super.has(pred) : getFirstIterator(pred) != null;
+        return useStream() ? Streamable.super.has(pred) : getFirstIterator(pred) != null;
     }
 
     default Supplier<E> loop() {
