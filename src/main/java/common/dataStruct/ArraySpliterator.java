@@ -3,6 +3,12 @@ package common.dataStruct;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
+/**
+ * Spliterator for ArrayWrapper
+ * 
+ * @param <V> the type returned by this array
+ * @version 9/22/23
+ */
 public class ArraySpliterator<V> implements Spliterator<V> {
 
     private final ArrayWrapper<V, ? super V, ?> array;

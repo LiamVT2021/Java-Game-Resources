@@ -6,6 +6,12 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * default methods for Iterable
+ * 
+ * @param <G> the type returned by the Iterator
+ * @version 9/22/23
+ */
 public interface DataStruct<E> extends Iterable<E>, Streamable<E> {
 
     long size();
