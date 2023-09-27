@@ -14,7 +14,7 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
         this(new int[size]);
     }
 
-    public IntArray(int[] array) {
+    public IntArray(int... array) {
         super(array);
     }
 

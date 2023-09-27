@@ -13,7 +13,8 @@ import common.util.StringUtils;
  */
 public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
 
-    public GenericArray(V[] array) {
+    @SafeVarargs
+    public GenericArray(V... array) {
         super(array);
     }
 

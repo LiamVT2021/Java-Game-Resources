@@ -13,7 +13,7 @@ public class ShortArray extends PrimArray.Int<Short, short[]> {
         this(new short[size]);
     }
 
-    public ShortArray(short[] array) {
+    public ShortArray(short... array) {
         super(array);
     }
 

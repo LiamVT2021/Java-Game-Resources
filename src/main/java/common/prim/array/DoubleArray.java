@@ -14,7 +14,7 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
         this(new double[size]);
     }
 
-    public DoubleArray(double[] array) {
+    public DoubleArray(double... array) {
         super(array);
     }
 

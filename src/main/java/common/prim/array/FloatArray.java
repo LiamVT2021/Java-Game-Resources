@@ -13,7 +13,7 @@ public class FloatArray extends PrimArray.Flt<Float, float[]> {
         this(new float[size]);
     }
 
-    public FloatArray(float[] array) {
+    public FloatArray(float... array) {
         super(array);
     }
 

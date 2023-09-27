@@ -14,7 +14,7 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
         this(new long[size]);
     }
 
-    public LongArray(long[] array) {
+    public LongArray(long... array) {
         super(array);
     }
 

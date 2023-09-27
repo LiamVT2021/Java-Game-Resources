@@ -13,7 +13,7 @@ public class ByteArray extends PrimArray.Int<Byte, byte[]> {
         this(new byte[size]);
     }
 
-    public ByteArray(byte[] array) {
+    public ByteArray(byte... array) {
         super(array);
     }
 
