@@ -1,6 +1,7 @@
-package common.prim.array;
+package common.dataStruct;
 
 import java.util.Iterator;
+import java.util.Spliterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -14,7 +15,7 @@ import common.util.StringUtils;
  * @param <A> the type of the wrapped array
  * @version 7/12/23
  */
-public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
+public interface ArrayWrapper<G extends S, S, A> extends DataStruct<G> {
 
     /**
      * @return the unwrapped array
@@ -22,9 +23,10 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
     A array();
 
     /**
-     * @return the capacity of this array
+     * @return the length of this array
      */
-    int capacity();
+    @Override
+    long size();
 
     /**
      * @return the value stored at this index in the array
@@ -83,27 +85,13 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
     @Override
     default Iterator<G> iterator() {
-        return new Iterator<G>() {
-
-            private int i;
-
-            @Override
-            public boolean hasNext() {
-                return i < capacity();
-            }
-
-            @Override
-            public G next() {
-                return get(i++);
-            }
-
-        };
+        return new ArrayIterator<>(this, 0, (int) size());
     }
 
-    /**
-     * @return a Stream of the values in the array
-     */
-    Stream<G> stream();
+    @Override
+    default Spliterator<G> spliterator() {
+        return new ArrayIterator<>(this, 0, (int) size());
+    }
 
     /**
      * @param prefix characters at the begining of merged string

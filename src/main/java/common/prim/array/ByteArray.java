@@ -1,5 +1,7 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
+
 /**
  * A wrapper around an array of byte values.
  * 
@@ -11,12 +13,12 @@ public class ByteArray extends PrimArray.Int<Byte, byte[]> {
         this(new byte[size]);
     }
 
-    public ByteArray(byte[] array) {
+    public ByteArray(byte... array) {
         super(array);
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 
@@ -33,6 +35,12 @@ public class ByteArray extends PrimArray.Int<Byte, byte[]> {
     @Override
     public Byte cast(Number value) {
         return value.byteValue();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Byte> func) {
+        for (byte b : array)
+            func.accept(b);
     }
 
 }

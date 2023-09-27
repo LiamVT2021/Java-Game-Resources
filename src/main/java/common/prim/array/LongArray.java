@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
 import java.util.stream.LongStream;
 
 /**
@@ -13,12 +14,12 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
         this(new long[size]);
     }
 
-    public LongArray(long[] array) {
+    public LongArray(long... array) {
         super(array);
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 
@@ -37,9 +38,13 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
         return value.longValue();
     }
 
-    /**
-     * @return a LongStream of the values in the array
-     */
+    @Override
+    public void forEach(Consumer<? super Long> func) {
+        for (long l : array)
+            func.accept(l);
+    }
+
+    @Override
     public LongStream longStream() {
         return LongStream.of(array);
     }

@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
 import java.util.stream.DoubleStream;
 
 /**
@@ -13,12 +14,12 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
         this(new double[size]);
     }
 
-    public DoubleArray(double[] array) {
+    public DoubleArray(double... array) {
         super(array);
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 
@@ -37,9 +38,13 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
         return value.doubleValue();
     }
 
-    /**
-     * @return a DoubleStream of the values in the array
-     */
+    @Override
+    public void forEach(Consumer<? super Double> func) {
+        for (double d : array)
+            func.accept(d);
+    }
+
+    @Override
     public DoubleStream doubleStream() {
         return DoubleStream.of(array);
     }

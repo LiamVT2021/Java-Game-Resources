@@ -2,7 +2,7 @@ package old.util;
 
 import java.util.Iterator;
 
-public class SubArray<E> implements IterableExt<E> {
+public class SubArray<E> implements Iterable<E> {
 
     private E[] arr;
     private int[] indexes;

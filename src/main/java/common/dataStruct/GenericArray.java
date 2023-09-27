@@ -1,4 +1,6 @@
-package common.prim.array;
+package common.dataStruct;
+
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import common.util.StringUtils;
@@ -11,12 +13,13 @@ import common.util.StringUtils;
  */
 public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
 
-    public GenericArray(V[] array) {
+    @SafeVarargs
+    public GenericArray(V... array) {
         super(array);
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 
@@ -38,6 +41,12 @@ public class GenericArray<V> extends ArrayWrapper.ADT<V, V, V[]> {
     @Override
     public V cast(V value) {
         return value;
+    }
+
+    @Override
+    public void forEach(Consumer<? super V> func) {
+        for (V v : array)
+            func.accept(v);
     }
 
     @Override

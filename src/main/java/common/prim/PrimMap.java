@@ -64,10 +64,7 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
      * @throws IndexOutOfBoundsException if invalid key
      */
     default V swap(K key, V value) {
-        int index = indexOf(key);
-        V ret = get(index);
-        set(index, value);
-        return ret;
+        return swap(indexOf(key), value);
     }
 
     /**

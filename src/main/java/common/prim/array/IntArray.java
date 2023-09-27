@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 /**
@@ -13,12 +14,12 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
         this(new int[size]);
     }
 
-    public IntArray(int[] array) {
+    public IntArray(int... array) {
         super(array);
     }
 
     @Override
-    public int capacity() {
+    public long size() {
         return array.length;
     }
 
@@ -37,9 +38,13 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
         return value.intValue();
     }
 
-    /**
-     * @return a IntStream of the values in the array
-     */
+    @Override
+    public void forEach(Consumer<? super Integer> func) {
+        for (int i : array)
+            func.accept(i);
+    }
+
+    @Override
     public IntStream intStream() {
         return IntStream.of(array);
     }

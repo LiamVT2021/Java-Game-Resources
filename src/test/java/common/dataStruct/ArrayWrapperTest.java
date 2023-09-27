@@ -1,9 +1,9 @@
-package common.prim.array;
+package common.dataStruct;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static common.prim.NumStreamTest.assertIntEquals;
 
 import java.util.stream.Stream;
 
@@ -11,10 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import common.prim.array.*;
+
 /**
  * Tests all methods for Primitive and Generic ArrayWrappers.
  * 
- * @version 7/12/23
+ * @version 7/23/23
  */
 public class ArrayWrapperTest {
 
@@ -36,14 +38,14 @@ public class ArrayWrapperTest {
 
     @ParameterizedTest
     @MethodSource("empty")
-    public void testCapacity(ArrayWrapper<? extends Number, Number, ?> array) {
-        assertEquals(arrSize, array.capacity());
+    public void testSize(ArrayWrapper<? extends Number, Number, ?> array) {
+        assertEquals(arrSize, array.size());
     }
 
     @ParameterizedTest
     @MethodSource("full")
     public void testGet(ArrayWrapper<? extends Number, Number, ?> array) {
-        assertArrayEquals(new int[] { 0, 2, 4 }, array.get(0, 2, 4).mapToInt(Number::intValue).toArray());
+        assertIntEquals(array.get(0, 2, 4), 0, 2, 4);
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(arrSize));
     }
@@ -68,13 +70,6 @@ public class ArrayWrapperTest {
     }
 
     @Test
-    public void testPrimStream() {
-        new IntArray(arrSize).intStream().forEach(i -> assertEquals(0, i));
-        new LongArray(arrSize).longStream().forEach(i -> assertEquals(0, i));
-        new DoubleArray(arrSize).doubleStream().forEach(i -> assertEquals(0, i));
-    }
-
-    @Test
     public void testGen() {
         GenericArray<Number> numArr = new GenericArray<>(new Number[] { 0, 0, 0, 0, 0 });
         numArr.forEach(n -> assertEquals(0, n));
@@ -89,6 +84,12 @@ public class ArrayWrapperTest {
     @MethodSource("empty")
     public <N extends Number> void testCast(ArrayWrapper<N, Number, ?> array) {
         assertTrue(array.cast(arrSize) instanceof N);
+    }
+
+    @ParameterizedTest
+    @MethodSource("empty")
+    public <N extends Number> void testForEach(ArrayWrapper<N, Number, ?> array) {
+        array.forEach(n -> assertEquals(0, n.intValue()));
     }
 
 }
