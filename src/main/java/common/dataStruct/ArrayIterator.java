@@ -33,9 +33,9 @@ public class ArrayIterator<V> implements Iterator<V>, Spliterator<V> {
 
     @Override
     public boolean tryAdvance(Consumer<? super V> action) {
-        if (cur >= end)
+        if (!hasNext())
             return false;
-        action.accept(array.get(cur++));
+        action.accept(next());
         return true;
     }
 
