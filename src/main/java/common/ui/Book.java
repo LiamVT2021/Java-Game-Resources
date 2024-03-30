@@ -1,5 +1,6 @@
 package common.ui;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -10,6 +11,26 @@ public abstract class Book {
     private Book(String header, String[] tabs) {
         this.header = header;
         this.tabs = tabs;
+    }
+
+    public abstract Tab page(int index);
+
+    public abstract class Tab extends Page {
+        private int index;
+
+        public Tab(int index, String header, String[] tabs, Object content, String footer) {
+            super(header, tabs, content, footer);
+            this.index = index;
+        }
+        @Override
+        public Page prev() {
+            return index == 0 ? page(tabs.length - 1) : page(index - 1);
+        }
+
+        @Override
+        public Page next() {
+            return index == tabs.length - 1 ? page(0) : page(index + 1);
+        }
     }
 
     public static class Array extends Book {
@@ -27,26 +48,15 @@ public abstract class Book {
         public Array(String header, Object... contents) {
             this(header, contents, null);
         }
-
-        public Page page(int i) {
-            return new Page(header, tabs, contents[i], footers == null ? null : footers[i]) {
-                @Override
-                public Page prev() {
-                    return i == 0 ? page(contents.length - 1) : page(i - 1);
-                }
-
-                @Override
-                public Page next() {
-                    return i == contents.length - 1 ? page(0) : page(i + 1);
-                }
-
+        
+        public Tab page(int index) {
+            return new Tab(index, header, tabs, contents[index], footers == null ? null : footers[index]) {
                 @Override
                 public Page openTab(String tab) {
                     return page(Integer.valueOf(tab));
                 }
             };
         }
-
     }
 
     public static class Mapped extends Book {
@@ -57,28 +67,14 @@ public abstract class Book {
             this.map = map;
         }
 
-        public Page page(String tab) {
-            PageContent pc = map.get(tab);
-            return new Page(header, tabs, pc.content, pc.footer) {
-                @Override
-                public Page openTab(String tab) {
-                    return page(tab);
-                }
-
-                @Override
-                public Page prev() {
-                    return null;
-                }
-
-                @Override
-                public Page next() {
-                    return null;
-                }
-            };
+        @Override
+        public Tab page(int index) {
+            String tab = tabs[index];
+            return map.get(tab).makeTab(index, tab, map);
         }
     }
 
-    public static class PageContent {
+    public class PageContent {
         public final Object content;
         public final String footer;
 
@@ -87,6 +83,15 @@ public abstract class Book {
                 throw new IllegalArgumentException("content cannot be null");
             this.content = content;
             this.footer = footer;
+        }
+
+        public Tab makeTab(int index, String tab, Map<String, PageContent> map) {
+            return new Tab(index, header, tabs, content, footer) {
+                @Override
+                public Page openTab(String tab) {
+                    return makeTab(Arrays.asList(tabs).indexOf(tab), tab, map); // get index here
+                }
+            };
         }
     }
 
