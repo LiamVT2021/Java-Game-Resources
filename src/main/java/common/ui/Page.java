@@ -1,17 +1,17 @@
 package common.ui;
 
-public abstract class Page<C> {
+public abstract class Page {
     // LAYOUT - Top buttons on either side of header
     public final String header;
     public final String[] tabs;
-    public abstract Page<?> prev();
-    public final C content;
-    public abstract Page<?> next();
+    public abstract Page prev();
+    public final Object content;
+    public abstract Page next();
     public final String footer;
 
     // CODE
 
-    public Page(String header, String[] tabs, C content, String footer) {
+    public Page(String header, String[] tabs, Object content, String footer) {
         this.header = header;
         this.tabs = tabs;
         this.content = content;
@@ -26,11 +26,11 @@ public abstract class Page<C> {
         return true;
     }
 
-    public abstract Page<?> openTab(String tab);
+    public abstract Page openTab(String tab);
 
-    public static class Single<C> extends Page<C> {
+    public static class Single extends Page {
 
-        public Single(String header, C content, String footer) {
+        public Single(String header, Object content, String footer) {
             super(header, null, content, footer);
         }
 
@@ -45,17 +45,17 @@ public abstract class Page<C> {
         }
 
         @Override
-        public final Page<?> prev() {
+        public final Page prev() {
             return null;
         }
 
         @Override
-        public final Page<?> next() {
+        public final Page next() {
             return null;
         }
 
         @Override
-        public final Page<?> openTab(String tab) {
+        public final Page openTab(String tab) {
             return null;
         }
 
