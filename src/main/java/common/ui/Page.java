@@ -61,4 +61,15 @@ public abstract class Page {
 
     }
 
+    public static class Content {
+        public final Object content;
+        public final String footer;
+        public Content(Object content, String footer) {
+            if (content == null)
+                throw new IllegalArgumentException("content cannot be null");
+            this.content = content;
+            this.footer = footer;
+        }
+    }
+
 }

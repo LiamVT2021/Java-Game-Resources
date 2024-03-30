@@ -1,7 +1,9 @@
 package common.ui;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class Book {
@@ -22,6 +24,7 @@ public abstract class Book {
             super(header, tabs, content, footer);
             this.index = index;
         }
+
         @Override
         public Page prev() {
             return index == 0 ? page(tabs.length - 1) : page(index - 1);
@@ -48,7 +51,7 @@ public abstract class Book {
         public Array(String header, Object... contents) {
             this(header, contents, null);
         }
-        
+
         public Tab page(int index) {
             return new Tab(index, header, tabs, contents[index], footers == null ? null : footers[index]) {
                 @Override
@@ -60,11 +63,13 @@ public abstract class Book {
     }
 
     public static class Mapped extends Book {
-        private final Map<String, PageContent> map;
+        private final HashMap<String, PageContent> map;
 
-        public Mapped(String header, Map<String, PageContent> map) {
+        public Mapped(String header, Map<String, Page.Content> map) {
             super(header, map.keySet().stream().toArray(String[]::new));
-            this.map = map;
+            this.map = map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    entry -> new PageContent(entry.getValue().content, entry.getValue().footer),
+                    (a, b) -> a, HashMap::new));
         }
 
         @Override
@@ -72,26 +77,21 @@ public abstract class Book {
             String tab = tabs[index];
             return map.get(tab).makeTab(index, tab, map);
         }
-    }
 
-    public class PageContent {
-        public final Object content;
-        public final String footer;
+        public class PageContent extends Page.Content {
 
-        public PageContent(Object content, String footer) {
-            if (content == null)
-                throw new IllegalArgumentException("content cannot be null");
-            this.content = content;
-            this.footer = footer;
-        }
+            public PageContent(Object content, String footer) {
+                super(content, footer);
+            }
 
-        public Tab makeTab(int index, String tab, Map<String, PageContent> map) {
-            return new Tab(index, header, tabs, content, footer) {
-                @Override
-                public Page openTab(String tab) {
-                    return makeTab(Arrays.asList(tabs).indexOf(tab), tab, map); // get index here
-                }
-            };
+            public Tab makeTab(int index, String tab, Map<String, PageContent> map) {
+                return new Tab(index, header, tabs, content, footer) {
+                    @Override
+                    public Page openTab(String tab) {
+                        return makeTab(Arrays.asList(tabs).indexOf(tab), tab, map);
+                    }
+                };
+            }
         }
     }
 
