@@ -1,29 +1,62 @@
 package common.ui;
 
 public abstract class Page<C> {
-    // Top buttons on either side of header
-    public abstract String header();
-
-    // Tabs and/or prev next buttons
+    // LAYOUT - Top buttons on either side of header
+    public final String header;
+    public final String[] tabs;
+    public abstract Page<?> prev();
     public final C content;
+    public abstract Page<?> next();
     public final String footer;
 
-    public Page(C content, String footer) {
+    // CODE
+
+    public Page(String header, String[] tabs, C content, String footer) {
+        this.header = header;
+        this.tabs = tabs;
         this.content = content;
         this.footer = footer;
     }
 
+    public boolean displayTabs() {
+        return false;
+    }
+
+    public boolean displayArrows() {
+        return true;
+    }
+
+    public abstract Page<?> openTab(String tab);
+
     public static class Single<C> extends Page<C> {
-        private final String header;
 
         public Single(String header, C content, String footer) {
-            super(content, footer);
-            this.header = header;
+            super(header, null, content, footer);
         }
 
         @Override
-        public String header() {
-            return header;
+        public final boolean displayTabs() {
+            return false;
+        }
+
+        @Override
+        public final boolean displayArrows() {
+            return false;
+        }
+
+        @Override
+        public final Page<?> prev() {
+            return null;
+        }
+
+        @Override
+        public final Page<?> next() {
+            return null;
+        }
+
+        @Override
+        public final Page<?> openTab(String tab) {
+            return null;
         }
 
     }
