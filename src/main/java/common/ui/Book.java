@@ -1,113 +1,117 @@
 package common.ui;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-import common.util.MapUtils;
+import common.util.StringUtils;
 
-public abstract class Book {
-    protected final String header;
-    protected final String[] tabs;
+public abstract class Book extends Page {
 
-    private Book(String header, String[] tabs) {
-        this.header = header;
-        this.tabs = tabs;
+    private Book(String name, String footer) {
+        super(name, footer);
     }
 
-    public abstract Tab page(int index);
+    @Override
+    public String header() {
+        return name + " - " + currentTab();
+    }
 
-    public abstract class Tab extends Page {
-        private int index;
+    abstract public String currentTab();
 
-        public Tab(int index, String header, String[] tabs, Object content, String footer) {
-            super(header, tabs, content, footer);
-            this.index = index;
-        }
+    abstract public String[] tabNames();
 
-        @Override
-        public Page prev() {
-            return index == 0 ? page(tabs.length - 1) : page(index - 1);
-        }
+    abstract public Stream<CharSequence> tabStrings();
 
-        @Override
-        public Page next() {
-            return index == tabs.length - 1 ? page(0) : page(index + 1);
-        }
+    private static String tabString(String tabName, Object content) {
+        return "- " + tabName + " -\n" + content;
+    }
+
+    @Override
+    public String toString() {
+        return StringUtils.join(header(), "\n\n", footer, tabStrings());
     }
 
     public static class Array extends Book {
         private final Object[] contents;
-        private final String[] footers;
+        private int index;
 
-        public Array(String header, Object[] contents, String[] footers) {
-            super(header, IntStream.range(0, contents.length).mapToObj(String::valueOf).toArray(String[]::new));
-            if (tabs.length != contents.length || (footers != null && tabs.length != footers.length))
-                throw new IndexOutOfBoundsException("Array sizes don't match");
+        public Array(String name, String footer, Object... contents) {
+            super(name, footer);
             this.contents = contents;
-            this.footers = footers;
+            loadContent(0);
         }
 
-        public Array(String header, Object... contents) {
-            this(header, contents, null);
+        public Object getContent(int index) {
+            return contents[index];
         }
 
-        public Tab page(int index) {
-            return new Tab(index, header, tabs, contents[index], footers == null ? null : footers[index]) {
-                @Override
-                public Page openTab(String tab) {
-                    return page(Integer.valueOf(tab));
-                }
-            };
+        public void loadContent(int index) {
+            this.index = index;
+            content = getContent(index);
+        }
+
+        @Override
+        public String currentTab() {
+            return String.valueOf(index);
+        }
+
+        @Override
+        public String[] tabNames() {
+            return IntStream.range(0, contents.length).mapToObj(String::valueOf).toArray(String[]::new);
+        }
+
+        @Override
+        public Stream<CharSequence> tabStrings() {
+            return IntStream.range(0, contents.length).mapToObj(i -> tabString(String.valueOf(i), contents[i]));
         }
     }
 
     public static class Mapped extends Book {
-        private final HashMap<String, PageContent> map;
+        public final HashMap<String, Object> map;
+        private String current;
 
-        public Mapped(String header, Map<String, Page.Content> map) {
-            super(header, map.keySet().stream().toArray(String[]::new));
-            this.map = MapUtils.mapValues(map, pc -> new PageContent(pc.content, pc.footer), HashMap::new);
+        public Mapped(String name, String footer, Map<String, Object> map) {
+            super(name, footer);
+            this.map = map instanceof HashMap ? (HashMap<String, Object>) map : new HashMap<>(map);
+        }
+
+        public Mapped(String name, String footer, Map<String, Object> map, String startingTab) {
+            this(name, footer, map);
+            loadContent(startingTab);
+        }
+
+        public Object getContent(String tab) {
+            return map.get(tab);
+        }
+
+        public void loadContent(String tab) {
+            current = tab;
+            content = getContent(tab);
         }
 
         @Override
-        public Tab page(int index) {
-            String tab = tabs[index];
-            return map.get(tab).makeTab(index, tab, map);
+        public String currentTab() {
+            return current;
         }
 
-        private class PageContent extends Page.Content {
-            private PageContent(Object content, String footer) {
-                super(content, footer);
-            }
-
-            private Tab makeTab(int index, String tab, Map<String, PageContent> map) {
-                return new Tab(index, header, tabs, content, footer) {
-                    @Override
-                    public Page openTab(String tab) {
-                        return makeTab(Arrays.asList(tabs).indexOf(tab), tab, map);
-                    }
-                };
-            }
-        }
-    }
-
-    public static class Builder {
-        private final HashMap<String, Page.Content> map = new HashMap<>();
-        private final String header;
-
-        public Builder(String header) {
-            this.header = header;
+        @Override
+        public String[] tabNames() {
+            return map.keySet().stream().toArray(String[]::new);
         }
 
-        public Builder with(String tab, Object content, String footer){
-            map.put(tab, new Page.Content(content, footer));
-            return this;
+        @Override
+        public Stream<CharSequence> tabStrings() {
+            return map.entrySet().stream().map(e -> tabString(e.getKey(), e.getValue()));
         }
 
-        public Mapped build() {
-            return new Mapped(header, map);
+        public Object put(String tab, Object content) {
+            return map.put(tab, content);
+        }
+
+        public Object remove(String tab) {
+            return map.remove(tab);
         }
     }
 
