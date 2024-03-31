@@ -96,9 +96,9 @@ public abstract class Book<C> extends Page<C> {
         protected final HashMap<String, C> map;
         private String[] tabs;
 
-        // public Mapped(String name, String footer) {
-        //     this(name, footer, new HashMap<>());
-        // }
+        public Mapped(String name, String footer) {
+            this(name, footer, new HashMap<>());
+        }
 
         public Mapped(String name, String footer, Map<String, C> map, String... tabOrder) {
             super(name, footer);
