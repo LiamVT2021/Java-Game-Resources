@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import common.util.Predicates;
+import common.util.StreamUtils;
 import common.util.StringUtils;
 
 public abstract class Book<C> extends Page<C> {
@@ -53,7 +55,7 @@ public abstract class Book<C> extends Page<C> {
 
     @Override
     public String toString() {
-        return StringUtils.join(header(), "\n\n", footer, tabStrings());
+        return StringUtils.join("\n\n", StreamUtils.wrap(name, tabStrings(), footer).filter(Predicates.NOT_NULL));
     }
 
     public static class Array<C> extends Book<C> {
@@ -110,7 +112,7 @@ public abstract class Book<C> extends Page<C> {
         // this.map = new HashMap<>();
         // }
 
-        public Mapped(String name, String footer, Map<String, C> map, String startingTab) {
+        public Mapped(String name, String footer, String startingTab, Map<String, C> map) {
             super(name, footer);
             this.map = map instanceof HashMap ? (HashMap<String, C>) map : new HashMap<>(map);
             loadContent(startingTab);
@@ -127,9 +129,10 @@ public abstract class Book<C> extends Page<C> {
         }
 
         @Override
-        public void loadContent(String tabName) {
+        public C loadContent(String tabName) {
             tabIndex = Arrays.asList(tabNames()).indexOf(tabName);
             content = getContent(tabName);
+            return content;
         }
 
         @Override
