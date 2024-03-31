@@ -97,18 +97,13 @@ public abstract class Book<C> extends Page<C> {
         private String[] tabs;
 
         // public Mapped(String name, String footer) {
-        // super(name, footer);
-        // this.map = new HashMap<>();
+        //     this(name, footer, new HashMap<>());
         // }
-
-        public Mapped(String name, String footer, Map<String, C> map) {
-            this(name, footer, map, null);
-        }
 
         public Mapped(String name, String footer, Map<String, C> map, String... tabOrder) {
             super(name, footer);
             this.map = map instanceof HashMap ? (HashMap<String, C>) map : new HashMap<>(map);
-            tabs = tabOrder;
+            tabs = tabOrder.length == 0 ? null : tabOrder;
             loadContent(1);
         }
 
