@@ -4,9 +4,9 @@ import java.util.stream.Stream;
 
 import common.util.StringUtils;
 
-public abstract class Page {
+public abstract class Page<C> {
     public final String name;
-    protected Object content;
+    protected C content;
     public final String footer;
 
     public Page(String name, String footer) {
@@ -34,8 +34,8 @@ public abstract class Page {
         return pageString();
     }
 
-    public static class Single extends Page {
-        public Single(String name, Object content, String footer) {
+    public static class Single<C> extends Page<C> {
+        public Single(String name, C content, String footer) {
             super(name, footer);
             if (content == null)
               throw new IllegalArgumentException("Page Content cannot be Null");

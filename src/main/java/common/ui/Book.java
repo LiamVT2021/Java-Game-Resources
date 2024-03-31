@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import common.util.StringUtils;
 
-public abstract class Book extends Page {
+public abstract class Book<C> extends Page<C> {
     protected int tabIndex;
 
     private Book(String name, String footer) {
@@ -32,9 +32,9 @@ public abstract class Book extends Page {
         return "- " + tabName + " -\n" + content;
     }
 
-    public abstract Object getContent(String tabName);
+    public abstract C getContent(String tabName);
 
-    public abstract Object getContent(int tabIndex);
+    public abstract C getContent(int tabIndex);
 
     public abstract void loadContent(String tabName);
 
@@ -56,23 +56,23 @@ public abstract class Book extends Page {
         return StringUtils.join(header(), "\n\n", footer, tabStrings());
     }
 
-    public static class Array extends Book {
-        private final Object[] contents;
+    public static class Array<C> extends Book<C> {
+        private final C[] contents;
 
-        public Array(String name, String footer, Object... contents) {
+        public Array(String name, String footer, @SuppressWarnings("unchecked") C... contents) {
             super(name, footer);
             this.contents = contents;
-            loadContent(0);
+            loadContent(1);
         }
 
         @Override
-        public Object getContent(String tabName) {
+        public C getContent(String tabName) {
             return getContent(Integer.valueOf(tabName));
         }
 
         @Override
-        public Object getContent(int tabIndex) {
-            return contents[tabIndex];
+        public C getContent(int tabIndex) {
+            return contents[tabIndex - 1];
         }
 
         @Override
@@ -87,7 +87,7 @@ public abstract class Book extends Page {
 
         @Override
         public String[] tabNames() {
-            return IntStream.range(0, contents.length).mapToObj(String::valueOf).toArray(String[]::new);
+            return IntStream.range(1, contents.length + 1).mapToObj(String::valueOf).toArray(String[]::new);
         }
 
         @Override
@@ -97,31 +97,32 @@ public abstract class Book extends Page {
 
         @Override
         public Stream<CharSequence> tabStrings() {
-            return IntStream.range(0, contents.length).mapToObj(i -> tabString(String.valueOf(i), contents[i]));
+            return IntStream.range(1, contents.length + 1).mapToObj(i -> tabString(String.valueOf(i), contents[i - 1]));
         }
     }
 
-    public static class Mapped extends Book {
-        protected final HashMap<String, Object> map;
+    public static class Mapped<C> extends Book<C> {
+        protected final HashMap<String, C> map;
         private String[] tabs;
 
-        public Mapped(String name, String footer, Map<String, Object> map) {
-            super(name, footer);
-            this.map = map instanceof HashMap ? (HashMap<String, Object>) map : new HashMap<>(map);
-        }
+        // public Mapped(String name, String footer) {
+        // super(name, footer);
+        // this.map = new HashMap<>();
+        // }
 
-        public Mapped(String name, String footer, Map<String, Object> map, String startingTab) {
-            this(name, footer, map);
+        public Mapped(String name, String footer, Map<String, C> map, String startingTab) {
+            super(name, footer);
+            this.map = map instanceof HashMap ? (HashMap<String, C>) map : new HashMap<>(map);
             loadContent(startingTab);
         }
 
         @Override
-        public Object getContent(String tab) {
+        public C getContent(String tab) {
             return map.get(tab);
         }
 
         @Override
-        public Object getContent(int tabIndex) {
+        public C getContent(int tabIndex) {
             return getContent(tabNames()[tabIndex]);
         }
 
@@ -153,12 +154,12 @@ public abstract class Book extends Page {
             return map.entrySet().stream().map(e -> tabString(e.getKey(), e.getValue()));
         }
 
-        public Object put(String tab, Object content) {
+        public C put(String tab, C content) {
             tabs = null;
             return map.put(tab, content);
         }
 
-        public Object remove(String tab) {
+        public C remove(String tab) {
             tabs = null;
             return map.remove(tab);
         }
