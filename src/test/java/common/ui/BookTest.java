@@ -22,22 +22,18 @@ public class BookTest {
 
     @Test
     public void testStrings() {
-        assertEquals("Array - 1\n\nPage 1", arrBook.pageString());
-        assertEquals("Food Map - Meats\n\nChicken, Beef, Pork\n\nEat Healthy", mapBook.pageString());
+        assertEquals("Array - 1\n[ 1 | 2 | 3 ]\n\nPage 1", arrBook.pageString());
+        assertEquals("Food Map - Meats\n[ Meats | Veggies | Fruits ]\n\nChicken, Beef, Pork\n\nEat Healthy",
+                mapBook.pageString());
         assertEquals("Array\n\n"
                 + "- 1 -\nPage 1\n\n"
                 + "- 2 -\nPage 2\n\n"
                 + "- 3 -\nPage 3",
                 arrBook.toString());
-        String[] tabs = mapBook.tabNames();
-        Map<String, String> map = Map.of(
-                "Fruits", "- Fruits -\nApple, Orange, Bannana, Kiwi\n\n",
-                "Veggies", "- Veggies -\nLetuce, Kale, Celery, Carrot\n\n",
-                "Meats", "- Meats -\nChicken, Beef, Pork\n\n");
         assertEquals("Food Map\n\n"
-                + map.get(tabs[0])
-                + map.get(tabs[1])
-                + map.get(tabs[2])
+                + "- Meats -\nChicken, Beef, Pork\n\n"
+                + "- Veggies -\nLetuce, Kale, Celery, Carrot\n\n"
+                + "- Fruits -\nApple, Orange, Bannana, Kiwi\n\n"
                 + "Eat Healthy",
                 mapBook.toString());
     }

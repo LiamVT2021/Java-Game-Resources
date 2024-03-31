@@ -19,7 +19,7 @@ public abstract class Book<C> extends Page<C> {
 
     @Override
     public String header() {
-        return name + " - " + currentTab();
+        return name + " - " + currentTab() + "\n" + StringUtils.join("[ ", " | ", " ]", Stream.of(tabNames()));
     }
 
     public abstract String[] tabNames();
