@@ -16,7 +16,7 @@ public interface StringUtils {
     }
 
     static String join(CharSequence prefix, CharSequence delim, CharSequence suffix, Stream<CharSequence> stream) {
-        return stream.collect(Collectors.joining(delim, prefix, suffix));
+        return stream.collect(Collectors.joining(delim, prefix == null ? "" : prefix, suffix == null ? "" : suffix));
     }
 
 }
