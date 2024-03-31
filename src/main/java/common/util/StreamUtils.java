@@ -4,7 +4,8 @@ import java.util.stream.Stream;
 
 public class StreamUtils {
 
-    public static <T> Stream<T> concat(@SuppressWarnings("unchecked") Stream<? extends T>... streams) {
+    @SafeVarargs
+    public static <T> Stream<T> concat(Stream<? extends T>... streams) {
         int size = streams.length;
         switch (size) {
             case 0:
@@ -19,11 +20,13 @@ public class StreamUtils {
         }
     }
 
-    public static <T> Stream<T> prepend(Stream<? extends T> stream, @SuppressWarnings("unchecked") T... predecessors) {
+    @SafeVarargs
+    public static <T> Stream<T> prepend(Stream<? extends T> stream, T... predecessors) {
         return Stream.concat(Stream.of(predecessors), stream);
     }
 
-    public static <T> Stream<T> append(Stream<? extends T> stream, @SuppressWarnings("unchecked") T... succecessors) {
+    @SafeVarargs
+    public static <T> Stream<T> append(Stream<? extends T> stream, T... succecessors) {
         return Stream.concat(stream, Stream.of(succecessors));
     }
 
