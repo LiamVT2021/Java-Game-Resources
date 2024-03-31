@@ -3,8 +3,9 @@ package common.ui;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import common.util.MapUtils;
 
 public abstract class Book {
     protected final String header;
@@ -67,9 +68,7 @@ public abstract class Book {
 
         public Mapped(String header, Map<String, Page.Content> map) {
             super(header, map.keySet().stream().toArray(String[]::new));
-            this.map = map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                    entry -> new PageContent(entry.getValue().content, entry.getValue().footer),
-                    (a, b) -> a, HashMap::new));
+            this.map = MapUtils.mapValues(map, pc -> new PageContent(pc.content, pc.footer), HashMap::new);
         }
 
         @Override
