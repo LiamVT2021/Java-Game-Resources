@@ -34,23 +34,16 @@ public abstract class Book<C> extends Page<C> {
         return "- " + tabName + " -\n" + content;
     }
 
-    public abstract C getContent(String tabName);
+    public abstract C loadContent(int tabIndex);
 
-    public abstract C getContent(int tabIndex);
+    public abstract C loadContent(String tabName);
 
-    public abstract void loadContent(String tabName);
-
-    public void loadContent(int tabIndex) {
-        this.tabIndex = tabIndex;
-        content = getContent(tabIndex);
+    public C loadPrev() {
+        return loadContent(tabIndex == 1 ? numTabs() : tabIndex - 1);
     }
 
-    public void loadPrev() {
-        loadContent(tabIndex == 0 ? numTabs() - 1 : tabIndex - 1);
-    }
-
-    public void loadNext() {
-        loadContent(tabIndex == numTabs() - 1 ? 0 : tabIndex + 1);
+    public C loadNext() {
+        return loadContent(tabIndex == numTabs() ? 1 : tabIndex + 1);
     }
 
     @Override
@@ -67,19 +60,15 @@ public abstract class Book<C> extends Page<C> {
             loadContent(1);
         }
 
-        @Override
-        public C getContent(String tabName) {
-            return getContent(Integer.valueOf(tabName));
+        public C loadContent(int tabIndex) {
+            this.tabIndex = tabIndex;
+            content = contents[tabIndex - 1];
+            return content;
         }
 
         @Override
-        public C getContent(int tabIndex) {
-            return contents[tabIndex - 1];
-        }
-
-        @Override
-        public void loadContent(String tabName) {
-            loadContent(Integer.valueOf(tabName));
+        public C loadContent(String tabName) {
+            return loadContent(Integer.valueOf(tabName));
         }
 
         @Override
@@ -119,19 +108,19 @@ public abstract class Book<C> extends Page<C> {
         }
 
         @Override
-        public C getContent(String tab) {
-            return map.get(tab);
-        }
-
-        @Override
-        public C getContent(int tabIndex) {
-            return getContent(tabNames()[tabIndex]);
+        public C loadContent(int tabIndex) {
+            this.tabIndex = tabIndex;
+            return setContet(tabNames()[tabIndex]);
         }
 
         @Override
         public C loadContent(String tabName) {
             tabIndex = Arrays.asList(tabNames()).indexOf(tabName);
-            content = getContent(tabName);
+            return setContet(tabName);
+        }
+
+        private C setContet(String tabName) {
+            content = map.get(tabName);
             return content;
         }
 

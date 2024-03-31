@@ -42,4 +42,23 @@ public class BookTest {
                 mapBook.toString());
     }
 
+    @Test
+    public void testNav() {
+        // Start
+        assertEquals("Page 1", arrBook.getContent());
+        assertEquals("Chicken, Beef, Pork", mapBook.getContent());
+        // Next
+        assertEquals("Page 2", arrBook.loadNext());
+        assertEquals("Page 3", arrBook.loadNext());
+        assertEquals("Page 1", arrBook.loadNext());
+        // Prev
+        assertEquals("Page 3", arrBook.loadPrev());
+        assertEquals("Page 2", arrBook.loadPrev());
+        assertEquals("Page 1", arrBook.loadPrev());
+        // Search
+        assertEquals("Page 3", arrBook.loadContent(3));
+        assertEquals("Page 3", arrBook.loadContent("3"));
+        assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadContent("Fruits"));
+    }
+
 }
