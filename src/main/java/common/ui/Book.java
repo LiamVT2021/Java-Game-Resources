@@ -1,5 +1,6 @@
 package common.ui;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -8,6 +9,7 @@ import java.util.stream.Stream;
 import common.util.StringUtils;
 
 public abstract class Book extends Page {
+    protected int tabIndex;
 
     private Book(String name, String footer) {
         super(name, footer);
@@ -18,14 +20,35 @@ public abstract class Book extends Page {
         return name + " - " + currentTab();
     }
 
-    abstract public String currentTab();
+    public abstract String[] tabNames();
 
-    abstract public String[] tabNames();
+    public abstract int numTabs();
 
-    abstract public Stream<CharSequence> tabStrings();
+    public abstract String currentTab();
+
+    public abstract Stream<CharSequence> tabStrings();
 
     private static String tabString(String tabName, Object content) {
         return "- " + tabName + " -\n" + content;
+    }
+
+    public abstract Object getContent(String tabName);
+
+    public abstract Object getContent(int tabIndex);
+
+    public abstract void loadContent(String tabName);
+
+    public void loadContent(int tabIndex) {
+        this.tabIndex = tabIndex;
+        content = getContent(tabIndex);
+    }
+
+    public void loadPrev() {
+        loadContent(tabIndex == 0 ? numTabs() - 1 : tabIndex - 1);
+    }
+
+    public void loadNext() {
+        loadContent(tabIndex == numTabs() - 1 ? 0 : tabIndex + 1);
     }
 
     @Override
@@ -35,7 +58,6 @@ public abstract class Book extends Page {
 
     public static class Array extends Book {
         private final Object[] contents;
-        private int index;
 
         public Array(String name, String footer, Object... contents) {
             super(name, footer);
@@ -43,23 +65,34 @@ public abstract class Book extends Page {
             loadContent(0);
         }
 
-        public Object getContent(int index) {
-            return contents[index];
+        @Override
+        public Object getContent(String tabName) {
+            return getContent(Integer.valueOf(tabName));
         }
 
-        public void loadContent(int index) {
-            this.index = index;
-            content = getContent(index);
+        @Override
+        public Object getContent(int tabIndex) {
+            return contents[tabIndex];
+        }
+
+        @Override
+        public void loadContent(String tabName) {
+            loadContent(Integer.valueOf(tabName));
         }
 
         @Override
         public String currentTab() {
-            return String.valueOf(index);
+            return String.valueOf(tabIndex);
         }
 
         @Override
         public String[] tabNames() {
             return IntStream.range(0, contents.length).mapToObj(String::valueOf).toArray(String[]::new);
+        }
+
+        @Override
+        public int numTabs() {
+            return contents.length;
         }
 
         @Override
@@ -69,8 +102,8 @@ public abstract class Book extends Page {
     }
 
     public static class Mapped extends Book {
-        public final HashMap<String, Object> map;
-        private String current;
+        protected final HashMap<String, Object> map;
+        private String[] tabs;
 
         public Mapped(String name, String footer, Map<String, Object> map) {
             super(name, footer);
@@ -82,23 +115,37 @@ public abstract class Book extends Page {
             loadContent(startingTab);
         }
 
+        @Override
         public Object getContent(String tab) {
             return map.get(tab);
         }
 
-        public void loadContent(String tab) {
-            current = tab;
-            content = getContent(tab);
+        @Override
+        public Object getContent(int tabIndex) {
+            return getContent(tabNames()[tabIndex]);
         }
 
         @Override
-        public String currentTab() {
-            return current;
+        public void loadContent(String tabName) {
+            tabIndex = Arrays.asList(tabNames()).indexOf(tabName);
+            content = getContent(tabName);
         }
 
         @Override
         public String[] tabNames() {
-            return map.keySet().stream().toArray(String[]::new);
+            if (tabs == null)
+                tabs = map.keySet().stream().toArray(String[]::new);
+            return tabs;
+        }
+
+        @Override
+        public int numTabs() {
+            return tabNames().length;
+        }
+
+        @Override
+        public String currentTab() {
+            return tabNames()[tabIndex];
         }
 
         @Override
@@ -107,10 +154,12 @@ public abstract class Book extends Page {
         }
 
         public Object put(String tab, Object content) {
+            tabs = null;
             return map.put(tab, content);
         }
 
         public Object remove(String tab) {
+            tabs = null;
             return map.remove(tab);
         }
     }
