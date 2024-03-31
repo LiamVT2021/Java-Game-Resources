@@ -101,21 +101,26 @@ public abstract class Book<C> extends Page<C> {
         // this.map = new HashMap<>();
         // }
 
-        public Mapped(String name, String footer, String startingTab, Map<String, C> map) {
+        public Mapped(String name, String footer, Map<String, C> map) {
+            this(name, footer, map, null);
+        }
+
+        public Mapped(String name, String footer, Map<String, C> map, String... tabOrder) {
             super(name, footer);
             this.map = map instanceof HashMap ? (HashMap<String, C>) map : new HashMap<>(map);
-            loadContent(startingTab);
+            tabs = tabOrder;
+            loadContent(1);
         }
 
         @Override
         public C loadContent(int tabIndex) {
             this.tabIndex = tabIndex;
-            return setContet(tabNames()[tabIndex]);
+            return setContet(tabNames()[tabIndex - 1]);
         }
 
         @Override
         public C loadContent(String tabName) {
-            tabIndex = Arrays.asList(tabNames()).indexOf(tabName);
+            tabIndex = Arrays.asList(tabNames()).indexOf(tabName) + 1;
             return setContet(tabName);
         }
 
@@ -138,12 +143,12 @@ public abstract class Book<C> extends Page<C> {
 
         @Override
         public String currentTab() {
-            return tabNames()[tabIndex];
+            return tabNames()[tabIndex - 1];
         }
 
         @Override
         public Stream<CharSequence> tabStrings() {
-            return map.entrySet().stream().map(e -> tabString(e.getKey(), e.getValue()));
+            return Stream.of(tabNames()).map(tab -> tabString(tab, map.get(tab)));
         }
 
         public C put(String tab, C content) {

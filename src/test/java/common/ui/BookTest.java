@@ -14,7 +14,7 @@ public class BookTest {
     @BeforeEach
     public void setUp() {
         arrBook = new Book.Array<>("Array", null, "Page 1", "Page 2", "Page 3");
-        mapBook = new Book.Mapped<>("Food Map", "Eat Healthy", "Meats", Map.of(
+        mapBook = new Book.Mapped<>("Food Map", "Eat Healthy", Map.of(
                 "Fruits", "Apple, Orange, Bannana, Kiwi",
                 "Veggies", "Letuce, Kale, Celery, Carrot",
                 "Meats", "Chicken, Beef, Pork"));
@@ -47,13 +47,20 @@ public class BookTest {
         assertEquals("Page 2", arrBook.loadNext());
         assertEquals("Page 3", arrBook.loadNext());
         assertEquals("Page 1", arrBook.loadNext());
+        assertEquals("Letuce, Kale, Celery, Carrot", mapBook.loadNext());
+        assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadNext());
+        assertEquals("Chicken, Beef, Pork", mapBook.loadNext());
         // Prev
         assertEquals("Page 3", arrBook.loadPrev());
         assertEquals("Page 2", arrBook.loadPrev());
         assertEquals("Page 1", arrBook.loadPrev());
+        assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadPrev());
+        assertEquals("Letuce, Kale, Celery, Carrot", mapBook.loadPrev());
+        assertEquals("Chicken, Beef, Pork", mapBook.loadPrev());
         // Search
         assertEquals("Page 3", arrBook.loadContent(3));
-        assertEquals("Page 3", arrBook.loadContent("3"));
+        assertEquals("Page 2", arrBook.loadContent("2"));
+        assertEquals("Letuce, Kale, Celery, Carrot", mapBook.loadContent(2));
         assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadContent("Fruits"));
     }
 
