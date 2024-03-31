@@ -77,13 +77,12 @@ public abstract class Book {
             return map.get(tab).makeTab(index, tab, map);
         }
 
-        public class PageContent extends Page.Content {
-
-            public PageContent(Object content, String footer) {
+        private class PageContent extends Page.Content {
+            private PageContent(Object content, String footer) {
                 super(content, footer);
             }
 
-            public Tab makeTab(int index, String tab, Map<String, PageContent> map) {
+            private Tab makeTab(int index, String tab, Map<String, PageContent> map) {
                 return new Tab(index, header, tabs, content, footer) {
                     @Override
                     public Page openTab(String tab) {
@@ -91,6 +90,24 @@ public abstract class Book {
                     }
                 };
             }
+        }
+    }
+
+    public static class Builder {
+        private final HashMap<String, Page.Content> map = new HashMap<>();
+        private final String header;
+
+        public Builder(String header) {
+            this.header = header;
+        }
+
+        public Builder with(String tab, Object content, String footer){
+            map.put(tab, new Page.Content(content, footer));
+            return this;
+        }
+
+        public Mapped build() {
+            return new Mapped(header, map);
         }
     }
 
