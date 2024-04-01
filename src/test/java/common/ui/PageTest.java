@@ -1,6 +1,7 @@
 package common.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,8 +18,7 @@ public class PageTest {
 
     @Test
     public void testToString() {
-        Page<String> page = new Page.Single<>("Name", "Contents\nOf\nPage", "Footer");
-        page.addExitButton();
+        Page<String> page = new Page.Single<>("Name", "Contents\nOf\nPage", "Footer").withExitButton();
         assertEquals("[Exit] Name\n\nContents\nOf\nPage\n\nFooter", page.toString());
         assertEquals("[] Short\n\nPage\nContent",
                 new Page.Single<>("Short", "Page\nContent", null).toString());
@@ -32,6 +32,15 @@ public class PageTest {
         thrown = assertThrows(IllegalArgumentException.class,
                 () -> new Page.Single<>("Name", null, null));
         assertEquals("Page Content cannot be Null", thrown.getMessage());
+    }
+
+    @Test
+    public void testButtons() {
+        Page<String> page = new Page.Single<>("Name", "Contents", "Footer");
+        page.withButton("This", () -> page).withExitButton();
+        assertEquals("[This|Exit] Name", page.pageHeader());
+        assertNull(page.clickButton(Page.EXIT_STRING));
+        assertEquals(page, page.clickButton("This"));
     }
 
 }

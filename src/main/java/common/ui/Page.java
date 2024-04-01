@@ -33,7 +33,8 @@ public abstract class Page<C> {
     }
 
     public String pageString() {
-        return StringUtils.join("\n\n", Stream.of(pageHeader(), content.toString(), footer).filter(Predicates.NOT_NULL));
+        return StringUtils.join("\n\n",
+                Stream.of(pageHeader(), content.toString(), footer).filter(Predicates.NOT_NULL));
     }
 
     @Override
@@ -43,15 +44,20 @@ public abstract class Page<C> {
 
     // Button methods
 
-    public final void addButton(String buttonText, Supplier<Page<?>> pageSupplier) {
+    public final Page<C> withButton(String buttonText, Supplier<Page<?>> pageSupplier) {
         buttons.put(buttonText, pageSupplier);
+        return this;
+    }
+
+    public final Page<?> clickButton(String button) {
+        return buttons.get(button).get();
     }
 
     public static String EXIT_STRING = "Exit";
     public static Supplier<Page<?>> EXIT_FUNC = () -> null;
 
-    public final void addExitButton() {
-        addButton(EXIT_STRING, EXIT_FUNC);
+    public final Page<C> withExitButton() {
+        return withButton(EXIT_STRING, EXIT_FUNC);
     }
 
     public static class Single<C> extends Page<C> {

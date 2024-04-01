@@ -19,7 +19,7 @@ public class BookTest {
                 "Veggies", "Letuce, Kale, Celery, Carrot",
                 "Meats", "Chicken, Beef, Pork"),
                 "Meats", "Veggies", "Fruits");
-        mapBook.addExitButton();
+        mapBook.withExitButton();
     }
 
     @Test
