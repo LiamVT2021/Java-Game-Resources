@@ -19,23 +19,24 @@ public class BookTest {
                 "Veggies", "Letuce, Kale, Celery, Carrot",
                 "Meats", "Chicken, Beef, Pork"),
                 "Meats", "Veggies", "Fruits");
+        mapBook.addExitButton();
     }
 
     @Test
     public void testPageString() {
-        assertEquals("Array - 1\n[ 1 | 2 | 3 ]\n\nPage 1", arrBook.pageString());
-        assertEquals("Food Map - Meats\n[ Meats | Veggies | Fruits ]\n\nChicken, Beef, Pork\n\nEat Healthy",
+        assertEquals("[] Array - 1\n[ 1 | 2 | 3 ]\n\nPage 1", arrBook.pageString());
+        assertEquals("[Exit] Food Map - Meats\n[ Meats | Veggies | Fruits ]\n\nChicken, Beef, Pork\n\nEat Healthy",
                 mapBook.pageString());
     }
 
     @Test
     public void testToString() {
-        assertEquals("Array\n\n"
+        assertEquals("[] Array\n\n"
                 + "- 1 -\nPage 1\n\n"
                 + "- 2 -\nPage 2\n\n"
                 + "- 3 -\nPage 3",
                 arrBook.toString());
-        assertEquals("Food Map\n\n"
+        assertEquals("[Exit] Food Map\n\n"
                 + "- Meats -\nChicken, Beef, Pork\n\n"
                 + "- Veggies -\nLetuce, Kale, Celery, Carrot\n\n"
                 + "- Fruits -\nApple, Orange, Bannana, Kiwi\n\n"
@@ -80,5 +81,11 @@ public class BookTest {
         assertEquals("Page 2", arrBook.loadContent("2"));
         assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadContent("Fruits"));
     }
+
+    // @Test
+    // public void testAdd() {
+    // mapBook = new Book.Mapped<>("Builder", null);
+    // // TODO build
+    // }
 
 }

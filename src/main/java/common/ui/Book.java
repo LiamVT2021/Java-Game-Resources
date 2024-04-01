@@ -18,8 +18,8 @@ public abstract class Book<C> extends Page<C> {
     }
 
     @Override
-    public String header() {
-        return name + " - " + currentTab() + "\n" + StringUtils.join("[ ", " | ", " ]", Stream.of(tabNames()));
+    public String pageHeader() {
+        return baseHeader() + " - " + currentTab() + "\n" + StringUtils.join("[ ", " | ", " ]", Stream.of(tabNames()));
     }
 
     public abstract String[] tabNames();
@@ -48,7 +48,7 @@ public abstract class Book<C> extends Page<C> {
 
     @Override
     public String toString() {
-        return StringUtils.join("\n\n", StreamUtils.wrap(name, tabStrings(), footer).filter(Predicates.NOT_NULL));
+        return StringUtils.join("\n\n", StreamUtils.wrap(baseHeader(), tabStrings(), footer).filter(Predicates.NOT_NULL));
     }
 
     public static class Array<C> extends Book<C> {
