@@ -10,6 +10,12 @@ import common.util.Predicates;
 import common.util.StreamUtils;
 import common.util.StringUtils;
 
+/**
+ * Displays multiple tabs to the user
+ * 
+ * @param <C> the type of tabs displayed
+ * @version 3/31/24
+ */
 public abstract class Book<C> extends Page<C> {
     protected int tabIndex = 1;
 
@@ -19,16 +25,26 @@ public abstract class Book<C> extends Page<C> {
 
     @Override
     public String pageHeader() {
+        // Adds current tab name and list of tabs
         return baseHeader() + " - " + currentTab() + "\n" + StringUtils.join("[ ", " | ", " ]", Stream.of(tabNames()));
     }
 
+    /**
+     * @return ordered array of tab names
+     */
     public abstract String[] tabNames();
 
+    /**
+     * @return the number of tabs in this Book
+     */
     public abstract int numTabs();
 
+    /**
+     * @return the name of the current tab
+     */
     public abstract String currentTab();
 
-    public abstract Stream<CharSequence> tabStrings();
+    protected abstract Stream<CharSequence> tabStrings();
 
     private static String tabString(String tabName, Object content) {
         return "- " + tabName + " -\n" + content;
@@ -36,21 +52,37 @@ public abstract class Book<C> extends Page<C> {
 
     @Override
     public Object getContent() {
-        return content == null ? loadContent(1) : content;
+        return content == null ? loadTab(1) : content;
     }
 
-    public abstract C loadContent(int tabIndex);
+    /**
+     * loads the tab at tabIndex (starts at 1)
+     */
+    public abstract C loadTab(int tabIndex);
 
-    public abstract C loadContent(String tabName);
+    /**
+     * loads the tab with tabName
+     */
+    public abstract C loadTab(String tabName);
 
+    /**
+     * loads the previous tab
+     */
     public C loadPrev() {
-        return loadContent(tabIndex == 1 ? numTabs() : tabIndex - 1);
+        return loadTab(tabIndex == 1 ? numTabs() : tabIndex - 1);
     }
 
+    /**
+     * loads the next tab
+     */
     public C loadNext() {
-        return loadContent(tabIndex == numTabs() ? 1 : tabIndex + 1);
+        return loadTab(tabIndex == numTabs() ? 1 : tabIndex + 1);
     }
 
+    /**
+     * returns the baseHeader, each tab in order, and the footer seperated by new
+     * lines
+     */
     @Override
     public String toString() {
         return StringUtils.join("\n\n",
@@ -63,18 +95,19 @@ public abstract class Book<C> extends Page<C> {
         public Array(String name, String footer, @SuppressWarnings("unchecked") C... contents) {
             super(name, footer);
             this.contents = contents;
-            loadContent(1);
+            loadTab(1);
         }
 
-        public C loadContent(int tabIndex) {
+        @Override
+        public C loadTab(int tabIndex) {
             this.tabIndex = tabIndex;
             content = contents[tabIndex - 1];
             return content;
         }
 
         @Override
-        public C loadContent(String tabName) {
-            return loadContent(Integer.valueOf(tabName));
+        public C loadTab(String tabName) {
+            return loadTab(Integer.valueOf(tabName));
         }
 
         @Override
@@ -108,6 +141,9 @@ public abstract class Book<C> extends Page<C> {
 
         // Build
 
+        /**
+         * Sets a tab in this book, if it is a new tab, will use default order
+         */
         public Mapped<C> withTab(String tabName, C content) {
             if (tabName == null || content == null)
                 throw new IllegalArgumentException("tabName and content cannot be null");
@@ -117,7 +153,9 @@ public abstract class Book<C> extends Page<C> {
             return this;
         }
 
-        //use null to reset order
+        /**
+         * @param tabOrder use null to use default ordering
+         */
         public Mapped<C> withTabOrder(String... tabOrder) {
             if (tabOrder != null && !Set.of(tabOrder).equals(map.keySet()))
                 throw new IllegalArgumentException("tabOrder does not match set of tabs");
@@ -128,13 +166,13 @@ public abstract class Book<C> extends Page<C> {
         // Book
 
         @Override
-        public C loadContent(int tabIndex) {
+        public C loadTab(int tabIndex) {
             this.tabIndex = tabIndex;
             return setContet(tabNames()[tabIndex - 1]);
         }
 
         @Override
-        public C loadContent(String tabName) {
+        public C loadTab(String tabName) {
             tabIndex = Arrays.asList(tabNames()).indexOf(tabName) + 1;
             return setContet(tabName);
         }

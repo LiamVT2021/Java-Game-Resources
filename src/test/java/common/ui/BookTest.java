@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @version 3/31/24
+ */
 public class BookTest {
     private Book.Array<String> arrBook;
     private Book.Mapped<String> mapBook;
@@ -70,14 +73,14 @@ public class BookTest {
 
     @Test
     public void testLoadIndex() {
-        assertEquals("Page 3", arrBook.loadContent(3));
-        assertEquals("Letuce, Kale, Celery, Carrot", mapBook.loadContent(2));
+        assertEquals("Page 3", arrBook.loadTab(3));
+        assertEquals("Letuce, Kale, Celery, Carrot", mapBook.loadTab(2));
     }
 
     @Test
     public void testLoadName() {
-        assertEquals("Page 2", arrBook.loadContent("2"));
-        assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadContent("Fruits"));
+        assertEquals("Page 2", arrBook.loadTab("2"));
+        assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadTab("Fruits"));
     }
 
     @Test
