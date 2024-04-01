@@ -1,8 +1,7 @@
 package common.ui;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,11 +13,10 @@ public class BookTest {
     @BeforeEach
     public void setUp() {
         arrBook = new Book.Array<>("Array", null, "Page 1", "Page 2", "Page 3");
-        mapBook = new Book.Mapped<>("Food Map", "Eat Healthy", Map.of(
-                "Fruits", "Apple, Orange, Bannana, Kiwi",
-                "Veggies", "Letuce, Kale, Celery, Carrot",
-                "Meats", "Chicken, Beef, Pork"),
-                "Meats", "Veggies", "Fruits");
+        mapBook = new Book.Mapped<String>("Food Map", "Eat Healthy")
+                .withTab("Fruits", "Apple, Orange, Bannana, Kiwi")
+                .withTab("Veggies", "Letuce, Kale, Celery, Carrot")
+                .withTab("Meats", "Chicken, Beef, Pork");
         mapBook.withExitButton();
     }
 
@@ -82,10 +80,16 @@ public class BookTest {
         assertEquals("Apple, Orange, Bannana, Kiwi", mapBook.loadContent("Fruits"));
     }
 
-    // @Test
-    // public void testAdd() {
-    // mapBook = new Book.Mapped<>("Builder", null);
-    // // TODO build
-    // }
+    @Test
+    public void testSetTabOrder() {
+        assertEquals("[Exit] Food Map\n\n"
+                + "- Fruits -\nApple, Orange, Bannana, Kiwi\n\n"
+                + "- Meats -\nChicken, Beef, Pork\n\n"
+                + "- Veggies -\nLetuce, Kale, Celery, Carrot\n\n"
+                + "Eat Healthy",
+                mapBook.withTabOrder("Fruits", "Meats", "Veggies").toString());
+        assertThrows(IllegalArgumentException.class, () -> mapBook.withTab(null, null));
+        assertThrows(IllegalArgumentException.class, () -> mapBook.withTabOrder("Junk"));
+    }
 
 }

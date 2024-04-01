@@ -2,7 +2,7 @@ package common.ui;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -11,7 +11,7 @@ import common.util.StreamUtils;
 import common.util.StringUtils;
 
 public abstract class Book<C> extends Page<C> {
-    protected int tabIndex;
+    protected int tabIndex = 1;
 
     private Book(String name, String footer) {
         super(name, footer);
@@ -34,6 +34,11 @@ public abstract class Book<C> extends Page<C> {
         return "- " + tabName + " -\n" + content;
     }
 
+    @Override
+    public Object getContent() {
+        return content == null ? loadContent(1) : content;
+    }
+
     public abstract C loadContent(int tabIndex);
 
     public abstract C loadContent(String tabName);
@@ -48,7 +53,8 @@ public abstract class Book<C> extends Page<C> {
 
     @Override
     public String toString() {
-        return StringUtils.join("\n\n", StreamUtils.wrap(baseHeader(), tabStrings(), footer).filter(Predicates.NOT_NULL));
+        return StringUtils.join("\n\n",
+                StreamUtils.wrap(baseHeader(), tabStrings(), footer).filter(Predicates.NOT_NULL));
     }
 
     public static class Array<C> extends Book<C> {
@@ -93,19 +99,33 @@ public abstract class Book<C> extends Page<C> {
     }
 
     public static class Mapped<C> extends Book<C> {
-        protected final HashMap<String, C> map;
+        protected final HashMap<String, C> map = new HashMap<>();
         private String[] tabs;
 
         public Mapped(String name, String footer) {
-            this(name, footer, new HashMap<>());
+            super(name, footer);
         }
 
-        public Mapped(String name, String footer, Map<String, C> map, String... tabOrder) {
-            super(name, footer);
-            this.map = map instanceof HashMap ? (HashMap<String, C>) map : new HashMap<>(map);
-            tabs = tabOrder.length == 0 ? null : tabOrder;
-            loadContent(1);
+        // Build
+
+        public Mapped<C> withTab(String tabName, C content) {
+            if (tabName == null || content == null)
+                throw new IllegalArgumentException("tabName and content cannot be null");
+            if (!map.keySet().contains(tabName))
+                tabs = null;
+            map.put(tabName, content);
+            return this;
         }
+
+        //use null to reset order
+        public Mapped<C> withTabOrder(String... tabOrder) {
+            if (tabOrder != null && !Set.of(tabOrder).equals(map.keySet()))
+                throw new IllegalArgumentException("tabOrder does not match set of tabs");
+            tabs = tabOrder;
+            return this;
+        }
+
+        // Book
 
         @Override
         public C loadContent(int tabIndex) {
@@ -144,16 +164,6 @@ public abstract class Book<C> extends Page<C> {
         @Override
         public Stream<CharSequence> tabStrings() {
             return Stream.of(tabNames()).map(tab -> tabString(tab, map.get(tab)));
-        }
-
-        public C put(String tab, C content) {
-            tabs = null;
-            return map.put(tab, content);
-        }
-
-        public C remove(String tab) {
-            tabs = null;
-            return map.remove(tab);
         }
     }
 

@@ -28,13 +28,13 @@ public abstract class Page<C> {
         return baseHeader();
     }
 
-    public final Object getContent() {
+    public Object getContent() {
         return content;
     }
 
     public String pageString() {
         return StringUtils.join("\n\n",
-                Stream.of(pageHeader(), content.toString(), footer).filter(Predicates.NOT_NULL));
+                Stream.of(pageHeader(), getContent().toString(), footer).filter(Predicates.NOT_NULL));
     }
 
     @Override
