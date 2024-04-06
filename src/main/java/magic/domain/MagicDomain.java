@@ -14,15 +14,24 @@ public enum MagicDomain {
     BLOOD("BLD"), LIGHT("LGT"), DARKNESS("DRK"), FORCE("FRC"), MIND("MND"), VISION("VIS"),
     SPACE("SPC"), TIME("TIM");
 
-    private final String str;
-    private EnumSet<Tag> tags;
+    /**
+     * a 3 letter name for this domain
+     */
+    public final String shortName;
+    private final EnumSet<Tag> tags;
 
     MagicDomain(String shortName, Tag... tags) {
-        str = shortName;
+        this.shortName = shortName;
         this.tags = tags.length > 0 ? EnumSet.copyOf(Arrays.asList(tags)) : EnumSet.noneOf(Tag.class);
         for (Tag tag : tags)
             tag.domains.add(this);
     }
+
+    public EnumSet<Tag> tags() {
+        return tags.clone();
+    }
+
+    ///////////
 
     private static void addDomainRange(Tag tag, MagicDomain start, MagicDomain end) {
         EnumSet<MagicDomain> range = EnumSet.range(start, end);
@@ -36,17 +45,6 @@ public enum MagicDomain {
         addDomainRange(Tag.DIVINE, LIFE, CHOAS);
         addDomainRange(Tag.NATURE, PLANT, WEATHER);
         Tag.finalizeDomians();
-    }
-
-    /**
-     * @return a 3 letter name for this domain
-     */
-    public String shortName() {
-        return str;
-    }
-
-    public EnumSet<Tag> tags() {
-        return tags.clone();
     }
 
 }
