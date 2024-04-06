@@ -9,13 +9,18 @@ public enum Tag {
 
     Set<MagicDomain> domains = new HashSet<>();
 
-    static void finalizeDomians() {
-        for (Tag tag : values())
-            tag.domains = tag.domains();
-    }
-
     public EnumSet<MagicDomain> domains() {
         return EnumSet.copyOf(domains);
+    }
+
+    static boolean finalized = false;
+
+    static void finalizeDomians() {
+        if (finalized)
+            throw new RuntimeException("tag domains already finalized");
+        for (Tag tag : values())
+            tag.domains = tag.domains();
+        finalized = true;
     }
 
 }

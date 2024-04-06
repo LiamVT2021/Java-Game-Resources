@@ -4,12 +4,12 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 public enum MagicDomain {
-    EARTH("ETH", Tag.ELEMENTAL), AIR("AIR", Tag.ELEMENTAL), WATER("WTR", Tag.ELEMENTAL),
-    FIRE("FIR", Tag.ELEMENTAL), COLD("CLD", Tag.ELEMENTAL), ELECTRIC("ELC", Tag.ELEMENTAL),
+    EARTH("ETH"), AIR("AIR"), WATER("WTR"),
+    FIRE("FIR"), COLD("CLD"), ELECTRIC("ELC"),
 
-    LIFE("LIF", Tag.DIVINE), DEATH("DTH", Tag.DIVINE), HOLY("HLY", Tag.DIVINE), CHOAS("CHS", Tag.DIVINE),
+    LIFE("LIF"), DEATH("DTH"), HOLY("HLY"), CHOAS("CHS"),
 
-    PLANT("PLT", Tag.NATURE), BEAST("BST", Tag.NATURE), WEATHER("WTH", Tag.NATURE),
+    PLANT("PLT"), BEAST("BST"), WEATHER("WTH"),
 
     BLOOD("BLD"), LIGHT("LGT"), DARKNESS("DRK"), FORCE("FRC"), MIND("MND"), VISION("VIS"),
     SPACE("SPC"), TIME("TIM");
@@ -24,7 +24,17 @@ public enum MagicDomain {
             tag.domains.add(this);
     }
 
+    private static void addDomainRange(Tag tag, MagicDomain start, MagicDomain end) {
+        EnumSet<MagicDomain> range = EnumSet.range(start, end);
+        tag.domains.addAll(range);
+        for (MagicDomain domain : range)
+            domain.tags.add(tag);
+    }
+
     static {
+        addDomainRange(Tag.ELEMENTAL, EARTH, ELECTRIC);
+        addDomainRange(Tag.DIVINE, LIFE, CHOAS);
+        addDomainRange(Tag.NATURE, PLANT, WEATHER);
         Tag.finalizeDomians();
     }
 
