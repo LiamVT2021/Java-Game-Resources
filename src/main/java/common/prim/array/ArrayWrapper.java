@@ -12,7 +12,7 @@ import common.util.StringUtils;
  * @param <G> the type returned by get methods
  * @param <S> the type consumed by set methods
  * @param <A> the type of the wrapped array
- * @version 7/12/23
+ * @version 4/7/24
  */
 public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
 
@@ -62,6 +62,14 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
      * @throws IndexOutOfBoundsException if index out of bounds
      */
     void set(int index, S value);
+
+    /**
+     * sets value for all indexes in the array
+     */
+    default void setAll(S value) {
+        for (int i = 0; i < capacity(); i++)
+            set(i, value);
+    }
 
     /**
      * performs a set and get at the same time
