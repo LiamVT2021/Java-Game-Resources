@@ -35,4 +35,14 @@ public class FloatArray extends PrimArray.Flt<Float, float[]> {
         return value.floatValue();
     }
 
+    @Override
+    public Float sum(Number a, Number b) {
+        return a.floatValue() + b.floatValue();
+    }
+
+    @Override
+    public Float product(Number a, Number b) {
+        return a.floatValue() * b.floatValue();
+    }
+
 }

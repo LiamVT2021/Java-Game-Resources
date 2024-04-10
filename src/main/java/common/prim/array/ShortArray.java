@@ -3,7 +3,7 @@ package common.prim.array;
 /**
  * A wrapper around an array of short values.
  * 
- * @version 6/30/23
+ * @version 4/10/24
  */
 public class ShortArray extends PrimArray.Int<Short, short[]> {
 
@@ -33,6 +33,16 @@ public class ShortArray extends PrimArray.Int<Short, short[]> {
     @Override
     public Short cast(Number value) {
         return value.shortValue();
+    }
+
+    @Override
+    public Short sum(Number a, Number b) {
+        return (short) (a.shortValue() + b.shortValue());
+    }
+
+    @Override
+    public Short product(Number a, Number b) {
+        return (short) (a.shortValue() * b.shortValue());
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.stream.DoubleStream;
 /**
  * A wrapper around an array of double values.
  * 
- * @version 6/30/23
+ * @version 4/10/24
  */
 public class DoubleArray extends PrimArray.Flt<Double, double[]> {
 
@@ -42,6 +42,16 @@ public class DoubleArray extends PrimArray.Flt<Double, double[]> {
      */
     public DoubleStream doubleStream() {
         return DoubleStream.of(array);
+    }
+
+    @Override
+    public Double sum(Number a, Number b) {
+        return a.doubleValue() + b.doubleValue();
+    }
+
+    @Override
+    public Double product(Number a, Number b) {
+        return a.doubleValue() * b.doubleValue();
     }
 
 }

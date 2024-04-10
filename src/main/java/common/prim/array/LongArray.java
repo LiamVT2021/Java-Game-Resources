@@ -5,7 +5,7 @@ import java.util.stream.LongStream;
 /**
  * A wrapper around an array of long values.
  * 
- * @version 6/30/23
+ * @version 4/10/24
  */
 public class LongArray extends PrimArray.Int<Long, long[]> {
 
@@ -42,6 +42,16 @@ public class LongArray extends PrimArray.Int<Long, long[]> {
      */
     public LongStream longStream() {
         return LongStream.of(array);
+    }
+
+    @Override
+    public Long sum(Number a, Number b) {
+        return a.longValue() + b.longValue();
+    }
+
+    @Override
+    public Long product(Number a, Number b) {
+        return a.longValue() * b.longValue();
     }
 
 }

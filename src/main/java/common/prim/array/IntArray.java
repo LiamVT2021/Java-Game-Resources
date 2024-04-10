@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 /**
  * A wrapper around an array of int values.
  * 
- * @version 6/30/23
+ * @version 4/10/24
  */
 public class IntArray extends PrimArray.Int<Integer, int[]> {
 
@@ -42,6 +42,16 @@ public class IntArray extends PrimArray.Int<Integer, int[]> {
      */
     public IntStream intStream() {
         return IntStream.of(array);
+    }
+
+    @Override
+    public Integer sum(Number a, Number b) {
+        return a.intValue() + b.intValue();
+    }
+
+    @Override
+    public Integer product(Number a, Number b) {
+        return a.intValue() * b.intValue();
     }
 
 }
