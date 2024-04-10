@@ -1,5 +1,6 @@
 package common.prim.array;
 
+import java.util.function.UnaryOperator;
 import java.util.Iterator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -103,6 +104,40 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
      * @return value cast into G type
      */
     G cast(S value);
+
+    /**
+     * modifies the value stored at index using the modifier
+     * 
+     * @return the modified value
+     */
+    default G modify(int index, UnaryOperator<G> modifier) {
+        G result = modifier.apply(get(index));
+        set(index, result);
+        return result;
+    }
+
+    /**
+     * modifies value for all indexes in the array using the modifier
+     */
+    default void moidfyAll(UnaryOperator<G> modifier) {
+        for (int i = 0; i < capacity(); i++)
+            set(i, modifier.apply(get(i)));
+    }
+
+    /**
+     * modifies value for all provided indexes using the modifier
+     */
+    default void moidfyAll(UnaryOperator<G> modifier, int... indexes) {
+        for (int i : indexes)
+            set(i, modifier.apply(get(i)));
+    }
+
+    /**
+     * modifies value for all provided indexes using the modifier
+     */
+    default void moidfyAll(UnaryOperator<G> modifier, IntStream indexes) {
+        indexes.forEach(i -> set(i, modifier.apply(get(i))));
+    }
 
     @Override
     default Iterator<G> iterator() {
