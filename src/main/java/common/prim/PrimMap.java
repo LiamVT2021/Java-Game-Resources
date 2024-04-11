@@ -34,8 +34,7 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
      * @return the values stored at keys
      * @throws IndexOutOfBoundsException if any invalid keys
      */
-    @SuppressWarnings("unchecked")
-    default Stream<V> get(K... keys) {
+    default Stream<V> get(@SuppressWarnings("unchecked") K... keys) {
         return get(Stream.of(keys));
     }
 
@@ -76,8 +75,7 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
      * @return A Stream of returned objects
      * @throws IndexOutOfBoundsException if any invalid keys
      */
-    @SuppressWarnings("unchecked")
-    default <R> Stream<R> map(BiFunction<K, V, R> func, K... keys) {
+    default <R> Stream<R> map(BiFunction<K, V, R> func, @SuppressWarnings("unchecked") K... keys) {
         return map(Stream.of(keys), func);
     }
 
@@ -96,8 +94,7 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
      *         with format "Key: Value"
      * @throws IndexOutOfBoundsException if any invalid keys
      */
-    @SuppressWarnings("unchecked")
-    default String mapString(K... keys) {
+    default String mapString(@SuppressWarnings("unchecked") K... keys) {
         return mapString(Stream.of(keys));
     }
 
