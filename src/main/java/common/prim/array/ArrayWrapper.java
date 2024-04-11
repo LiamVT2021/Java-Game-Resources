@@ -119,7 +119,7 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
     /**
      * modifies value for all indexes in the array using the modifier
      */
-    default void moidfyAll(UnaryOperator<G> modifier) {
+    default void modifyAll(UnaryOperator<G> modifier) {
         for (int i = 0; i < capacity(); i++)
             set(i, modifier.apply(get(i)));
     }
@@ -127,7 +127,7 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
     /**
      * modifies value for all provided indexes using the modifier
      */
-    default void moidfyAll(UnaryOperator<G> modifier, int... indexes) {
+    default void modifyAll(UnaryOperator<G> modifier, int... indexes) {
         for (int i : indexes)
             set(i, modifier.apply(get(i)));
     }
@@ -135,7 +135,7 @@ public interface ArrayWrapper<G extends S, S, A> extends Iterable<G> {
     /**
      * modifies value for all provided indexes using the modifier
      */
-    default void moidfyAll(UnaryOperator<G> modifier, IntStream indexes) {
+    default void modifyAll(UnaryOperator<G> modifier, IntStream indexes) {
         indexes.forEach(i -> set(i, modifier.apply(get(i))));
     }
 

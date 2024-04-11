@@ -48,21 +48,21 @@ public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, 
      * adds modifier to all values in array
      */
     default void addAll(Number modifier) {
-        moidfyAll(n -> sum(n, modifier));
+        modifyAll(n -> sum(n, modifier));
     }
 
     /**
      * adds modifier to value for all provided indexes
      */
     default void addAll(Number modifier, int... indexes) {
-        moidfyAll(n -> sum(n, modifier), indexes);
+        modifyAll(n -> sum(n, modifier), indexes);
     }
 
     /**
      * adds modifier to value for all provided indexes
      */
     default void addAll(Number modifier, IntStream indexes) {
-        moidfyAll(n -> sum(n, modifier), indexes);
+        modifyAll(n -> sum(n, modifier), indexes);
     }
 
     /**
@@ -83,21 +83,21 @@ public interface PrimArray<N extends Number, A> extends ArrayWrapper<N, Number, 
      * multiplys by modifier for all values in array
      */
     default void multiplyAll(Number modifier) {
-        moidfyAll(n -> product(n, modifier));
+        modifyAll(n -> product(n, modifier));
     }
 
     /**
      * multiplys the value by modifier for all provided indexes
      */
     default void multiplyAll(Number modifier, int... indexes) {
-        moidfyAll(n -> product(n, modifier), indexes);
+        modifyAll(n -> product(n, modifier), indexes);
     }
 
     /**
      * multiplys the value by modifier for all provided indexes
      */
     default void multiplyAll(Number modifier, IntStream indexes) {
-        moidfyAll(n -> product(n, modifier), indexes);
+        modifyAll(n -> product(n, modifier), indexes);
     }
 
     static abstract class Int<N extends Number, A> extends ArrayWrapper.ADT<N, Number, A> implements PrimArray<N, A> {
