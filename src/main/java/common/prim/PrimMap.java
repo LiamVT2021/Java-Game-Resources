@@ -1,6 +1,7 @@
 package common.prim;
 
 import java.util.function.BiFunction;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,7 +13,7 @@ import common.prim.array.*;
  * @param <K> the type of the keys
  * @param <V> the type of the values
  * @param <A> the type of the wrapped array
- * @version 7/12/23
+ * @version 4/11/24
  */
 public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
 
@@ -105,6 +106,78 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
      */
     default String mapString(Stream<K> keys) {
         return map(keys, (k, v) -> k + ": " + v).collect(Collectors.joining("\n"));
+    }
+
+    /**
+     * modifies the value stored at key using the modifier
+     * 
+     * @return the modified value
+     */
+    default V modify(K key, UnaryOperator<V> modifier) {
+        return modify(indexOf(key), modifier);
+    }
+
+    /**
+     * modifies value for all provided keys using the modifier
+     */
+    default void modifyAll(UnaryOperator<V> modifier, @SuppressWarnings("unchecked") K... keys) {
+        for (K key : keys) {
+            int index = indexOf(key);
+            set(index, modifier.apply(get(index)));
+        }
+    }
+
+    /**
+     * modifies value for all provided keys using the modifier
+     */
+    default void modifyAll(UnaryOperator<V> modifier, Stream<K> keys) {
+        modifyAll(modifier, keys.mapToInt(this::indexOf));
+    }
+
+    /**
+     * adds modifier to the value at key
+     * 
+     * @return the sum
+     */
+    default V add(K key, Number modifier) {
+        return add(indexOf(key), modifier);
+    }
+
+    /**
+     * adds modifier to value for all provided keys
+     */
+    default void addAll(Number modifier, @SuppressWarnings("unchecked") K... keys) {
+        modifyAll(n -> sum(n, modifier), keys);
+    }
+
+    /**
+     * adds modifier to value for all provided keys
+     */
+    default void addAll(Number modifier, Stream<K> keys) {
+        addAll(modifier, keys.mapToInt(this::indexOf));
+    }
+
+    /**
+     * multiplys the value at key by modifier
+     *
+     * @return the product
+     */
+    default V multiply(K key, Number modifier) {
+        return multiply(indexOf(key), modifier);
+    }
+
+    /**
+     * multiplys the value by modifier for all provided keys
+     */
+    default void multiplyAll(Number modifier, @SuppressWarnings("unchecked") K... keys) {
+        modifyAll(n -> product(n, modifier), keys);
+    }
+
+    /**
+     * multiplys the value by modifier for all provided keys
+     */
+    default void multiplyAll(Number modifier, Stream<K> keys) {
+        multiplyAll(modifier, keys.mapToInt(this::indexOf));
     }
 
     static abstract class ByteMap<K> extends ByteArray implements PrimMap<K, Byte, byte[]> {
