@@ -57,6 +57,21 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
     }
 
     /**
+     * sets value for all provided keys
+     */
+    default void setAll(V value, @SuppressWarnings("unchecked") K... keys) {
+        for (K key : keys)
+            set(key, value);
+    }
+
+    /**
+     * sets value for all provided keys
+     */
+    default void setAll(V value, Stream<K> keys) {
+        setAll(value, keys.mapToInt(this::indexOf));
+    }
+
+    /**
      * Performs a set and get at the same time.
      * Stores value at key.
      * 
