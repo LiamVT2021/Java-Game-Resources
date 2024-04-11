@@ -18,16 +18,35 @@ import org.junit.jupiter.params.provider.MethodSource;
  * @version 4/11/24
  */
 public class ArrayWrapperTest {
-
     private static final int arrSize = 5;
 
-    private static Stream<ArrayWrapper<? extends Number, Number, ?>> empty() {
-        return Stream.of(new GenericArray<>(new Number[] { 0, 0, 0, 0, 0 }),
-                new ByteArray(arrSize), new ShortArray(arrSize), new IntArray(arrSize), new LongArray(arrSize),
-                new FloatArray(arrSize), new DoubleArray(arrSize));
+    private static class NumArray extends GenericArray<Number> implements PrimArray<Number, Number[]> {
+        public NumArray() {
+            super(new Number[] { 0, 0, 0, 0, 0 });
+        }
+
+        @Override
+        public boolean storesFloat() {
+            return false;
+        }
+
+        @Override
+        public Number sum(Number a, Number b) {
+            return a.intValue() + b.intValue();
+        }
+
+        @Override
+        public Number product(Number a, Number b) {
+            return a.intValue() * b.intValue();
+        }
     }
 
-    private static Stream<ArrayWrapper<? extends Number, Number, ?>> full() {
+    private static Stream<PrimArray<? extends Number, ?>> empty() {
+        return Stream.of(new ByteArray(arrSize), new ShortArray(arrSize), new IntArray(arrSize), new LongArray(arrSize),
+                new FloatArray(arrSize), new DoubleArray(arrSize), new NumArray());
+    }
+
+    private static Stream<PrimArray<? extends Number, ?>> full() {
         return empty().map(array -> {
             for (int i = 0; i < arrSize; i++)
                 array.set(i, i);
