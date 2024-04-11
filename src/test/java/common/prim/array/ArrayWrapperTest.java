@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 /**
  * Tests all methods for Primitive and Generic ArrayWrappers.
  * 
- * @version 7/12/23
+ * @version 4/11/24
  */
 public class ArrayWrapperTest {
 
@@ -46,6 +47,19 @@ public class ArrayWrapperTest {
         assertArrayEquals(new int[] { 0, 2, 4 }, array.get(0, 2, 4).mapToInt(Number::intValue).toArray());
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> array.get(arrSize));
+    }
+
+    @ParameterizedTest
+    @MethodSource("empty")
+    public void testSetAll(ArrayWrapper<? extends Number, Number, ?> array) {
+        array.setAll(1);
+        array.forEach(n -> assertEquals(1, n.intValue()));
+        array.setAll(0, 0, 2, 4);
+        for (int i = 0; i < array.capacity(); i++)
+            assertEquals(i % 2, array.get(i).intValue());
+        array.setAll(-1, IntStream.of(1, 3));
+        for (int i = 0; i < array.capacity(); i++)
+            assertEquals((i % 2) * -1, array.get(i).intValue());
     }
 
     @ParameterizedTest
