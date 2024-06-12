@@ -14,7 +14,7 @@ import common.util.StringUtils;
  * @version 3/31/24
  */
 public abstract class Page<C> {
-    private final HashMap<String, Supplier<Page<?>>> buttons = new HashMap<>();
+    private final HashMap<String, Supplier<Page<?>>> navButtons = new HashMap<>();
     public final String name;
     protected C content;
     public final String footer;
@@ -30,7 +30,7 @@ public abstract class Page<C> {
      * @return a header with the format "[A|B] Name"
      */
     public final String baseHeader() {
-        return StringUtils.join("[", "|", "]", buttons.keySet().stream()) + " " + name;
+        return StringUtils.join("[", "|", "]", navButtons.keySet().stream()) + " " + name;
     }
 
     /**
@@ -71,16 +71,16 @@ public abstract class Page<C> {
      * @param pageSupplier navigates to new page
      * @return this page
      */
-    public final Page<C> withButton(String buttonText, Supplier<Page<?>> pageSupplier) {
-        buttons.put(buttonText, pageSupplier);
+    public final Page<C> withNavButton(String buttonText, Supplier<Page<?>> pageSupplier) {
+        navButtons.put(buttonText, pageSupplier);
         return this;
     }
 
     /**
      * @return the Page supplied by clicking the button
      */
-    public final Page<?> clickButton(String button) {
-        return buttons.get(button).get();
+    public final Page<?> clickNavButton(String button) {
+        return navButtons.get(button).get();
     }
 
     public static String EXIT_STRING = "Exit";
@@ -92,7 +92,7 @@ public abstract class Page<C> {
      * @return this Page
      */
     public final Page<C> withExitButton() {
-        return withButton(EXIT_STRING, EXIT_FUNC);
+        return withNavButton(EXIT_STRING, EXIT_FUNC);
     }
 
     public static class Single<C> extends Page<C> {

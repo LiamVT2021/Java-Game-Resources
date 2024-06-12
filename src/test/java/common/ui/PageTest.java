@@ -40,10 +40,10 @@ public class PageTest {
     @Test
     public void testButtons() {
         Page<String> page = new Page.Single<>("Name", "Contents", "Footer");
-        page.withButton("This", () -> page).withExitButton();
+        page.withNavButton("This", () -> page).withExitButton();
         assertEquals("[This|Exit] Name", page.pageHeader());
-        assertNull(page.clickButton(Page.EXIT_STRING));
-        assertEquals(page, page.clickButton("This"));
+        assertNull(page.clickNavButton(Page.EXIT_STRING));
+        assertEquals(page, page.clickNavButton("This"));
     }
 
 }
