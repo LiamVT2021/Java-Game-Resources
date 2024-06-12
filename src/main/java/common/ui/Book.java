@@ -2,11 +2,11 @@ package common.ui;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import common.util.Predicates;
 import common.util.StreamUtils;
 import common.util.StringUtils;
 
@@ -86,7 +86,7 @@ public abstract class Book<C> extends Page<C> {
     @Override
     public String toString() {
         return StringUtils.join("\n\n",
-                StreamUtils.wrap(baseHeader(), tabStrings(), footer).filter(Predicates.NOT_NULL));
+                StreamUtils.wrap(baseHeader(), tabStrings(), footer).filter(Objects::nonNull));
     }
 
     public static class Array<C> extends Book<C> {

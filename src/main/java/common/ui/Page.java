@@ -2,9 +2,9 @@ package common.ui;
 
 import java.util.stream.Stream;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.function.Supplier;
 
-import common.util.Predicates;
 import common.util.StringUtils;
 
 /**
@@ -52,7 +52,7 @@ public abstract class Page<C> {
      */
     public String pageString() {
         return StringUtils.join("\n\n",
-                Stream.of(pageHeader(), getContent().toString(), footer).filter(Predicates.NOT_NULL));
+                Stream.of(pageHeader(), getContent().toString(), footer).filter(Objects::nonNull));
     }
 
     /**
