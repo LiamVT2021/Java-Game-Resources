@@ -91,8 +91,21 @@ public class BookTest {
                 + "- Veggies -\nLetuce, Kale, Celery, Carrot\n\n"
                 + "Eat Healthy",
                 mapBook.withTabOrder("Fruits", "Meats", "Veggies").toString());
-        assertThrows(IllegalArgumentException.class, () -> mapBook.withTab(null, null));
+        assertThrows(IllegalArgumentException.class, () -> mapBook.withTab(null, "null"));
+        assertThrows(IllegalArgumentException.class, () -> mapBook.withTab("null", null));
         assertThrows(IllegalArgumentException.class, () -> mapBook.withTabOrder("Junk"));
+        assertEquals("[Exit] Food Map\n\n"
+                + "- Fruits -\nStrawberry, Bannana\n\n"
+                + "- Meats -\nChicken, Beef, Pork\n\n"
+                + "- Veggies -\nLetuce, Kale, Celery, Carrot\n\n"
+                + "Eat Healthy",
+                mapBook.withTab("Fruits", "Strawberry, Bannana").toString());
+        assertEquals("[Exit] Food Map\n\n"
+                + "- Meats -\nChicken, Beef, Pork\n\n"
+                + "- Veggies -\nLetuce, Kale, Celery, Carrot\n\n"
+                + "- Fruits -\nStrawberry, Bannana\n\n"
+                + "Eat Healthy",
+                mapBook.withTabOrder((String[]) null).toString());
     }
 
 }
