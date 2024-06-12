@@ -1,28 +1,34 @@
 package magic.domain;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.EnumSet;
 
+import common.ui.Colors;
+
 public enum MagicDomain {
-    EARTH("ETH"), AIR("AIR"), WATER("WTR"),
-    FIRE("FIR"), COLD("CLD", Tag.NEGATIVE), ELECTRIC("ELC"),
+    EARTH("ETH", Colors.BROWN), AIR("AIR", Color.WHITE), WATER("WTR", Color.BLUE),
+    FIRE("FIR", Color.ORANGE), COLD("CLD", null, Tag.NEGATIVE), ELECTRIC("ELC", null),
 
-    LIFE("LIF"), DEATH("DTH", Tag.NEGATIVE), HOLY("HLY"), CHOAS("CHS"),
+    LIFE("LIF", null), DEATH("DTH", Color.DARK_GRAY, Tag.NEGATIVE), HOLY("HLY", null), CHOAS("CHS", null),
 
-    PLANT("PLT"), BEAST("BST"), WEATHER("WTH"),
+    PLANT("PLT", Color.GREEN), BEAST("BST", null), WEATHER("WTH", null),
 
-    BLOOD("BLD"), LIGHT("LGT"), DARKNESS("DRK", Tag.NEGATIVE),
-    FORCE("FRC"), MIND("MND"), VISION("VIS"),
-    SPACE("SPC"), TIME("TIM");
+    // BLOOD("BLD", Color.RED), LIGHT("LGT"), DARKNESS("DRK", Color.BLACK, Tag.NEGATIVE),
+    // FORCE("FRC"), MIND("MND"), VISION("VIS"),
+    // SPACE("SPC"), TIME("TIM"),
+    ;
 
     /**
      * a 3 letter name for this domain
      */
     public final String shortName;
+    public final Color color;
     private final EnumSet<Tag> tags;
 
-    MagicDomain(String shortName, Tag... tags) {
+    MagicDomain(String shortName , Color color, Tag... tags) {
         this.shortName = shortName;
+        this.color = color; 
         this.tags = tags.length > 0 ? EnumSet.copyOf(Arrays.asList(tags)) : EnumSet.noneOf(Tag.class);
         for (Tag tag : tags)
             tag.addDomain(this);
