@@ -85,7 +85,7 @@ public interface Rollable {
      *         negates rolls if rollCount < 0
      */
     default int sum(int rollCount) {
-        return stream(rollCount).sum();
+        return isConstant() ? rollCount * min() : stream(rollCount).sum();
     }
 
     /**

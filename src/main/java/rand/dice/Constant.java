@@ -40,13 +40,18 @@ public class Constant implements Rollable {
         int[] arr;
         if (rollCount > 0) {
             arr = new int[rollCount];
-            Arrays.fill(arr, min());
+            Arrays.fill(arr, con);
         } else if (rollCount < 0) {
             arr = new int[-rollCount];
-            Arrays.fill(arr, -min());
+            Arrays.fill(arr, -con);
         } else
             arr = new int[0];
         return arr;
+    }
+
+    @Override
+    public int sum(int rollCount) {
+        return rollCount * con;
     }
 
 }

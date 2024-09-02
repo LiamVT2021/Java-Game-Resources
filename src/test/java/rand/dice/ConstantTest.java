@@ -23,6 +23,7 @@ public class ConstantTest {
     @MethodSource("five")
     public void testRoll(Rollable five) {
         assertEquals(5, five.roll());
+        assertEquals(15, five.sum(3));
     }
 
     @ParameterizedTest
