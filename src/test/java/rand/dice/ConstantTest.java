@@ -1,5 +1,6 @@
 package rand.dice;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,6 +33,14 @@ public class ConstantTest {
         assertTrue(five.isConstant());
         assertEquals("5", five.range());
         assertEquals("5", five.diceStr());
+    }
+
+    @ParameterizedTest
+    @MethodSource("five")
+    public void testArray(Rollable five) {
+        assertArrayEquals(new int[] { 5, 5, 5, 5 }, five.array(4));
+        assertArrayEquals(new int[0], five.array(0));
+        assertArrayEquals(new int[] { -5, -5, -5 }, five.array(-3));
     }
 
 }

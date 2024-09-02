@@ -1,5 +1,7 @@
 package rand.dice;
 
+import java.util.Arrays;
+
 public class Constant implements Rollable {
 
     private final int con;
@@ -31,6 +33,20 @@ public class Constant implements Rollable {
     @Override
     public String range() {
         return String.valueOf(con);
+    }
+
+    @Override
+    public int[] array(int rollCount) {
+        int[] arr;
+        if (rollCount > 0) {
+            arr = new int[rollCount];
+            Arrays.fill(arr, min());
+        } else if (rollCount < 0) {
+            arr = new int[-rollCount];
+            Arrays.fill(arr, -min());
+        } else
+            arr = new int[0];
+        return arr;
     }
 
 }

@@ -1,5 +1,6 @@
 package rand.dice;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public interface Rollable {
@@ -49,15 +50,23 @@ public interface Rollable {
      */
     default int[] array(int rollCount) {
         int[] arr;
-        if (rollCount < 0) {
-            arr = new int[-rollCount];
-            for (int i = 0; i < -rollCount; i++)
-                arr[i] = -roll();
-        } else {
+        if (rollCount > 0) {
             arr = new int[rollCount];
-            for (int i = 0; i < rollCount; i++)
-                arr[i] = roll();
-        }
+            if (isConstant())
+                Arrays.fill(arr, min());
+            else
+                for (int i = 0; i < rollCount; i++)
+                    arr[i] = roll();
+
+        } else if (rollCount < 0) {
+            arr = new int[-rollCount];
+            if (isConstant())
+                Arrays.fill(arr, -min());
+            else
+                for (int i = 0; i < -rollCount; i++)
+                    arr[i] = -roll();
+        } else
+            arr = new int[0];
         return arr;
     }
 
