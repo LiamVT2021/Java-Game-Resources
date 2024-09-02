@@ -45,6 +45,8 @@ public interface Rollable {
         return min() + "-" + max();
     }
 
+    String diceStr();
+
     /**
      * @param rollCount the number of times this is rolled
      * @return an IntStream of the results of rolling this,
