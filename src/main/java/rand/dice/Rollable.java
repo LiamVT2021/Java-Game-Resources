@@ -59,6 +59,18 @@ public interface Rollable {
 
     /**
      * @param rollCount the number of times this is rolled
+     * @return the average of roll results,
+     *         negates rolls if rollCount < 0
+     *         avg() if rollCount = 0
+     */
+    default float avgOf(int rollCount) {
+        if (isConstant())
+            return rollCount < 0 ? -min() : min();
+        return rollCount == 0 ? avg() : stream(rollCount).sum() / (float) rollCount;
+    }
+
+    /**
+     * @param rollCount the number of times this is rolled
      * @return the minimum roll result,
      *         negates rolls if rollCount < 0,
      *         max() if rollCount = 0
@@ -90,6 +102,14 @@ public interface Rollable {
     int max();
 
     /**
+     * @return the average result of this
+     */
+    default float avg() {
+        int min = min(), max = max();
+        return min == max ? min : min + max / 2f;
+    }
+
+    /**
      * @return if rolling this will always return the same result
      */
     default boolean isConstant() {
@@ -102,7 +122,7 @@ public interface Rollable {
      */
     default String range() {
         int min = min(), max = max();
-        return min == max ? String.valueOf(min) : min() + "-" + max();
+        return min == max ? String.valueOf(min) : min + "-" + max;
     }
 
     /**

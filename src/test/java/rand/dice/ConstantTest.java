@@ -36,6 +36,13 @@ public class ConstantTest {
 
     @ParameterizedTest
     @MethodSource("five")
+    public void testAvgOf(Rollable five) {
+        assertEquals(5, five.avgOf(3));
+        assertEquals(-5, five.avgOf(-2));
+    }
+
+    @ParameterizedTest
+    @MethodSource("five")
     public void testMinOf(Rollable five) {
         assertEquals(5, five.minOf(2));
         assertEquals(-5, five.minOf(-3));
@@ -53,6 +60,7 @@ public class ConstantTest {
     public void testInfo(Rollable five) {
         assertEquals(5, five.min());
         assertEquals(5, five.max());
+        assertEquals(5, five.avg());
         assertTrue(five.isConstant());
         assertEquals("5", five.range());
         assertEquals("5", five.dice());

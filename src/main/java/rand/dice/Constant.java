@@ -37,6 +37,11 @@ public class Constant implements Rollable {
     }
 
     @Override
+    public float avgOf(int rollCount) {
+        return rollCount < 0 ? -con : con;
+    }
+
+    @Override
     public int minOf(int rollCount) {
         return rollCount < 0 ? -con : con;
     }
@@ -55,6 +60,11 @@ public class Constant implements Rollable {
 
     @Override
     public int max() {
+        return con;
+    }
+
+    @Override
+    public float avg() {
         return con;
     }
 
