@@ -1,4 +1,4 @@
-package common.dice;
+package rand.dice;
 
 @FunctionalInterface
 public interface Roller {
