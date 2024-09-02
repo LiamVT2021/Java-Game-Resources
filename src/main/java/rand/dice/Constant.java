@@ -54,4 +54,14 @@ public class Constant implements Rollable {
         return rollCount * con;
     }
 
+    @Override
+    public int min(int rollCount) {
+        return rollCount < 0 ? -con : con;
+    }
+
+    @Override
+    public int max(int rollCount) {
+        return rollCount < 0 ? -con : con;
+    }
+
 }

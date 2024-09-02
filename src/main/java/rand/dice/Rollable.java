@@ -92,18 +92,20 @@ public interface Rollable {
      * @param rollCount the number of times this is rolled
      * @return the minimum roll result,
      *         negates rolls if rollCount < 0
+     *         max() if rollCount = 0
      */
     default int min(int rollCount) {
-        return stream(rollCount).min().getAsInt();
+        return rollCount == 0 || isConstant() ? max() : stream(rollCount).min().getAsInt();
     }
 
     /**
      * @param rollCount the number of times this is rolled
      * @return the maximum roll result,
      *         negates rolls if rollCount < 0
+     *         min() if rollCount = 0
      */
     default int max(int rollCount) {
-        return stream(rollCount).max().getAsInt();
+        return rollCount == 0 || isConstant() ? min() : stream(rollCount).max().getAsInt();
     }
 
 }

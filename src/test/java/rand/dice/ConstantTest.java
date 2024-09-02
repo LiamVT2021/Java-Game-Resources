@@ -44,4 +44,18 @@ public class ConstantTest {
         assertArrayEquals(new int[] { -5, -5, -5 }, five.array(-3));
     }
 
+    @ParameterizedTest
+    @MethodSource("five")
+    public void testMin(Rollable five) {
+        assertEquals(5, five.min(2));
+        assertEquals(-5, five.min(-3));
+    }
+
+    @ParameterizedTest
+    @MethodSource("five")
+    public void testMax(Rollable five) {
+        assertEquals(5, five.max(3));
+        assertEquals(-5, five.max(-2));
+    }
+
 }
