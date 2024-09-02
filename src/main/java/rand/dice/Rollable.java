@@ -20,6 +20,29 @@ public interface Rollable {
     int max();
 
     /**
+     * @return if rolling this will always return the same result
+     */
+    default boolean isConstant() {
+        return min() == max();
+    }
+
+    /**
+     * @return the range of possible vaules that can be returned by this "min-max"
+     *         just the expected result if constant
+     */
+    default String range() {
+        int min = min(), max = max();
+        return min == max ? String.valueOf(min) : min() + "-" + max();
+    }
+
+    /**
+     * @return a String expressing this as a dice roll ex: "d100+2d12+8"
+     */
+    default String diceStr() {
+        return range();
+    }
+
+    /**
      * @param rollCount the number of times this is rolled
      * @return an int[] of the results of rolling this,
      *         negates rolls if rollCount < 0
@@ -37,15 +60,6 @@ public interface Rollable {
         }
         return arr;
     }
-
-    /**
-     * @return the range of possible vaules that can be returned by this "min-max"
-     */
-    default String range() {
-        return min() + "-" + max();
-    }
-
-    String diceStr();
 
     /**
      * @param rollCount the number of times this is rolled

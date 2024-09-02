@@ -24,7 +24,12 @@ public class Constant implements Rollable {
     }
 
     @Override
-    public String diceStr() {
+    public boolean isConstant() {
+        return true;
+    }
+
+    @Override
+    public String range() {
         return String.valueOf(con);
     }
 
