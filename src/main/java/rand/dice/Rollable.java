@@ -5,43 +5,12 @@ import java.util.stream.IntStream;
 
 public interface Rollable {
 
+    // ROLLS
+
     /**
      * @return the result of rolling this
      */
     int roll();
-
-    /**
-     * @return the minimum possible result of this
-     */
-    int min();
-
-    /**
-     * @return the maximum possible result of this
-     */
-    int max();
-
-    /**
-     * @return if rolling this will always return the same result
-     */
-    default boolean isConstant() {
-        return min() == max();
-    }
-
-    /**
-     * @return the range of possible vaules that can be returned by this "min-max"
-     *         just the expected result if constant
-     */
-    default String range() {
-        int min = min(), max = max();
-        return min == max ? String.valueOf(min) : min() + "-" + max();
-    }
-
-    /**
-     * @return a String expressing this as a dice roll ex: "d100+2d12+8"
-     */
-    default String diceStr() {
-        return range();
-    }
 
     /**
      * @param rollCount the number of times this is rolled
@@ -84,28 +53,63 @@ public interface Rollable {
      * @return the sum of roll results,
      *         negates rolls if rollCount < 0
      */
-    default int sum(int rollCount) {
+    default int sumOf(int rollCount) {
         return isConstant() ? rollCount * min() : stream(rollCount).sum();
     }
 
     /**
      * @param rollCount the number of times this is rolled
      * @return the minimum roll result,
-     *         negates rolls if rollCount < 0
+     *         negates rolls if rollCount < 0,
      *         max() if rollCount = 0
      */
-    default int min(int rollCount) {
+    default int minOf(int rollCount) {
         return rollCount == 0 || isConstant() ? max() : stream(rollCount).min().getAsInt();
     }
 
     /**
      * @param rollCount the number of times this is rolled
      * @return the maximum roll result,
-     *         negates rolls if rollCount < 0
+     *         negates rolls if rollCount < 0,
      *         min() if rollCount = 0
      */
-    default int max(int rollCount) {
+    default int maxOf(int rollCount) {
         return rollCount == 0 || isConstant() ? min() : stream(rollCount).max().getAsInt();
+    }
+
+    // INFO
+
+    /**
+     * @return the minimum possible result of this
+     */
+    int min();
+
+    /**
+     * @return the maximum possible result of this
+     */
+    int max();
+
+    /**
+     * @return if rolling this will always return the same result
+     */
+    default boolean isConstant() {
+        return min() == max();
+    }
+
+    /**
+     * @return the range of possible vaules that can be returned by this "min-max"
+     *         just the expected result if constant
+     */
+    default String range() {
+        int min = min(), max = max();
+        return min == max ? String.valueOf(min) : min() + "-" + max();
+    }
+
+    /**
+     * @return a String expressing this as a dice roll ex: "d100+2d12+8"
+     */
+    default String dice() {
+        return "(" + range() + ")";
     }
 
 }

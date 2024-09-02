@@ -10,10 +10,43 @@ public class Constant implements Rollable {
         con = constant;
     }
 
+    // ROLLS
+
     @Override
     public int roll() {
         return con;
     }
+
+    @Override
+    public int[] array(int rollCount) {
+        int[] arr;
+        if (rollCount > 0) {
+            arr = new int[rollCount];
+            Arrays.fill(arr, con);
+        } else if (rollCount < 0) {
+            arr = new int[-rollCount];
+            Arrays.fill(arr, -con);
+        } else
+            arr = new int[0];
+        return arr;
+    }
+
+    @Override
+    public int sumOf(int rollCount) {
+        return rollCount * con;
+    }
+
+    @Override
+    public int minOf(int rollCount) {
+        return rollCount < 0 ? -con : con;
+    }
+
+    @Override
+    public int maxOf(int rollCount) {
+        return rollCount < 0 ? -con : con;
+    }
+
+    // INFO
 
     @Override
     public int min() {
@@ -33,35 +66,6 @@ public class Constant implements Rollable {
     @Override
     public String range() {
         return String.valueOf(con);
-    }
-
-    @Override
-    public int[] array(int rollCount) {
-        int[] arr;
-        if (rollCount > 0) {
-            arr = new int[rollCount];
-            Arrays.fill(arr, con);
-        } else if (rollCount < 0) {
-            arr = new int[-rollCount];
-            Arrays.fill(arr, -con);
-        } else
-            arr = new int[0];
-        return arr;
-    }
-
-    @Override
-    public int sum(int rollCount) {
-        return rollCount * con;
-    }
-
-    @Override
-    public int min(int rollCount) {
-        return rollCount < 0 ? -con : con;
-    }
-
-    @Override
-    public int max(int rollCount) {
-        return rollCount < 0 ? -con : con;
     }
 
 }

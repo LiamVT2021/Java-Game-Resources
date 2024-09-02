@@ -23,17 +23,7 @@ public class ConstantTest {
     @MethodSource("five")
     public void testRoll(Rollable five) {
         assertEquals(5, five.roll());
-        assertEquals(15, five.sum(3));
-    }
-
-    @ParameterizedTest
-    @MethodSource("five")
-    public void testRange(Rollable five) {
-        assertEquals(5, five.min());
-        assertEquals(5, five.max());
-        assertTrue(five.isConstant());
-        assertEquals("5", five.range());
-        assertEquals("5", five.diceStr());
+        assertEquals(15, five.sumOf(3));
     }
 
     @ParameterizedTest
@@ -46,16 +36,26 @@ public class ConstantTest {
 
     @ParameterizedTest
     @MethodSource("five")
-    public void testMin(Rollable five) {
-        assertEquals(5, five.min(2));
-        assertEquals(-5, five.min(-3));
+    public void testMinOf(Rollable five) {
+        assertEquals(5, five.minOf(2));
+        assertEquals(-5, five.minOf(-3));
     }
 
     @ParameterizedTest
     @MethodSource("five")
-    public void testMax(Rollable five) {
-        assertEquals(5, five.max(3));
-        assertEquals(-5, five.max(-2));
+    public void testMaxOf(Rollable five) {
+        assertEquals(5, five.maxOf(3));
+        assertEquals(-5, five.maxOf(-2));
+    }
+
+    @ParameterizedTest
+    @MethodSource("five")
+    public void testInfo(Rollable five) {
+        assertEquals(5, five.min());
+        assertEquals(5, five.max());
+        assertTrue(five.isConstant());
+        assertEquals("5", five.range());
+        assertEquals("5", five.dice());
     }
 
 }

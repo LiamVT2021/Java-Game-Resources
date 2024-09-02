@@ -30,7 +30,8 @@ public class Range implements Rollable {
         return max - 1;
     }
 
-    public String diceStr() {
+    @Override
+    public String dice() {
         if (max == min + 1)
             return String.valueOf(min);
         String ret = "d" + (max - min);
