@@ -78,4 +78,9 @@ public class Constant implements Rollable {
         return String.valueOf(con);
     }
 
+    @Override
+    public String dice() {
+        return String.valueOf(con);
+    }
+
 }
