@@ -109,15 +109,15 @@ public interface Rollable {
      * @return the average result of this
      */
     default float avg() {
-        int min = min(), max = max();
-        return min == max ? min : min + max / 2f;
+        return isConstant() ? min() : min() + max() / 2f;
     }
 
     /**
-     * @return if rolling this will always return the same result
+     * @return if rolling this will always return the same result,
+     *         and there is no need to call roll()
      */
     default boolean isConstant() {
-        return min() == max();
+        return false;
     }
 
     /**
@@ -125,8 +125,7 @@ public interface Rollable {
      *         just the expected result if constant
      */
     default String range() {
-        int min = min(), max = max();
-        return min == max ? String.valueOf(min) : min + "-" + max;
+        return isConstant() ? String.valueOf(min()) : min() + "-" + max();
     }
 
     /**

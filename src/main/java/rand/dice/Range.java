@@ -31,6 +31,11 @@ public class Range implements Rollable {
     }
 
     @Override
+    public boolean isConstant() {
+        return min == max - 1;
+    }
+
+    @Override
     public String dice() {
         if (max == min + 1)
             return String.valueOf(min);
