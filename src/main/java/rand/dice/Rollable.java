@@ -76,7 +76,9 @@ public interface Rollable {
      *         max() if rollCount = 0
      */
     default int minOf(int rollCount) {
-        return rollCount == 0 || isConstant() ? max() : stream(rollCount).min().getAsInt();
+        if (isConstant())
+            return rollCount < 0 ? -max() : max();
+        return rollCount == 0 ? max() : stream(rollCount).min().getAsInt();
     }
 
     /**
@@ -86,7 +88,9 @@ public interface Rollable {
      *         min() if rollCount = 0
      */
     default int maxOf(int rollCount) {
-        return rollCount == 0 || isConstant() ? min() : stream(rollCount).max().getAsInt();
+        if (isConstant())
+            return rollCount < 0 ? -min() : min();
+        return rollCount == 0 ? min() : stream(rollCount).max().getAsInt();
     }
 
     // INFO
