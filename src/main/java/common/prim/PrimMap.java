@@ -116,12 +116,20 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
             super(size);
         }
 
+        protected ByteMap(byte... values) {
+            super(values);
+        }
+
     }
 
     static abstract class ShortMap<K> extends ShortArray implements PrimMap<K, Short, short[]> {
 
         public ShortMap(int size) {
             super(size);
+        }
+
+        protected ShortMap(short... values) {
+            super(values);
         }
 
     }
@@ -132,12 +140,20 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
             super(size);
         }
 
+        protected IntMap(int... values) {
+            super(values);
+        }
+
     }
 
     static abstract class LongMap<K> extends LongArray implements PrimMap<K, Long, long[]> {
 
         public LongMap(int size) {
             super(size);
+        }
+
+        protected LongMap(long... values) {
+            super(values);
         }
 
     }
@@ -148,12 +164,20 @@ public interface PrimMap<K, V extends Number, A> extends PrimArray<V, A> {
             super(size);
         }
 
+        protected FloatMap(float... values) {
+            super(values);
+        }
+
     }
 
     static abstract class DoubleMap<K> extends DoubleArray implements PrimMap<K, Double, double[]> {
 
         public DoubleMap(int size) {
             super(size);
+        }
+
+        protected DoubleMap(double... values) {
+            super(values);
         }
 
     }

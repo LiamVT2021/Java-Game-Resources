@@ -21,6 +21,11 @@ public interface PrimEnumMap<E extends Enum<E>, N extends Number, A> extends Pri
             super(clazz.getEnumConstants().length);
         }
 
+        public ByteEnumMap(Class<E> clazz, byte... values) {
+            super(values);
+            if (values.length != clazz.getEnumConstants().length)
+                throw new IllegalArgumentException("Number of values does not match number of Attributes");
+        }
     }
 
     static class ShortEnumMap<E extends Enum<E>> extends ShortMap<E> implements PrimEnumMap<E, Short, short[]> {
@@ -29,6 +34,11 @@ public interface PrimEnumMap<E extends Enum<E>, N extends Number, A> extends Pri
             super(clazz.getEnumConstants().length);
         }
 
+        public ShortEnumMap(Class<E> clazz, short... values) {
+            super(values);
+            if (values.length != clazz.getEnumConstants().length)
+                throw new IllegalArgumentException("Number of values does not match number of Attributes");
+        }
     }
 
     static class IntEnumMap<E extends Enum<E>> extends IntMap<E> implements PrimEnumMap<E, Integer, int[]> {
@@ -37,6 +47,11 @@ public interface PrimEnumMap<E extends Enum<E>, N extends Number, A> extends Pri
             super(clazz.getEnumConstants().length);
         }
 
+        public IntEnumMap(Class<E> clazz, int... values) {
+            super(values);
+            if (values.length != clazz.getEnumConstants().length)
+                throw new IllegalArgumentException("Number of values does not match number of Attributes");
+        }
     }
 
     static class LongEnumMap<E extends Enum<E>> extends LongMap<E> implements PrimEnumMap<E, Long, long[]> {
@@ -45,6 +60,11 @@ public interface PrimEnumMap<E extends Enum<E>, N extends Number, A> extends Pri
             super(clazz.getEnumConstants().length);
         }
 
+        public LongEnumMap(Class<E> clazz, long... values) {
+            super(values);
+            if (values.length != clazz.getEnumConstants().length)
+                throw new IllegalArgumentException("Number of values does not match number of Attributes");
+        }
     }
 
     static class FloatEnumMap<E extends Enum<E>> extends FloatMap<E> implements PrimEnumMap<E, Float, float[]> {
@@ -53,12 +73,23 @@ public interface PrimEnumMap<E extends Enum<E>, N extends Number, A> extends Pri
             super(clazz.getEnumConstants().length);
         }
 
+        public FloatEnumMap(Class<E> clazz, float... values) {
+            super(values);
+            if (values.length != clazz.getEnumConstants().length)
+                throw new IllegalArgumentException("Number of values does not match number of Attributes");
+        }
     }
 
     static class DoubleEnumMap<E extends Enum<E>> extends DoubleMap<E> implements PrimEnumMap<E, Double, double[]> {
 
         public DoubleEnumMap(Class<E> clazz) {
             super(clazz.getEnumConstants().length);
+        }
+
+        public DoubleEnumMap(Class<E> clazz, double... values) {
+            super(values);
+            if (values.length != clazz.getEnumConstants().length)
+                throw new IllegalArgumentException("Number of values does not match number of Attributes");
         }
 
     }
