@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.function.Predicate;
@@ -26,9 +27,11 @@ public class BoolReqTest {
     @Test
     public void testDescription() {
         assertEquals("simple", simple.description());
-        assertEquals("simple", simple.fullDescription());
         assertEquals("full", full.description());
+        assertEquals("simple", simple.fullDescription());
         assertEquals("full description", full.fullDescription());
+        assertEquals("simple", simple.toString());
+        assertEquals("full:\nfull description", full.toString());
     }
 
     @Test
@@ -45,6 +48,15 @@ public class BoolReqTest {
         assertEquals("simple [N]", simple.report(false));
         assertEquals("full [Y]", full.report(true));
         assertEquals("full [N]", full.report(false));
+    }
+
+    @Test
+    public void testEquals() {
+        assertEquals(simple, simple);
+        assertEquals(simple, full);
+        assertNotEquals(simple, null);
+        assertNotEquals(simple, new BoolReq<Boolean>("other", bool -> !bool));
+        assertEquals(simple.hashCode(), full.hashCode());
     }
 
 }

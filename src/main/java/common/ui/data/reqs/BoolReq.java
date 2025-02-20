@@ -36,6 +36,21 @@ public class BoolReq<S> implements Requirement<S> {
         return description() + ' ' + passed(subject);
     }
 
+    @Override
+    public String toString() {
+        return description();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof BoolReq && pred.equals(((BoolReq<?>) other).pred);
+    }
+
+    @Override
+    public int hashCode() {
+        return pred.hashCode();
+    }
+
     /**
      * A Predicate with a long description
      */
@@ -54,6 +69,11 @@ public class BoolReq<S> implements Requirement<S> {
 
         public String fullDescription() {
             return full;
+        }
+
+        @Override
+        public String toString() {
+            return description() + ":\n" + fullDescription();
         }
     }
 
