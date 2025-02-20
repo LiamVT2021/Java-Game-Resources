@@ -2,12 +2,21 @@ package common.ui.data.reqs;
 
 import java.util.function.Predicate;
 
-public class BoolReq<T> implements Requirement<T> {
+/**
+ * A Predicate with a description
+ * 
+ * @version 12/20/25
+ */
+public class BoolReq<S> implements Requirement<S> {
 
     private final String desc;
-    private final Predicate<T> pred;
+    private final Predicate<S> pred;
 
-    public BoolReq(String description, Predicate<T> predicate) {
+    /**
+     * @param description one line description of this requirement
+     * @param predicate   returns if a subject meets this requirement
+     */
+    public BoolReq(String description, Predicate<S> predicate) {
         desc = description;
         pred = predicate;
     }
@@ -18,13 +27,34 @@ public class BoolReq<T> implements Requirement<T> {
     }
 
     @Override
-    public boolean test(T t) {
-        return pred.test(t);
+    public boolean test(S subject) {
+        return pred.test(subject);
     }
 
     @Override
-    public String progress(T t) {
-        return desc + (test(t) ? ": passed" : ": failed");
+    public String results(S subject) {
+        return description() + ' ' + passed(subject);
+    }
+
+    /**
+     * A Predicate with a long description
+     */
+    public static class Full<S> extends BoolReq<S> {
+        private final String full;
+
+        /**
+         * @param description     one line description of this requirement
+         * @param fullDescription longer description of this requirement
+         * @param predicate       returns if a subject meets this requirement
+         */
+        public Full(String description, String fullDescription, Predicate<S> predicate) {
+            super(description, predicate);
+            full = fullDescription;
+        }
+
+        public String fullDescription() {
+            return full;
+        }
     }
 
 }
