@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 /**
  * Displayable Predicate
  * 
- * @version 12/20/25
+ * @version 12/21/25
  */
 public interface Requirement<S> extends Predicate<S> {
     static final String PASS = "[Y]", FAIL = "[N]";
@@ -41,16 +41,8 @@ public interface Requirement<S> extends Predicate<S> {
 
     /**
      * @param subject the object being tested
-     * @return one line description of test results
+     * @return results of test results
      */
-    String results(S subject);
-
-    /**
-     * @param subject the object being tested
-     * @return full of test results
-     */
-    default String report(S subject){
-        return results(subject);
-    }
+    Results results(S subject);
 
 }

@@ -10,9 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.function.Predicate;
 
 /**
- * Tests all methods for BoolReq and Requirement files.
- * 
- * @version 2/20/25
+ * @version 2/21/25
  */
 public class BoolReqTest {
     private static Requirement<Boolean> simple, full;
@@ -43,11 +41,11 @@ public class BoolReqTest {
     }
 
     @Test
-    public void testReport() {
-        assertEquals("simple [Y]", simple.report(true));
-        assertEquals("simple [N]", simple.report(false));
-        assertEquals("full [Y]", full.report(true));
-        assertEquals("full [N]", full.report(false));
+    public void testResults() {
+        assertEquals("simple [Y]", simple.results(true).toString());
+        assertEquals("simple [N]", simple.results(false).toString());
+        assertEquals("full [Y]", full.results(true).toString());
+        assertEquals("full [N]", full.results(false).toString());
     }
 
     @Test

@@ -22,18 +22,18 @@ public class BoolReq<S> implements Requirement<S> {
     }
 
     @Override
-    public String description() {
+    public final String description() {
         return desc;
     }
 
     @Override
-    public boolean test(S subject) {
+    public final boolean test(S subject) {
         return pred.test(subject);
     }
 
     @Override
-    public String results(S subject) {
-        return description() + ' ' + passed(subject);
+    public final Results results(S subject) {
+        return new BoolResult(subject);
     }
 
     @Override
@@ -42,19 +42,19 @@ public class BoolReq<S> implements Requirement<S> {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public final boolean equals(Object other) {
         return this == other || other instanceof BoolReq && pred.equals(((BoolReq<?>) other).pred);
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return pred.hashCode();
     }
 
     /**
      * A Predicate with a long description
      */
-    public static class Full<S> extends BoolReq<S> {
+    public static final class Full<S> extends BoolReq<S> {
         private final String full;
 
         /**
@@ -74,6 +74,29 @@ public class BoolReq<S> implements Requirement<S> {
         @Override
         public String toString() {
             return description() + ":\n" + fullDescription();
+        }
+    }
+
+    private final class BoolResult extends Results {
+        private final boolean passed;
+
+        public BoolResult(S subject) {
+            passed = test(subject);
+        }
+
+        @Override
+        public String description() {
+            return BoolReq.this.description();
+        }
+
+        @Override
+        public Boolean passed() {
+            return passed;
+        }
+
+        @Override
+        public String line() {
+            return description() + ' ' + passStr();
         }
     }
 
