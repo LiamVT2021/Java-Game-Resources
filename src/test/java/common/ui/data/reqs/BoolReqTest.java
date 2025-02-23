@@ -24,8 +24,8 @@ public class BoolReqTest {
 
     @Test
     public void testDescription() {
-        assertEquals("simple", simple.description());
-        assertEquals("full", full.description());
+        assertEquals("simple", simple.lineDescription());
+        assertEquals("full", full.lineDescription());
         assertEquals("simple", simple.fullDescription());
         assertEquals("full description", full.fullDescription());
         assertEquals("simple", simple.toString());

@@ -5,10 +5,9 @@ import java.util.function.Predicate;
 /**
  * A Predicate with a description
  * 
- * @version 12/20/25
+ * @version 2/23/25
  */
 public class BoolReq<S> implements Requirement<S> {
-
     private final String desc;
     private final Predicate<S> pred;
 
@@ -22,7 +21,7 @@ public class BoolReq<S> implements Requirement<S> {
     }
 
     @Override
-    public final String description() {
+    public final String lineDescription() {
         return desc;
     }
 
@@ -38,7 +37,7 @@ public class BoolReq<S> implements Requirement<S> {
 
     @Override
     public String toString() {
-        return description();
+        return fullDescription();
     }
 
     @Override
@@ -73,7 +72,7 @@ public class BoolReq<S> implements Requirement<S> {
 
         @Override
         public String toString() {
-            return description() + ":\n" + fullDescription();
+            return lineDescription() + ":\n" + fullDescription();
         }
     }
 
@@ -85,8 +84,8 @@ public class BoolReq<S> implements Requirement<S> {
         }
 
         @Override
-        public String description() {
-            return BoolReq.this.description();
+        public String str() {
+            return BoolReq.this.lineDescription();
         }
 
         @Override
@@ -95,8 +94,8 @@ public class BoolReq<S> implements Requirement<S> {
         }
 
         @Override
-        public String line() {
-            return description() + ' ' + passStr();
+        public String lineDescription() {
+            return str() + ' ' + passStr();
         }
     }
 
