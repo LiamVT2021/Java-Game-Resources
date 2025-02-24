@@ -1,4 +1,4 @@
-package common.ui.data.reqs;
+package common.ui.data.func;
 
 import java.util.function.Predicate;
 
@@ -31,7 +31,7 @@ public class BoolReq<S> implements Requirement<S> {
     }
 
     @Override
-    public final Results results(S subject) {
+    public final Result<Boolean> results(S subject) {
         return new BoolResult(subject);
     }
 
@@ -76,26 +76,21 @@ public class BoolReq<S> implements Requirement<S> {
         }
     }
 
-    private final class BoolResult extends Results {
-        private final boolean passed;
+    private final class BoolResult implements Result<Boolean> {
+        private final boolean result;
 
         public BoolResult(S subject) {
-            passed = test(subject);
+            result = test(subject);
         }
 
         @Override
-        public String str() {
+        public String text() {
             return BoolReq.this.lineDescription();
         }
 
         @Override
-        public Boolean passed() {
-            return passed;
-        }
-
-        @Override
-        public String lineDescription() {
-            return str() + ' ' + passStr();
+        public Boolean result() {
+            return result;
         }
     }
 
