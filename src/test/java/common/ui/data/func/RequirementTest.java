@@ -56,6 +56,7 @@ public class RequirementTest {
         assertFalse(fullFalse.result());
         assertEquals("simple: true", simpleTrue.toString());
         assertEquals("full: false\nfull description", fullFalse.toString());
+        assertEquals("full", fullFalse.text());
         assertNull(simpleTrue.calc());
         assertNull(fullFalse.children());
     }

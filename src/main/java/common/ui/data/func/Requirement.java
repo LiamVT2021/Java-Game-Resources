@@ -1,5 +1,6 @@
 package common.ui.data.func;
 
+import common.ui.data.adt.Describable;
 import java.util.function.Predicate;
 
 /**
@@ -8,12 +9,11 @@ import java.util.function.Predicate;
  * @param I the input type of this Method
  * @version 3/1/25
  */
-public final class Requirement<I> implements Method.Bool<I> {
-    private final String line, full;
+public final class Requirement<I> extends Describable.ADT implements Method.Bool<I> {
     private final Predicate<I> pred;
 
     /**
-     * @param description one line description of this requirement
+     * @param description one line description of this Predicate
      * @param predicate
      */
     public Requirement(String description, Predicate<I> predicate) {
@@ -21,28 +21,13 @@ public final class Requirement<I> implements Method.Bool<I> {
     }
 
     /**
-     * @param line      one line description of this requirement
-     * @param full      longer description of this requirement
+     * @param line      one line description of this Predicate
+     * @param full      longer description of this Predicate
      * @param predicate
      */
     public Requirement(String line, String full, Predicate<I> predicate) {
-        this.line = line;
-        this.full = full;
+        super(line, full);
         pred = predicate;
-    }
-
-    @Override
-    public String lineDescription() {
-        return line;
-    }
-
-    public String fullDescription() {
-        return full != null ? full : line;
-    }
-
-    @Override
-    public String toString() {
-        return full == null ? line : line + ":\n" + full;
     }
 
     @Override
