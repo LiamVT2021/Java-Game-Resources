@@ -21,7 +21,7 @@ public class RequirementTest {
     private static void setUp() {
         Predicate<Boolean> pred = bool -> bool;
         simple = new Requirement<>("simple", pred);
-        full = new Requirement.Full<>("full", "full description", pred);
+        full = new Requirement<>("full", "full description", pred);
     }
 
     /**

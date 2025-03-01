@@ -8,75 +8,61 @@ import java.util.function.Predicate;
  * @param I the input type of this Method
  * @version 3/1/25
  */
-public class Requirement<I> implements Method.Bool<I> {
-    private final String desc;
+public final class Requirement<I> implements Method.Bool<I> {
+    private final String line, full;
     private final Predicate<I> pred;
 
     /**
      * @param description one line description of this requirement
-     * @param predicate   returns if a subject meets this requirement
+     * @param predicate
      */
     public Requirement(String description, Predicate<I> predicate) {
-        desc = description;
+        this(description, null, predicate);
+    }
+
+    /**
+     * @param line      one line description of this requirement
+     * @param full      longer description of this requirement
+     * @param predicate
+     */
+    public Requirement(String line, String full, Predicate<I> predicate) {
+        this.line = line;
+        this.full = full;
         pred = predicate;
     }
 
     @Override
-    public final String lineDescription() {
-        return desc;
+    public String lineDescription() {
+        return line;
     }
 
-    @Override
-    public final boolean test(I ipnut) {
-        return pred.test(ipnut);
-    }
-
-    @Override
-    public final Result<Boolean> results(I ipnut) {
-        return new BoolResult(ipnut);
+    public String fullDescription() {
+        return full != null ? full : line;
     }
 
     @Override
     public String toString() {
-        return fullDescription();
+        return full == null ? line : line + ":\n" + full;
     }
 
     @Override
-    public final boolean equals(Object other) {
+    public boolean test(I ipnut) {
+        return pred.test(ipnut);
+    }
+
+    @Override
+    public Result<Boolean> results(I ipnut) {
+        return new BoolResult(ipnut);
+    }
+
+    @Override
+    public boolean equals(Object other) {
         return this == other || other instanceof Requirement && pred.equals(((Requirement<?>) other).pred);
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         return pred.hashCode();
-    }
-
-    /**
-     * A Predicate with a long description
-     * 
-     * @param I the input type of this Method
-     */
-    public static final class Full<I> extends Requirement<I> {
-        private final String full;
-
-        /**
-         * @param description     one line description of this requirement
-         * @param fullDescription longer description of this requirement
-         * @param predicate       returns if a subject meets this requirement
-         */
-        public Full(String description, String fullDescription, Predicate<I> predicate) {
-            super(description, predicate);
-            full = fullDescription;
-        }
-
-        public String fullDescription() {
-            return full;
-        }
-
-        @Override
-        public String toString() {
-            return lineDescription() + ":\n" + fullDescription();
-        }
     }
 
     private final class BoolResult extends Result<Boolean> {
@@ -88,7 +74,7 @@ public class Requirement<I> implements Method.Bool<I> {
 
         @Override
         public String text() {
-            return Requirement.this.lineDescription();
+            return line;
         }
 
         @Override
@@ -98,13 +84,13 @@ public class Requirement<I> implements Method.Bool<I> {
 
         @Override
         public String lineDescription() {
-            return text() + ": " + result;
+            return line + ": " + result;
         }
 
         @Override
         public String fullDescription() {
             String line = lineDescription();
-            return Requirement.this instanceof Requirement.Full ? line + '\n' + Requirement.this.fullDescription() : line;
+            return full == null ? line : line + '\n' + full;
         }
     }
 
