@@ -5,20 +5,24 @@ import common.ui.data.adt.Describable;
 /**
  * Displayable Result of a Method
  * 
- * @version 2/23/25
+ * @version 3/1/25
  */
-public interface Result<R> extends Describable {
+public abstract class Result<R> implements Describable {
 
-    String text();
+    public abstract String text();
 
-    default String calc() {
+    public String calc() {
         return null;
     }
 
-    R result();
+    public abstract R result();
 
-    default Result<?>[] children() {
+    public Result<?>[] children() {
         return null;
+    }
+
+    public String toString() {
+        return fullDescription();
     }
 
 }

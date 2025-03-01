@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 /**
  * A Predicate with a description
  * 
- * @version 2/23/25
+ * @version 3/1/25
  */
 public class BoolReq<S> implements Requirement<S> {
     private final String desc;
@@ -76,7 +76,7 @@ public class BoolReq<S> implements Requirement<S> {
         }
     }
 
-    private final class BoolResult implements Result<Boolean> {
+    private final class BoolResult extends Result<Boolean> {
         private final boolean result;
 
         public BoolResult(S subject) {
@@ -91,6 +91,17 @@ public class BoolReq<S> implements Requirement<S> {
         @Override
         public Boolean result() {
             return result;
+        }
+
+        @Override
+        public String lineDescription() {
+            return text() + ": " + result;
+        }
+
+        @Override
+        public String fullDescription() {
+            String line = lineDescription();
+            return BoolReq.this instanceof BoolReq.Full ? line + '\n' + BoolReq.this.fullDescription() : line;
         }
     }
 

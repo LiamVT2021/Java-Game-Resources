@@ -1,16 +1,18 @@
-package common.ui.data.reqs;
+package common.ui.data.func;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.function.Predicate;
 
 /**
- * @version 2/21/25
+ * @version 3/1/25
  */
 public class BoolReqTest {
     private static Requirement<Boolean> simple, full;
@@ -22,6 +24,9 @@ public class BoolReqTest {
         full = new BoolReq.Full<>("full", "full description", pred);
     }
 
+    /**
+     * tests lineDescription, fullDescription and toString
+     */
     @Test
     public void testDescription() {
         assertEquals("simple", simple.lineDescription());
@@ -32,22 +37,32 @@ public class BoolReqTest {
         assertEquals("full:\nfull description", full.toString());
     }
 
+    /**
+     * tests test and apply
+     */
     @Test
     public void testTest() {
         assertTrue(simple.test(true));
-        assertTrue(full.test(true));
+        assertTrue(full.apply(true));
         assertFalse(simple.test(false));
-        assertFalse(full.test(false));
+        assertFalse(full.apply(false));
     }
 
     @Test
     public void testResults() {
-        assertEquals("simple [Y]", simple.results(true).toString());
-        assertEquals("simple [N]", simple.results(false).toString());
-        assertEquals("full [Y]", full.results(true).toString());
-        assertEquals("full [N]", full.results(false).toString());
+        Result<Boolean> simpleTrue = simple.results(true);
+        Result<Boolean> fullFalse = full.results(false);
+        assertTrue(simpleTrue.result());
+        assertFalse(fullFalse.result());
+        assertEquals("simple: true", simpleTrue.toString());
+        assertEquals("full: false\nfull description", fullFalse.toString());
+        assertNull(simpleTrue.calc());
+        assertNull(fullFalse.children());
     }
 
+    /**
+     * tests equals and hashCode
+     */
     @Test
     public void testEquals() {
         assertEquals(simple, simple);
