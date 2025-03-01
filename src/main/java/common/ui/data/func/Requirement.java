@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 /**
  * Describable Predicate with displayable Results
  * 
+ * @param I the input type of this Method
  * @version 12/23/25
  */
 public interface Requirement<I> extends Method<I, Boolean>, Predicate<I> {

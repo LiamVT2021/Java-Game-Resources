@@ -5,17 +5,18 @@ import java.util.function.Predicate;
 /**
  * A Predicate with a description
  * 
+ * @param I the input type of this Method
  * @version 3/1/25
  */
-public class BoolReq<S> implements Requirement<S> {
+public class BoolReq<I> implements Requirement<I> {
     private final String desc;
-    private final Predicate<S> pred;
+    private final Predicate<I> pred;
 
     /**
      * @param description one line description of this requirement
      * @param predicate   returns if a subject meets this requirement
      */
-    public BoolReq(String description, Predicate<S> predicate) {
+    public BoolReq(String description, Predicate<I> predicate) {
         desc = description;
         pred = predicate;
     }
@@ -26,13 +27,13 @@ public class BoolReq<S> implements Requirement<S> {
     }
 
     @Override
-    public final boolean test(S subject) {
-        return pred.test(subject);
+    public final boolean test(I ipnut) {
+        return pred.test(ipnut);
     }
 
     @Override
-    public final Result<Boolean> results(S subject) {
-        return new BoolResult(subject);
+    public final Result<Boolean> results(I ipnut) {
+        return new BoolResult(ipnut);
     }
 
     @Override
@@ -52,8 +53,10 @@ public class BoolReq<S> implements Requirement<S> {
 
     /**
      * A Predicate with a long description
+     * 
+     * @param I the input type of this Method
      */
-    public static final class Full<S> extends BoolReq<S> {
+    public static final class Full<I> extends BoolReq<I> {
         private final String full;
 
         /**
@@ -61,7 +64,7 @@ public class BoolReq<S> implements Requirement<S> {
          * @param fullDescription longer description of this requirement
          * @param predicate       returns if a subject meets this requirement
          */
-        public Full(String description, String fullDescription, Predicate<S> predicate) {
+        public Full(String description, String fullDescription, Predicate<I> predicate) {
             super(description, predicate);
             full = fullDescription;
         }
@@ -79,8 +82,8 @@ public class BoolReq<S> implements Requirement<S> {
     private final class BoolResult extends Result<Boolean> {
         private final boolean result;
 
-        public BoolResult(S subject) {
-            result = test(subject);
+        public BoolResult(I ipnut) {
+            result = test(ipnut);
         }
 
         @Override
