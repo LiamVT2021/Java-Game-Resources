@@ -14,14 +14,14 @@ import java.util.function.Predicate;
 /**
  * @version 3/1/25
  */
-public class BoolReqTest {
+public class RequirementTest {
     private static Requirement<Boolean> simple, full;
 
     @BeforeAll
     private static void setUp() {
         Predicate<Boolean> pred = bool -> bool;
-        simple = new BoolReq<>("simple", pred);
-        full = new BoolReq.Full<>("full", "full description", pred);
+        simple = new Requirement<>("simple", pred);
+        full = new Requirement.Full<>("full", "full description", pred);
     }
 
     /**
@@ -68,7 +68,7 @@ public class BoolReqTest {
         assertEquals(simple, simple);
         assertEquals(simple, full);
         assertNotEquals(simple, null);
-        assertNotEquals(simple, new BoolReq<Boolean>("other", bool -> !bool));
+        assertNotEquals(simple, new Requirement<Boolean>("other", bool -> !bool));
         assertEquals(simple.hashCode(), full.hashCode());
     }
 
