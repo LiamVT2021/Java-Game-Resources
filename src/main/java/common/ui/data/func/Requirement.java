@@ -1,7 +1,8 @@
 package common.ui.data.func;
 
-import common.ui.data.adt.Describable;
 import java.util.function.Predicate;
+
+import common.ui.data.adt.Describable;
 
 /**
  * A Predicate with a description
@@ -40,16 +41,6 @@ public final class Requirement<I> extends Describable.ADT implements Method.Bool
         return new BoolResult(ipnut);
     }
 
-    @Override
-    public boolean equals(Object other) {
-        return this == other || other instanceof Requirement && pred.equals(((Requirement<?>) other).pred);
-    }
-
-    @Override
-    public int hashCode() {
-        return pred.hashCode();
-    }
-
     private final class BoolResult extends Result<Boolean> {
         private final boolean result;
 
@@ -77,6 +68,16 @@ public final class Requirement<I> extends Describable.ADT implements Method.Bool
             String line = lineDescription();
             return full == null ? line : line + '\n' + full;
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof Requirement && pred.equals(((Requirement<?>) other).pred);
+    }
+
+    @Override
+    public int hashCode() {
+        return pred.hashCode();
     }
 
 }

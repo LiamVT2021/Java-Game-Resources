@@ -45,16 +45,6 @@ public final class ToIntMethod<I> extends Describable.ADT implements Method.Int<
         return new IntResult(ipnut);
     }
 
-    @Override
-    public boolean equals(Object other) {
-        return this == other || other instanceof ToIntMethod && func.equals(((ToIntMethod<?>) other).func);
-    }
-
-    @Override
-    public int hashCode() {
-        return func.hashCode();
-    }
-
     private class IntResult extends Result<Integer> {
         private final String calc;
         private final int result;
@@ -89,6 +79,16 @@ public final class ToIntMethod<I> extends Describable.ADT implements Method.Int<
             String line = lineDescription();
             return full == null ? line : line + '\n' + full;
         }
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof ToIntMethod && func.equals(((ToIntMethod<?>) other).func);
+    }
+
+    @Override
+    public int hashCode() {
+        return func.hashCode();
     }
 
 }
