@@ -2,6 +2,7 @@ package common.ui.data.func;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 import common.ui.data.adt.Describable;
 
@@ -30,6 +31,19 @@ public interface Method<I, O> extends Describable, Function<I, O> {
         @Override
         default Boolean apply(I input) {
             return test(input);
+        }
+    }
+
+    /**
+     * Describable ToIntFunction with displayable Results
+     * 
+     * @param I the input type of this Method
+     * @version 3/1/25
+     */
+    static interface Int<I> extends Method<I, Integer>, ToIntFunction<I> {
+        @Override
+        default Integer apply(I input) {
+            return applyAsInt(input);
         }
     }
 
