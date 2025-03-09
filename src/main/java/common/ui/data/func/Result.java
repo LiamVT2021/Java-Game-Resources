@@ -1,5 +1,6 @@
 package common.ui.data.func;
 
+import common.ui.data.adt.HoverOver;
 import common.ui.data.adt.Line;
 
 /**
@@ -10,7 +11,7 @@ import common.ui.data.adt.Line;
  * @param O the output type of the Method
  * @version 3/8/25
  */
-public abstract class Result<I, M extends Method<I, O>, O> implements Line {
+public abstract class Result<I, M extends Method<I, O>, O> implements Line, HoverOver {
     public final I input;
     public final O output;
 

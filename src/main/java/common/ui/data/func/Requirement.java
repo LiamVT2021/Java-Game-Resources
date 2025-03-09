@@ -2,15 +2,16 @@ package common.ui.data.func;
 
 import java.util.function.Predicate;
 
-import common.ui.data.adt.Describable;
+import common.ui.data.adt.HoverOver;
 
 /**
- * A Predicate with a description
+ * A Predicate visible to the user
  * 
  * @param I the input type of this Method
- * @version 3/1/25
+ * @version 3/8/25
  */
-public final class Requirement<I> extends Describable.ADT implements Method.Bool<I> {
+public final class Requirement<I> implements Method.Bool<I>, HoverOver {
+    private final String line, help;
     private final Predicate<I> pred;
 
     /**
@@ -22,62 +23,60 @@ public final class Requirement<I> extends Describable.ADT implements Method.Bool
     }
 
     /**
-     * @param line      one line description of this Predicate
-     * @param full      longer description of this Predicate
+     * @param description one line description of this Predicate
+     * @param helpText    additional information about this this Predicate
      * @param predicate
      */
-    public Requirement(String line, String full, Predicate<I> predicate) {
-        super(line, full);
+    public Requirement(String description, String helpText, Predicate<I> predicate) {
+        line = description;
+        help = helpText;
         pred = predicate;
     }
 
     @Override
-    public boolean test(I ipnut) {
-        return pred.test(ipnut);
+    public String line() {
+        return line;
     }
 
     @Override
-    public Result<Boolean> results(I ipnut) {
-        return new BoolResult(ipnut);
-    }
-
-    private final class BoolResult extends Result<Boolean> {
-        private final boolean result;
-
-        public BoolResult(I ipnut) {
-            result = test(ipnut);
-        }
-
-        @Override
-        public String text() {
-            return line;
-        }
-
-        @Override
-        public Boolean result() {
-            return result;
-        }
-
-        @Override
-        public String lineDescription() {
-            return line + ": " + result;
-        }
-
-        @Override
-        public String fullDescription() {
-            String line = lineDescription();
-            return full == null ? line : line + '\n' + full;
-        }
+    public String hoverOver() {
+        return help;
     }
 
     @Override
-    public boolean equals(Object other) {
-        return this == other || other instanceof Requirement && pred.equals(((Requirement<?>) other).pred);
+    public String toString() {
+        return help == null ? line : line + '\n' + help;
     }
 
     @Override
-    public int hashCode() {
-        return pred.hashCode();
+    public boolean test(I input) {
+        return pred.test(input);
+    }
+
+    @Override
+    public Result<I, Requirement<I>, Boolean> results(I input) {
+        return new ReqResult(input);
+    }
+
+    private final class ReqResult extends Result<I, Requirement<I>, Boolean> {
+        private ReqResult(I input) {
+            super(input);
+        }
+
+        @Override
+        public Requirement<I> method() {
+            return Requirement.this;
+        }
+
+        @Override
+        public String hoverOver() {
+            return help;
+        }
+
+        @Override
+        public String toString() {
+            return help == null ? line() : line() + '\n' + help;
+        }
     }
 
 }
