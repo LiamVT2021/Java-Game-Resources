@@ -9,7 +9,7 @@ import java.util.function.ToIntFunction;
  * @param I the input type of this Method
  * @version 3/8/25
  */
-public final class ToIntMethod<I> extends MethodWrap<I, ToIntFunction<I>, Integer> implements Method.Int<I> {
+public final class ToIntMethod<I> extends MethodWrap<I, ToIntFunction<I>, Integer> implements IntMethod<I> {
     private final Function<I, String> calc;
 
     /**

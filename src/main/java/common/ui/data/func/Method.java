@@ -1,7 +1,6 @@
 package common.ui.data.func;
 
 import java.util.function.Function;
-import java.util.function.ToIntFunction;
 
 import common.ui.data.adt.HoverOver;
 import common.ui.data.adt.Line;
@@ -20,17 +19,5 @@ public interface Method<I, O> extends Line, Function<I, O>, HoverOver {
      * @return Displayable Results of this Method
      */
     Result<? extends Method<?, ?>, I, O> results(I input);
-
-    /**
-     * ToIntFunction visible to the user
-     * 
-     * @param I the input type of this ToIntFunction
-     */
-    static interface Int<I> extends Method<I, Integer>, ToIntFunction<I> {
-        @Override
-        default Integer apply(I input) {
-            return applyAsInt(input);
-        }
-    }
 
 }
