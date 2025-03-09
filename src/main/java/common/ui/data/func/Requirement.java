@@ -9,6 +9,7 @@ import java.util.function.Predicate;
  * @version 3/8/25
  */
 public final class Requirement<I> extends MethodWrap<I, Predicate<I>, Boolean> implements Method.Bool<I> {
+
     /**
      * @param description one line description of this Predicate
      * @param predicate
@@ -33,13 +34,7 @@ public final class Requirement<I> extends MethodWrap<I, Predicate<I>, Boolean> i
 
     @Override
     public Result<I, Requirement<I>, Boolean> results(I input) {
-        return new ReqResult(input);
-    }
-
-    private final class ReqResult extends WrapResult<Requirement<I>> {
-        private ReqResult(I input) {
-            super(input);
-        }
+        return new WrapResult<>(input, null);
     }
 
 }

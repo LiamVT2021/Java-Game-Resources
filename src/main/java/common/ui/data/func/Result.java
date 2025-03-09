@@ -11,17 +11,14 @@ import common.ui.data.adt.Line;
  * @param O the output type of the Method
  * @version 3/8/25
  */
-public abstract class Result<I, M extends Method<I, O>, O> implements Line, HoverOver {
+public abstract class Result<I, M extends Method<?, ?>, O> implements Line, HoverOver {
     public final I input;
+    public final String calc;
     public final O output;
 
-    public Result(I input) {
+    public Result(I input, String calc, O output) {
         this.input = input;
-        output = method().apply(input);
-    }
-
-    public Result(I input, O output) {
-        this.input = input;
+        this.calc = calc;
         this.output = output;
     }
 
@@ -29,11 +26,8 @@ public abstract class Result<I, M extends Method<I, O>, O> implements Line, Hove
 
     @Override
     public String line() {
-        return method().line() + ": " + input + " => " + output;
+        return calc == null ? method().line() + ": " + input + " => " + output
+                : method().line() + ": " + input + " => " + calc + " = " + output;
     }
 
-    @Override
-    public String toString() {
-        return line();
-    }
 }

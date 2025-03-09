@@ -38,9 +38,9 @@ public abstract class MethodWrap<I, F, O> implements Method<I, O> {
         return help == null ? line : line + '\n' + help;
     }
 
-    protected abstract class WrapResult<M extends Method<I, O>> extends Result<I, M, O> {
-        public WrapResult(I input) {
-            super(input);
+    protected class WrapResult<M extends Method<I, O>> extends Result<I, M, O> {
+        public WrapResult(I input, String calc) {
+            super(input, calc, apply(input));
         }
 
         @Override
