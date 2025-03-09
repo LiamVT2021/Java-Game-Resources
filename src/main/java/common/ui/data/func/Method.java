@@ -4,28 +4,27 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-import common.ui.data.adt.Describable;
+import common.ui.data.adt.Line;
 
 /**
  * Describable single arg Method with displayable Results
  * 
  * @param I the input type of this Method
  * @param O the output type of this Method
- * @version 12/23/25
+ * @version 3/8/25
  */
-public interface Method<I, O> extends Describable, Function<I, O> {
+public interface Method<I, O> extends Line, Function<I, O> {
 
     /**
      * @param input the Object being input
      * @return Displayable Results of this Method
      */
-    Result<O> results(I input);
+    Result<I, ? extends Method<I, O>, O> results(I input);
 
     /**
      * Describable Predicate with displayable Results
      * 
      * @param I the input type of this Method
-     * @version 12/23/25
      */
     static interface Bool<I> extends Method<I, Boolean>, Predicate<I> {
         @Override
@@ -38,7 +37,6 @@ public interface Method<I, O> extends Describable, Function<I, O> {
      * Describable ToIntFunction with displayable Results
      * 
      * @param I the input type of this Method
-     * @version 3/1/25
      */
     static interface Int<I> extends Method<I, Integer>, ToIntFunction<I> {
         @Override
