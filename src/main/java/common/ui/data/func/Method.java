@@ -4,16 +4,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
+import common.ui.data.adt.HoverOver;
 import common.ui.data.adt.Line;
 
 /**
- * Describable single arg Method with displayable Results
+ * single arg Method visible to the user
  * 
  * @param I the input type of this Method
  * @param O the output type of this Method
  * @version 3/8/25
  */
-public interface Method<I, O> extends Line, Function<I, O> {
+public interface Method<I, O> extends Line, Function<I, O>, HoverOver {
 
     /**
      * @param input the Object being input
@@ -22,9 +23,9 @@ public interface Method<I, O> extends Line, Function<I, O> {
     Result<I, ? extends Method<I, O>, O> results(I input);
 
     /**
-     * Describable Predicate with displayable Results
+     * Predicate visible to the user
      * 
-     * @param I the input type of this Method
+     * @param I the input type of this Predicate
      */
     static interface Bool<I> extends Method<I, Boolean>, Predicate<I> {
         @Override
@@ -34,9 +35,9 @@ public interface Method<I, O> extends Line, Function<I, O> {
     }
 
     /**
-     * Describable ToIntFunction with displayable Results
+     * ToIntFunction visible to the user
      * 
-     * @param I the input type of this Method
+     * @param I the input type of this ToIntFunction
      */
     static interface Int<I> extends Method<I, Integer>, ToIntFunction<I> {
         @Override
