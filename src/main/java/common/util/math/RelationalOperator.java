@@ -1,31 +1,57 @@
 package common.util.math;
 
+import java.util.function.Function;
+
 /**
  * Compares two numerical values
  * 
- * @version 2/17/25
+ * @version 2/18/25
  */
 public enum RelationalOperator {
 
-    EQ("=", "equal to", "is", (a, b) -> a == b),
-    NE("!=", "not equal to", "not", (a, b) -> a != b),
-    LT("<", "less than", "less than", (a, b) -> a < b),
-    LE("<=", "less than or equal to", "at most", (a, b) -> a <= b),
-    GT(">", "greater than", "more than", (a, b) -> a > b),
-    GE(">=", "greater than or equal to", "at least", (a, b) -> a >= b);
+    EQ("=", "equal to",
+            b -> "exactly " + b,
+            (a, b) -> a == b),
+    NE("!=", "not equal to",
+            b -> "not " + b,
+            (a, b) -> a != b),
+    LT("<", "less than",
+            b -> "less than " + b,
+            (a, b) -> a < b),
+    LE("<=", "less than or equal to",
+            b -> b + "or less",
+            (a, b) -> a <= b),
+    GT(">", "greater than",
+            b -> "more than " + b,
+            (a, b) -> a > b),
+    GE(">=", "greater than or equal to",
+            b -> b + " or more",
+            (a, b) -> a >= b);
 
-    public final String symbol, math, simple;
+    /**
+     * how to display this operator
+     */
+    public final String symbol, string;
+    private final Function<Number, String> thresh;
     private final Int Int;
 
     private interface Int {
         boolean compare(int a, int b);
     }
 
-    private RelationalOperator(String symbol, String math, String simple, Int integer) {
+    private RelationalOperator(String symbol, String string,
+            Function<Number, String> threshold, Int integer) {
         this.symbol = symbol;
-        this.math = math;
-        this.simple = simple;
+        this.string = string;
+        thresh = threshold;
         Int = integer;
+    }
+
+    /**
+     * @return goal to be reached
+     */
+    public String threshold(Number target) {
+        return thresh.apply(target);
     }
 
     /**
