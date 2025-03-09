@@ -8,7 +8,7 @@ import java.util.function.Predicate;
  * @param I the input type of this Method
  * @version 3/8/25
  */
-public final class Requirement<I> extends MethodWrap<I, Predicate<I>, Boolean> implements Method.Bool<I> {
+public final class Requirement<I> extends MethodWrap<I, Predicate<I>, Boolean> implements BoolMethod<I> {
 
     /**
      * @param description one line description of this Predicate
@@ -33,8 +33,8 @@ public final class Requirement<I> extends MethodWrap<I, Predicate<I>, Boolean> i
     }
 
     @Override
-    public Result<I, Requirement<I>, Boolean> results(I input) {
-        return new WrapResult<>(input, null);
+    public Result<Requirement<I>, I, Boolean> results(I input) {
+        return new WrapResult<Requirement<I>>(input, null);
     }
 
 }

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import common.ui.data.adt.HoverOver;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -68,7 +70,7 @@ public class MethodWrapTest {
     public void testResults() {
         assertTrue(fullBool.results(true).output);
         assertEquals(1, fullInt.results(1).output);
-        assertEquals("help text", fullInt.results(1).hoverOver());
+        assertEquals("help text", ((HoverOver) fullInt.results(1)).hoverOver());
         assertEquals("simple: 1 => 1", simpleInt.results(1).toString());
         assertEquals("full: 2 => 2 = 2\nhelp text", fullInt.results(2).toString());
     }

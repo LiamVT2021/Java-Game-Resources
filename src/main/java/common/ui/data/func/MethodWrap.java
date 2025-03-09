@@ -1,5 +1,8 @@
 package common.ui.data.func;
 
+import common.ui.data.adt.HoverOver;
+import common.ui.data.adt.Line;
+
 /**
  * wrapper to make a single arg function visible to the user
  * 
@@ -38,9 +41,9 @@ public abstract class MethodWrap<I, F, O> implements Method<I, O> {
         return help == null ? line : line + '\n' + help;
     }
 
-    protected class WrapResult<M extends Method<I, O>> extends Result<I, M, O> {
+    protected class WrapResult<M extends Method<?, ?>> extends Result<M, I, O> implements Line, HoverOver {
         public WrapResult(I input, String calc) {
-            super(input, calc, apply(input));
+            super(input, calc, apply(input), null);
         }
 
         @Override
@@ -52,6 +55,12 @@ public abstract class MethodWrap<I, F, O> implements Method<I, O> {
         @Override
         public String hoverOver() {
             return help;
+        }
+
+        @Override
+        public String line() {
+            return calc == null ? method().line() + ": " + input + " => " + output
+                    : method().line() + ": " + input + " => " + calc + " = " + output;
         }
 
         @Override
