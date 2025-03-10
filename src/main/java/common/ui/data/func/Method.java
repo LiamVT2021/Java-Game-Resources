@@ -2,9 +2,6 @@ package common.ui.data.func;
 
 import java.util.function.Function;
 
-import common.ui.data.adt.HoverOver;
-import common.ui.data.adt.Line;
-
 /**
  * single arg Method visible to the user
  * 
@@ -12,7 +9,7 @@ import common.ui.data.adt.Line;
  * @param O the output type of this Method
  * @version 3/8/25
  */
-public interface Method<I, O> extends Line, Function<I, O>, HoverOver {
+public interface Method<I, O> extends Function<I, O> {
 
     /**
      * @param input the Object being input

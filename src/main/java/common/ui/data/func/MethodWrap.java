@@ -11,7 +11,7 @@ import common.ui.data.adt.Line;
  * @param O the output type of this Method
  * @version 3/8/25
  */
-public abstract class MethodWrap<I, F, O> implements Method<I, O> {
+public abstract class MethodWrap<I, F, O> implements Method<I, O>, Line, HoverOver {
     protected final String line, help;
     protected final F func;
 
@@ -41,7 +41,7 @@ public abstract class MethodWrap<I, F, O> implements Method<I, O> {
         return help == null ? line : line + '\n' + help;
     }
 
-    protected class WrapResult<M extends Method<?, ?>> extends Result<M, I, O> implements Line, HoverOver {
+    protected class WrapResult<M extends MethodWrap<?, ?, ?>> extends Result<M, I, O> implements Line, HoverOver {
         public WrapResult(I input, String calc) {
             super(input, calc, apply(input), null);
         }
