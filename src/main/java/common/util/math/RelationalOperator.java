@@ -48,13 +48,6 @@ public enum RelationalOperator {
     }
 
     /**
-     * @return goal to be reached
-     */
-    public String threshold(Number target) {
-        return thresh.apply(target);
-    }
-
-    /**
      * compares two integers
      * 
      * @param a left
@@ -77,4 +70,14 @@ public enum RelationalOperator {
         return Int.compare(a.compareTo(b), 0);
     }
 
+    public String equation(Number a, Number b) {
+        return a.toString() + symbol + b.toString();
+    }
+
+    /**
+     * @return goal to be reached
+     */
+    public String threshold(Number target) {
+        return thresh.apply(target);
+    }
 }
