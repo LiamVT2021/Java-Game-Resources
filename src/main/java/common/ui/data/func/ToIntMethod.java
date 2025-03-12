@@ -37,7 +37,7 @@ public final class ToIntMethod<I> extends MethodWrap<I, ToIntFunction<I>, Intege
     }
 
     @Override
-    public Result<ToIntMethod<I>, I, Integer> results(I input) {
+    public Result<ToIntMethod<I>, I, Integer> result(I input) {
         return new WrapResult<>(input, calc == null ? null : calc.apply(input));
     }
 

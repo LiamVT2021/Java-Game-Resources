@@ -33,7 +33,7 @@ public final class Requirement<I> extends MethodWrap<I, Predicate<I>, Boolean> i
     }
 
     @Override
-    public Result<Requirement<I>, I, Boolean> results(I input) {
+    public Result<Requirement<I>, I, Boolean> result(I input) {
         return new WrapResult<Requirement<I>>(input, null);
     }
 

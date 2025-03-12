@@ -17,7 +17,7 @@ public interface BoolMethod<I> extends Method<I, Boolean>, Predicate<I> {
     }
 
     default Filter<I> filter(I[] input, IntFunction<I[]> arrFunc) {
-        Result<?, ?, ?>[] children = Stream.of(input).map(this::results).toArray(Result[]::new);
+        Result<?, ?, ?>[] children = Stream.of(input).map(this::result).toArray(Result[]::new);
         I[] output = Stream.of(children).filter(r -> (boolean) r.output).toArray(arrFunc);
         return new Filter<>(this, input, output, children);
     }

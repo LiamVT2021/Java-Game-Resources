@@ -64,15 +64,15 @@ public class MethodWrapTest {
     }
 
     /**
-     * tests the output of results
+     * tests the output of result
      */
     @Test
-    public void testResults() {
-        assertTrue(fullBool.results(true).output);
-        assertEquals(1, fullInt.results(1).output);
-        assertEquals("help text", ((HoverOver) fullInt.results(1)).hoverOver());
-        assertEquals("simple: 1 => 1", simpleInt.results(1).toString());
-        assertEquals("full: 2 => 2 = 2\nhelp text", fullInt.results(2).toString());
+    public void testResult() {
+        assertTrue(fullBool.result(true).output);
+        assertEquals(1, fullInt.result(1).output);
+        assertEquals("help text", ((HoverOver) fullInt.result(1)).hoverOver());
+        assertEquals("simple: 1 => 1", simpleInt.result(1).toString());
+        assertEquals("full: 2 => 2 = 2\nhelp text", fullInt.result(2).toString());
     }
 
 }

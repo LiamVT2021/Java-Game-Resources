@@ -13,8 +13,8 @@ public interface Method<I, O> extends Function<I, O> {
 
     /**
      * @param input the Object being input
-     * @return Displayable Results of this Method
+     * @return Result of this Method
      */
-    Result<? extends Method<?, ?>, I, O> results(I input);
+    Result<? extends Method<?, ?>, I, O> result(I input);
 
 }
