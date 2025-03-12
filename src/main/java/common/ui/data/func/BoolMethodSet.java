@@ -14,8 +14,8 @@ public class BoolMethodSet<I> {
         count = new Count();
     }
 
-    private Result.Bool<?>[] results(I input) {
-        return Stream.of(methods).map(m -> m.result(input)).toArray(Result.Bool[]::new);
+    private Result<?, ?, ?>[] results(I input) {
+        return Stream.of(methods).map(m -> m.result(input)).toArray(Result[]::new);
     }
 
     private final class Any implements BoolMethod<I> {
@@ -31,7 +31,7 @@ public class BoolMethodSet<I> {
     }
 
     private final class AnyResult extends Result.Bool<I> {
-        public AnyResult(I input, Result.Bool<?>[] children) {
+        public AnyResult(I input, Result<?, ?, ?>[]  children) {
             super(input, null, Stream.of(children).anyMatch(r -> (boolean) r.output), children);
         }
 
@@ -54,7 +54,7 @@ public class BoolMethodSet<I> {
     }
 
     private final class AllResult extends Result.Bool<I> {
-        public AllResult(I input, Result.Bool<?>[] children) {
+        public AllResult(I input, Result<?, ?, ?>[]  children) {
             super(input, null, Stream.of(children).allMatch(r -> (boolean) r.output), children);
         }
 
