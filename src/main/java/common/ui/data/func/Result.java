@@ -23,4 +23,16 @@ public abstract class Result<M extends Method<?, ?>, I, O> {
 
     public abstract M method();
 
+    public static abstract class Bool<I> extends Result<BoolMethod<I>, I, Boolean> {
+        public Bool(I input, String calc, boolean output, Result<?, ?, ?>[] children) {
+            super(input, calc, output, children);
+        }
+    }
+
+    public static abstract class Int<I> extends Result<IntMethod<I>, I, Integer> {
+        public Int(I input, String calc, int output, Result<?, ?, ?>[] children) {
+            super(input, calc, output, children);
+        }
+    }
+
 }
